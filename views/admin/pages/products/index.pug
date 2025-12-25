@@ -70,18 +70,17 @@ block main
                                             i.far.fa-trash-alt
                             
                 .card-footer.bg-white.border-top-0.d-flex.justify-content-between.align-items-center.py-3
-                    span.text-muted.small Hiển thị 1-3 trong số 45 sản phẩm
+                    span.text-muted.small Hiển thị #{objPagination.start}-#{objPagination.end} trong số #{objPagination.countDocument} sản phẩm
                     nav
                         ul.pagination.pagination-sm.mb-0
-                            li.page-item.disabled
-                                a.page-link(href='#')
-                                    i.fas.fa-chevron-left
-                            li.page-item.active
-                                a.page-link(href='#') 1
-                            li.page-item
-                                a.page-link(href='#') 2
-                            li.page-item
-                                a.page-link(href='#') 3
-                            li.page-item
-                                a.page-link(href='#')
-                                    i.fas.fa-chevron-right
+                            if(objPagination.currentPage > 1)
+                                li(class="page-item " page = objPagination.currentPage - 1)
+                                    a.page-link(href='#')
+                                        i.fas.fa-chevron-left
+                            - for(let i = 1;i<=objPagination.totalPage;i++)
+                                li(class=`page-item ${objPagination.currentPage == i ? "active" : ""}` page = i )
+                                    a.page-link(href='#' ) #{i}
+                            if(objPagination.currentPage < objPagination.totalPage)
+                                li(class="page-item " page = objPagination.currentPage + 1)
+                                    a.page-link(href='#')
+                                        i.fas.fa-chevron-right
