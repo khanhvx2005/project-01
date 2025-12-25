@@ -1,0 +1,289 @@
+:root {
+    --sidebar-width: 260px;
+    --header-height: 70px;
+    --color-primary: #435ebe;
+    /* Màu chủ đạo Admin hiện đại */
+    --color-secondary: #6c757d;
+    --color-bg-body: #f2f7ff;
+    --color-sidebar-bg: #ffffff;
+    --color-text-main: #25396f;
+    --font-main: 'Inter', sans-serif;
+    --shadow-card: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-bg-body);
+    color: var(--color-text-main);
+    font-size: 0.95rem;
+}
+
+/* --- LAYOUT STRUCTURE --- */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- COMPONENT: SIDEBAR (BEM: .sidebar) --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--color-sidebar-bg);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.sidebar__header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar__brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.sidebar__nav {
+    padding: 1.5rem 1rem;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.sidebar__menu-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #aeb4be;
+    margin-bottom: 0.8rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    padding-left: 10px;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--color-text-main);
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.sidebar__link:hover {
+    background-color: #2870dc;
+    color: white;
+}
+
+.sidebar__link--active {
+    background-color: var(--color-primary);
+    color: #fff !important;
+    box-shadow: 0 4px 8px rgba(67, 94, 190, 0.25);
+}
+
+.sidebar__icon {
+    width: 25px;
+    font-size: 1.1rem;
+    margin-right: 10px;
+}
+
+/* --- COMPONENT: MAIN CONTENT (BEM: .main) --- */
+.main {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    /* Bo góc mềm hơn */
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+
+
+/* --- 4. FILTER BAR (Toolbar) --- */
+.filter-bar .input-group-text {
+    background-color: #fff;
+    border-right: none;
+    color: var(--color-text-muted);
+    border-color: var(--border-color);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.filter-bar .form-control,
+.filter-bar .form-select {
+    border-color: var(--border-color);
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    color: var(--color-text-dark);
+    border-radius: 8px;
+    box-shadow: none !important;
+    /* Loại bỏ shadow mặc định xanh lè của Bootstrap */
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+/* Xử lý riêng cho input search để nó liền mạch với icon */
+.filter-bar .form-control {
+    border-left: none;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.filter-bar .form-control:focus,
+.filter-bar .form-select:focus {
+    border-color: var(--color-primary);
+    background-color: #fff;
+}
+
+/* --- 5. PRODUCT TABLE (Trái tim của trang) --- */
+.product-table thead th {
+    background-color: #fafbfc;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #edf2f9;
+    padding: 1rem;
+    white-space: nowrap;
+    /* Không cho xuống dòng tiêu đề */
+}
+
+.product-table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f2f4f8;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.product-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.product-table tbody tr:hover {
+    background-color: #f8faff;
+    /* Hover vào dòng đổi màu nhẹ */
+}
+
+/* Ảnh sản phẩm */
+.product-table__img {
+    width: 100px;
+    /* height: 48px; */
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #edf2f9;
+    background-color: #fff;
+}
+
+/* Tên sản phẩm */
+.product-table__title {
+    color: var(--color-text-dark);
+    font-weight: 600;
+    margin-bottom: 2px;
+    transition: color 0.2s;
+}
+
+.product-table__title:hover {
+    color: var(--color-primary) !important;
+}
+
+/* Action Buttons (Nút hành động) */
+.btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid transparent;
+    color: var(--color-text-muted);
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-light:hover {
+    background-color: var(--color-primary);
+    color: #fff !important;
+    /* Đổi màu icon thành trắng khi hover */
+    transform: translateY(-2px);
+    /* Nảy lên nhẹ */
+}
+
+/* Riêng nút xóa hover màu đỏ */
+.btn-light.text-danger:hover {
+    background-color: #ff4d4f;
+    color: #fff !important;
+}
+
+/* --- 6. STATUS BADGES (Custom màu pastel) --- */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Ghi đè màu sắc để đảm bảo hiển thị đúng */
+.bg-success-subtle {
+    background-color: #e6fffa !important;
+    color: #00b894 !important;
+}
+
+.bg-danger-subtle {
+    background-color: #ffeaea !important;
+    color: #ff5252 !important;
+}
+
+
+
+/* --- 7. PAGINATION --- */
+.pagination .page-link {
+    border: none;
+    color: var(--color-text-muted);
+    border-radius: 6px;
+    margin: 0 3px;
+    font-weight: 500;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: var(--color-primary);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 3px 6px rgba(67, 94, 190, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: transparent;
+    opacity: 0.5;
+}

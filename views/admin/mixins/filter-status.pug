@@ -1,0 +1,5 @@
+mixin filter-status(filter)
+    select(style='width: 140px;' class = "form-select form-select-sm select-status")
+                                
+        each item,index in filter
+            option(value=item.value selected = item.selected) #{item.name}

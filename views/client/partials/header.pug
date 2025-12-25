@@ -1,0 +1,25 @@
+
+header.header
+  .container
+    nav.navbar.navbar-expand-lg.navbar-light
+      a.navbar-brand.header__brand(href='#') VUKHANHSHOP
+      button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='#navbarNav')
+        span.navbar-toggler-icon
+      .collapse.navbar-collapse.justify-content-center#navbarNav
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link.header__nav-link.header__nav-link--active(href='#') Trang chủ
+          li.nav-item
+            a.nav-link.header__nav-link(href='#') Nam
+          li.nav-item
+            a.nav-link.header__nav-link(href='#') Nữ
+          li.nav-item
+            a.nav-link.header__nav-link(href='#') Bộ sưu tập
+      .header__actions.d-flex.align-items-center
+        button.header__actions-btn
+          i.fas.fa-search
+        button.header__actions-btn
+          i.far.fa-heart
+        button.header__actions-btn
+          i.fas.fa-shopping-bag
+          span.badge.rounded-pill.header__badge 2

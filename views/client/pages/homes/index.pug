@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+block main
+    section.section.py-5
+        .container
+            .section-header
+                span.section-header__subtitle Sản phẩm nổi bật
+                h2.section-header__title Xu Hướng Mới
+            .row
+                each item,index in records
+                    .col-6.col-md-4.col-lg-3
+                        .product-card
+                            .product-card__image-wrapper
+                                img.product-card__img(src=item.thumbnail0, alt=item.title)
+                                .product-card__actions
+                                    button.btn.btn-sm.btn-light
+                                        i.fas.fa-cart-plus
+                                    button.btn.btn-sm.btn-light
+                                        i.far.fa-eye
+                            .product-card__body
+                                .product-card__category Áo Khoác
+                                h3.product-card__title
+                                    a(href='#') #{item.title}
+                                .product-card__price    
+                                    span(class="product-card__price--new") 290.000đ
+
+                                    span(class="product-card__price--old") #{item.price}
+                
+            .text-center.mt-5
+                a.btn.btn--custom.btn--dark(href='#') Xem Tất Cả
