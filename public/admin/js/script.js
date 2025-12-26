@@ -126,6 +126,13 @@ const formChangeMulti = document.querySelector("[form-change-multi]");
 if (formChangeMulti) {
     formChangeMulti.addEventListener("submit", (e) => {
         e.preventDefault();
+        const typeChange = e.target.elements[1].value;
+        if (typeChange == "delete-all") {
+            const conFirm = confirm("Bạn có chắc chắc muốn xóa các sản phẩm đã chọn ?");
+            if (!conFirm) {
+                return;
+            }
+        }
         const productTable = document.querySelector(".product-table");
 
         const inputChecked = productTable.querySelectorAll("input[name='id']:checked");
@@ -133,7 +140,6 @@ if (formChangeMulti) {
         if (inputChecked.length > 0) {
             let ids = [];
             const inputIds = formChangeMulti.querySelector("input[name='ids']");
-            console.log(inputIds)
             inputChecked.forEach((input) => {
                 const id = input.value;
                 ids.push(id);

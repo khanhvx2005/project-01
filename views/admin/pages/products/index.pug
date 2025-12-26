@@ -18,7 +18,7 @@ block main
                             .input-group
                                 button.input-group-text.bg-light.border-end-0.text-secondary.submit
                                     i.fas.fa-search
-                                input.form-control.border-start-0.bg-light.ps-0(type='text', placeholder='Tìm kiếm tên, mã SP...' name = "keyword" value = keyword)
+                                input.form-control.border-start-0.bg-light.ps-0(type='text', placeholder='Tìm kiếm tên SP' name = "keyword" value = keyword)
                     
                     .col-12.col-md-3
                         form(form-change-multi method="POST" action=`${prefixAdmin}/products/change-multi?_method=PATCH`)
