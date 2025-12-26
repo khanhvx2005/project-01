@@ -59,6 +59,7 @@ module.exports.changeStatus = async (req, res) => {
     // Cập nhập DB
     await Product.updateOne({ _id: id }, { status: status })
     // Chuyển hướng trình duyệt
+    req.flash("success", "Cập nhập thành công")
     res.redirect("/admin/products")
 }
 //[PATCH] /admin/product/change-multi--> Chuyển đổi trạng thái nhiều sản phẩm
@@ -69,12 +70,19 @@ module.exports.changeMulti = async (req, res) => {
     switch (type) {
         case "active":
             await Product.updateMany({ _id: { $in: ids } }, { status: type })
+            req.flash("success", "Cập nhập thành công")
+            res.redirect("/admin/products")
+
             break;
         case "inactive":
             await Product.updateMany({ _id: { $in: ids } }, { status: type })
+            req.flash("success", "Cập nhập thành công")
+            res.redirect("/admin/products")
             break;
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
+            req.flash("success", "Xóa sản phẩm thành công")
+            res.redirect("/admin/products")
             break;
         case "change-position":
             for (const element of ids) {
@@ -83,6 +91,7 @@ module.exports.changeMulti = async (req, res) => {
                 await Product.updateOne({ _id: id }, { position: position })
 
             }
+            req.flash("success", "Thay đổi vị trí thành công")
             const backURL = req.get("Referer");
             res.redirect(backURL);
             break;

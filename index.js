@@ -1,4 +1,8 @@
+const flash = require('express-flash')
 const express = require('express')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+
 // Cấu hình file .env
 require('dotenv').config()
 // Cấu hình thư viện method-override
@@ -17,6 +21,10 @@ app.set('view engine', 'pug')
 app.use(methodOverride('_method'))
 // Cấu hình thư viện body-parser
 app.use(bodyParser.urlencoded())
+// Cấu hình express-flash
+app.use(cookieParser('ABCDFGH'));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
 // Gọi route admin và client
 const routeAdmin = require("./routes/admin/index.route")
 const routeClient = require("./routes/client/index.route")
