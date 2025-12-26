@@ -1,7 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 block main
-    //- div #{filter}
     .container-fluid.p-0
         .d-flex.justify-content-between.align-items-center.mb-4
             div
@@ -20,7 +19,19 @@ block main
                                 button.input-group-text.bg-light.border-end-0.text-secondary.submit
                                     i.fas.fa-search
                                 input.form-control.border-start-0.bg-light.ps-0(type='text', placeholder='Tìm kiếm tên, mã SP...' name = "keyword" value = keyword)
-                    .col-12.col-md-8.d-flex.flex-wrap.justify-content-md-end.gap-3
+                    
+                    .col-12.col-md-3
+                        form(form-change-multi method="POST" action=`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                            .d-flex.align-items-center.gap-2
+                                input(type="text" name="ids" value="" class="d-none") 
+                                
+                                select.form-select.form-select-sm(name="type")
+                                    option(disabled selected) -- Chọn hành động --
+                                    option(value="active") Đang bán
+                                    option(value="inactive") Hết hàng
+                                    option(value="delete-all") Xóa tất cả
+                                button.btn.btn-sm.btn-primary(type="submit") Áp dụng
+                    .col-12.col-md-5.d-flex.flex-wrap.justify-content-md-end.gap-3
                         .d-flex.align-items-center.gap-2
                             label.text-muted.small.fw-medium.text-nowrap Trạng thái:
                             +filter-status(filter)
@@ -36,6 +47,8 @@ block main
                     table.table.table-hover.align-middle.mb-0.product-table
                         thead.bg-light
                             tr
+                                th 
+                                    input(type="checkbox" name = "checkall")
                                 th Tên sản phẩm
                                 th Hình ảnh
                                 th Giá
@@ -46,6 +59,8 @@ block main
                         tbody
                             each item,index in records
                                 tr
+                                    td 
+                                        input(type="checkbox" name = "id" value = item.id)
                                     td #{item.title}
                                     
                                     td
@@ -57,16 +72,16 @@ block main
                                     td
                                         if(item.status=="active")
 
-                                            span.badge.bg-success-subtle.text-success.border.border-success-subtle.rounded-pill Đang bán
+                                            a(class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Đang bán
                                         else 
-                                            span.badge.bg-danger-subtle.text-success.border.border-danger-subtle.rounded-pill Hết hàng
+                                            a(class="badge bg-danger-subtle text-success border border-danger-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Hết hàng
 
                                     td.text-end.pe-4
                                         button.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết')
                                             i.far.fa-eye
                                         button.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa')
                                             i.fas.fa-pencil-alt
-                                        button.btn.btn-sm.btn-light.text-danger(title='Xóa')
+                                        button.btn.btn-sm.btn-light.text-danger(title='Xóa' data-id = item.id button-delete-item)
                                             i.far.fa-trash-alt
                             
                 .card-footer.bg-white.border-top-0.d-flex.justify-content-between.align-items-center.py-3
@@ -84,3 +99,12 @@ block main
                                 li(class="page-item " page = objPagination.currentPage + 1)
                                     a.page-link(href='#')
                                         i.fas.fa-chevron-right
+    form(action= ""
+    form-change-status 
+    path = `${prefixAdmin}/products/change-status`
+    method = "POST"
+    )
+    form(action=""
+    form-delete-item
+    path = `${prefixAdmin}/products/delete`
+    method = "POST")

@@ -13,7 +13,8 @@ const productsSchema = new mongoose.Schema(
             default: false
         },
         position: Number,
-        thumbnail: String
+        thumbnail: String,
+        deletedAt: Date
 
 
     }, { timestamps: true });

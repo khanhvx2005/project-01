@@ -1,6 +1,11 @@
 const express = require('express')
 // Cấu hình file .env
 require('dotenv').config()
+// Cấu hình thư viện method-override
+const methodOverride = require('method-override')
+// Cấu hình thư viện body-parser
+
+const bodyParser = require('body-parser')
 const app = express()
 const port = process.env.PORT
 
@@ -8,9 +13,12 @@ const port = process.env.PORT
 app.set('views', './views')
 app.set('view engine', 'pug')
 // End Cấu hình pug
+// Cấu hình thư viện method-override
+app.use(methodOverride('_method'))
+// Cấu hình thư viện body-parser
+app.use(bodyParser.urlencoded())
 // Gọi route admin và client
 const routeAdmin = require("./routes/admin/index.route")
-
 const routeClient = require("./routes/client/index.route")
 routeAdmin(app);
 routeClient(app);

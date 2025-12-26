@@ -52,7 +52,7 @@ if (sidebarLinks) {
     });
 }
 // End logic xử lý sidebar
-//Xử lý phân trang
+//4: Xử lý phân trang
 const pageItem = document.querySelectorAll(".page-item");
 if (pageItem.length > 0) {
     const url = new URL(window.location.href);
@@ -69,4 +69,103 @@ if (pageItem.length > 0) {
     })
 }
 // End xử lý phân trang
+// 5: Chuyển đổi trạng thái 1 sản phẩm
+const buttonChangeStatus = document.querySelectorAll("[button-change-status]");
+if (buttonChangeStatus.length > 0) {
+    const formChangeStatus = document.querySelector("[form-change-status]");
+    const path = formChangeStatus.getAttribute("path");
+    buttonChangeStatus.forEach((button) => {
+        button.addEventListener("click", () => {
+            const id = button.getAttribute("data-id");
+            const status = button.getAttribute("data-status");
+            let newStatus = "";
+            if (status == "active") {
+                newStatus = "inactive";
+            } else {
+                newStatus = "active";
+
+            }
+            formChangeStatus.action = `${path}/${newStatus}/${id}?_method=PATCH`;
+            formChangeStatus.submit();
+        })
+    })
+}
+// End chuyển đổi trạng thái 1 sản phẩm
+
+// 6: logic chuyển đổi trạng thái cho nhiều sản phẩm
+const productTable = document.querySelector(".product-table");
+if (productTable) {
+    const inputCheckAll = productTable.querySelector("input[name='checkall']");
+    const inputCheckIds = productTable.querySelectorAll("input[name='id']");
+    inputCheckAll.addEventListener("click", (e) => {
+        const checked = inputCheckAll.checked;
+        if (checked) {
+            inputCheckIds.forEach((input) => {
+                input.checked = true;
+            })
+        } else {
+            inputCheckIds.forEach((input) => {
+                input.checked = false;
+            })
+        }
+    })
+    inputCheckIds.forEach((input) => {
+        input.addEventListener("click", (e) => {
+            const countInputChecked = productTable.querySelectorAll("input[name='id']:checked").length;
+
+            if (countInputChecked == inputCheckIds.length) {
+                inputCheckAll.checked = true;
+            } else {
+                inputCheckAll.checked = false;
+
+            }
+        })
+    })
+}
+const formChangeMulti = document.querySelector("[form-change-multi]");
+if (formChangeMulti) {
+    formChangeMulti.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const productTable = document.querySelector(".product-table");
+
+        const inputChecked = productTable.querySelectorAll("input[name='id']:checked");
+
+        if (inputChecked.length > 0) {
+            let ids = [];
+            const inputIds = formChangeMulti.querySelector("input[name='ids']");
+            console.log(inputIds)
+            inputChecked.forEach((input) => {
+                const id = input.value;
+                ids.push(id);
+            })
+
+            inputIds.value = ids.join(",");
+            formChangeMulti.submit();
+
+        } else {
+            alert("Vui lòng chọn ít nhất 1 sản phẩm");
+        }
+
+    })
+}
+// end logic chuyển đổi trạng thái cho nhiều sản phẩm
+// Xóa 1 sản phẩm
+const buttonDeleteItem = document.querySelectorAll("[button-delete-item]");
+if (buttonDeleteItem.length > 0) {
+    const formDeleteItem = document.querySelector("[form-delete-item]");
+    const path = formDeleteItem.getAttribute("path");
+    buttonDeleteItem.forEach((button) => {
+        button.addEventListener("click", () => {
+            const isComfirm = confirm("Bạn có chắc chắn xóa sản phẩm không ?");
+            if (!isComfirm) {
+                return;
+            }
+            const id = button.getAttribute("data-id")
+            formDeleteItem.action = `${path}/${id}?_method=DELETE`;
+            formDeleteItem.submit();
+
+        })
+    })
+}
+// end xóa 1 sản phẩm
 

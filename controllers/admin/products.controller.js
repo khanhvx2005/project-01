@@ -1,5 +1,7 @@
 const Product = require("../../models/product.model")
 const filterHelpers = require("../../helpers/filter.helper")
+const prefixAdmin = require("../../configs/configAdmin.config")
+//[GET] /admin/product
 module.exports.index = async (req, res) => {
 
 
@@ -43,6 +45,42 @@ module.exports.index = async (req, res) => {
     }
 
     // end logic phân trang
-    const records = await Product.find(find).limit(objPagination.limitItems).skip(objPagination.skip)
+    const sort = {
+        position: "desc"
+    }
+    const records = await Product.find(find).limit(objPagination.limitItems).skip(objPagination.skip).sort(sort)
     res.render('admin/pages/products/index', { title: 'Trang quản lý sản phẩm', records: records, filter: filter, keyword: keyword, objPagination: objPagination })
+}
+//[PATCH] /admin/product/change-status/:status/:id --> Chuyển đổi trạng thái 1 sản phẩm
+module.exports.changeStatus = async (req, res) => {
+    //Lấy dữ liệu từ params
+    const id = req.params.id;
+    const status = req.params.status;
+    // Cập nhập DB
+    await Product.updateOne({ _id: id }, { status: status })
+    // Chuyển hướng trình duyệt
+    res.redirect("/admin/products")
+}
+//[PATCH] /admin/product/change-multi--> Chuyển đổi trạng thái nhiều sản phẩm
+
+module.exports.changeMulti = async (req, res) => {
+    const type = req.body.type;
+    const ids = req.body.ids.split(",");
+    switch (type) {
+        case "active":
+            await Product.updateMany({ _id: { $in: ids } }, { status: type })
+            break;
+        case "inactive":
+            await Product.updateMany({ _id: { $in: ids } }, { status: type })
+            break;
+        default:
+            break;
+    }
+    res.redirect(`${prefixAdmin}/products`);
+
+}
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+    await Product.updateOne({ _id: id }, { deleted: true })
+    res.redirect(`${prefixAdmin}/products`)
 }
