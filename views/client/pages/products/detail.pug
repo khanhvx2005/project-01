@@ -1,0 +1,115 @@
+extends ../../layouts/default.pug
+
+block main
+    .product-detail.py-5
+        .container
+            //- 1. BREADCRUMB
+            nav(aria-label="breadcrumb")
+                ol.breadcrumb.bg-transparent.p-0.mb-4
+                    li.breadcrumb-item: a.text-secondary(href="/") Trang chủ
+                    li.breadcrumb-item: a.text-secondary(href="/products") Sản phẩm
+                    li.breadcrumb-item.active.text-dark(aria-current="page") #{product.title}
+
+            .row.g-5
+                //- 2. PRODUCT GALLERY (Trái)
+                .col-12.col-lg-6
+                    .product-gallery
+                        //- Ảnh chính
+                        .product-gallery__main.mb-3
+                            img#mainImage.img-fluid.rounded(src=product.thumbnail alt=product.title)
+                        
+                        
+
+                //- 3. PRODUCT INFO (Phải)
+                .col-12.col-lg-6
+                    .product-info
+                        h1.product-info__title.mb-2 #{product.title}
+                        
+                        .product-info__meta.d-flex.align-items-center.gap-3.mb-3
+                            .text-warning
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star
+                                i.fas.fa-star-half-alt
+                                span.text-muted.ms-1.small (4.8/5 đánh giá)
+                            span.text-muted |
+                            span.text-muted.small Mã SP: ##{product.id.slice(-6)}
+
+                        //- Giá
+                        .product-info__price.mb-4
+                            - var newPrice = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+                            span.h2.fw-bold.text-danger.me-2 #{newPrice}₫
+                            if product.discountPercentage > 0
+                                span.text-muted.text-decoration-line-through.fs-5 #{product.price}₫
+                                span.badge.bg-danger.ms-2 -#{product.discountPercentage}%
+
+                        //- Form thêm vào giỏ
+                        form(action=`/cart/add/${product.id}` method="POST")
+                            
+                            //- Chọn Màu (Visual Swatches)
+                            .product-option.mb-4
+                                label.product-option__title.fw-bold.mb-2 Màu sắc:
+                                .d-flex.gap-2
+                                    each color,index in product.color
+                                        if(color == "black")
+                                            input.product-option__input(type="radio" name="color" id="color-black" value="black" checked)
+                                            label.product-option__label.product-option__label--color(for="color-black" style="background-color: #000")
+                                        if(color == "blue")
+
+                                            input.product-option__input(type="radio" name="color" id="color-blue" value="blue")
+                                            label.product-option__label.product-option__label--color(for="color-blue" style="background-color: #435ebe")
+                                        if(color == "red")
+
+                                            input.product-option__input(type="radio" name="color" id="color-red" value="red")
+                                            label.product-option__label.product-option__label--color.border(for="color-red" style="background-color: red")
+                                        if(color == "yellow")
+
+                                            input.product-option__input(type="radio" name="color" id="color-yellow" value="yellow")
+                                            label.product-option__label.product-option__label--color.border(for="color-yellow" style="background-color: yellow")
+
+                            //- Chọn Size
+                            .product-option.mb-4
+                                label.product-option__title.fw-bold.mb-2 Kích thước:
+                                .d-flex.gap-2
+                                    each size,index in product.size
+                                        input.product-option__input(type="radio" name="size" id=`size-${size}` value=size)
+                                        label.product-option__label.product-option__label--text(for=`size-${size}`) #{size}
+
+                            //- Số lượng & Nút bấm
+                            .d-flex.align-items-center.gap-3.mb-4
+                                .quantity-selector.input-group(style="width: 130px;")
+                                    label.label Số lượng: 
+
+                                    input.form-control.text-center#quantity(type="number" name="quantity" value="1" min="1" max=product.stock)
+                            
+                            button.btn.btn-dark.btn-lg.w-100.py-3.fw-bold(type="submit")
+                                i.fas.fa-shopping-bag.me-2
+                                | Thêm vào giỏ hàng
+
+                        //- Chính sách (Trust Badges)
+                        .product-policy.mt-4.pt-4.border-top
+                            .row.g-3
+                                .col-6
+                                    .d-flex.align-items-center.gap-2
+                                        i.fas.fa-truck-fast.text-primary.fs-4
+                                        span.small Miễn phí vận chuyển đơn > 500k
+                                .col-6
+                                    .d-flex.align-items-center.gap-2
+                                        i.fas.fa-sync-alt.text-primary.fs-4
+                                        span.small Đổi trả miễn phí trong 30 ngày
+                                .col-12 
+                                    ul.nav.nav-tabs#productTab(role="tablist")
+                                        li.nav-item
+                                            button.nav-link.active(data-bs-toggle="tab" data-bs-target="#desc") Mô tả chi tiết
+                                    .tab-content.p-4.border.border-top-0.bg-white
+                                        //- Tab Mô tả
+                                        .tab-pane.fade.show.active#desc
+                                            .product-desc-content !{product.description}
+                                        
+                                        
+
+
+            
+
+    

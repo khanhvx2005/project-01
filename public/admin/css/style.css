@@ -288,6 +288,7 @@ body {
     opacity: 0.5;
 }
 
+/* thông báo */
 /* --- TOAST NOTIFICATION STYLES --- */
 
 [show-alert] {
@@ -398,3 +399,120 @@ body {
 .alert-close:hover {
     color: #333;
 }
+
+/* end thông báo */
+/* giao diện thêm mới sản phẩm */
+/* --- SECTION CARD (BEM: .section-card) --- */
+.section-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    background: #fff;
+    overflow: hidden;
+    /* Để bo góc header không bị lòi ra */
+}
+
+.section-card__header {
+    background-color: #fff;
+    border-bottom: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+}
+
+.section-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.section-card__body {
+    padding: 1.5rem;
+}
+
+/* --- FORM GROUPS (BEM: .form-group) --- */
+.form-group__label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.form-group__input {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.form-group__input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(67, 94, 190, 0.15);
+    /* Hiệu ứng focus nhẹ */
+}
+
+/* --- IMAGE UPLOADER (Custom Component) --- */
+.image-uploader__preview-box {
+    width: 100%;
+    /* Giữ khung hình vuông hoặc chữ nhật tùy ý */
+    height: 250px;
+    border: 2px dashed #dce0e4;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-uploader__img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Nút xóa ảnh (Dấu X tròn) */
+.image-uploader__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: none;
+    /* Mặc định ẩn, JS sẽ hiện */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #dc3545;
+    transition: transform 0.2s;
+}
+
+.image-uploader__close:hover {
+    transform: scale(1.1);
+    background: #fff;
+}
+
+/* end giao diện thêm mới sản phẩm */
+/* chi tiet san pham */
+.bg-light-success {
+    background-color: #e8fdf5 !important;
+}
+
+/* Style cho phần mô tả HTML để ảnh không bị tràn */
+.description-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 4px;
+}
+
+.description-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* end chi tiet san pham */

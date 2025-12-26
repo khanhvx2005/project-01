@@ -1,0 +1,75 @@
+extends ../../layouts/default.pug
+include ../../mixins/product-item.pug
+//- MIXIN: Product Item (Nên tách ra file riêng mixins/product-item.pug)
+
+
+block main
+    .container.py-5
+        //- BREADCRUMB
+        nav(aria-label="breadcrumb")
+            ol.breadcrumb.bg-transparent.p-0.mb-4
+                li.breadcrumb-item: a.text-secondary(href="/") Trang chủ
+                li.breadcrumb-item.active.text-dark(aria-current="page") Danh sách sản phẩm
+
+        .row
+            //- SIDEBAR FILTER (Trái)
+            .col-12.col-lg-3.mb-4
+                .sidebar
+                    //- Filter: Danh mục
+                    .sidebar__widget.mb-4
+                        h5.sidebar__title Danh mục
+                        .sidebar__content
+                            ul.list-unstyled.mb-0
+                                li: a.sidebar__link.active(href="#") Tất cả sản phẩm
+                                li: a.sidebar__link(href="#") Thời trang Nam
+                                li: a.sidebar__link(href="#") Thời trang Nữ
+                                li: a.sidebar__link(href="#") Phụ kiện
+                    
+                    //- Filter: Khoảng giá
+                    .sidebar__widget.mb-4
+                        h5.sidebar__title Khoảng giá
+                        .sidebar__content
+                            each priceRange in ['Dưới 100.000đ', '100.000đ - 300.000đ', '300.000đ - 500.000đ', 'Trên 500.000đ']
+                                .custom-control.custom-checkbox.mb-2
+                                    input.custom-control-input(type="checkbox" id=`price-${priceRange}`)
+                                    label.custom-control-label(for=`price-${priceRange}`) #{priceRange}
+
+                    //- Filter: Màu sắc (Visual)
+                    .sidebar__widget.mb-4
+                        h5.sidebar__title Màu sắc
+                        .sidebar__content.d-flex.flex-wrap.gap-2
+                            each color in ['#000', '#fff', '#dc3545', '#0d6efd', '#ffc107', '#198754']
+                                label.color-check
+                                    input(type="checkbox" name="color" value=color)
+                                    span.color-check__box(style=`background-color: ${color}`)
+
+            //- MAIN CONTENT (Phải)
+            .col-12.col-lg-9
+                
+                //- TOOLBAR (Sắp xếp)
+                .product-toolbar.d-flex.justify-content-between.align-items-center.mb-4.p-3.border.rounded
+                    span.text-muted.small Hiển thị 1-9 trong 45 kết quả
+                    
+                    .d-flex.align-items-center
+                        label.mr-2.mb-0.small.text-muted(for="sort") Sắp xếp:
+                        select.form-control.form-control-sm#sort(style="width: 150px;")
+                            option(value="newest") Mới nhất
+                            option(value="price-asc") Giá tăng dần
+                            option(value="price-desc") Giá giảm dần
+                            option(value="best-sell") Bán chạy nhất
+
+                //- GRID SẢN PHẨM
+                .row
+                    each item in records
+                        +product-item(item)
+
+                //- PAGINATION
+                nav.mt-4.d-flex.justify-content-center
+                    ul.pagination
+                        li.page-item.disabled
+                            a.page-link(href="#") <i class="fas fa-chevron-left"></i>
+                        li.page-item.active: a.page-link(href="#") 1
+                        li.page-item: a.page-link(href="#") 2
+                        li.page-item: a.page-link(href="#") 3
+                        li.page-item
+                            a.page-link(href="#") <i class="fas fa-chevron-right"></i>

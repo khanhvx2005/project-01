@@ -8,7 +8,7 @@ block main
             div
                 h2.fw-bold.mb-1 Quản lý sản phẩm
                 
-            a.btn.btn-primary.d-flex.align-items-center.gap-2(href='#')
+            a.btn.btn-primary.d-flex.align-items-center.gap-2(href=`${prefixAdmin}/products/create`)
                 i.fas.fa-plus
                 |  
                 span Thêm mới
@@ -83,9 +83,9 @@ block main
                                             a(class="badge bg-danger-subtle text-success border border-danger-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Hết hàng
 
                                     td.text-end.pe-4
-                                        button.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết')
+                                        a.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết' href=`${prefixAdmin}/products/edit/${item.id}`)
                                             i.far.fa-eye
-                                        button.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa')
+                                        a.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa' href=`${prefixAdmin}/products/edit/${item.id}` )
                                             i.fas.fa-pencil-alt
                                         button.btn.btn-sm.btn-light.text-danger(title='Xóa' data-id = item.id button-delete-item)
                                             i.far.fa-trash-alt

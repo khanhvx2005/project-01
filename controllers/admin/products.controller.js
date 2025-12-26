@@ -111,3 +111,67 @@ module.exports.deleteItem = async (req, res) => {
     )
     res.redirect(`${prefixAdmin}/products`)
 }
+//[GET] /admin/product/create-> Giao diện tạo mới sản phẩm
+module.exports.create = (req, res) => {
+    res.render("admin/pages/products/create", { title: "Trang thêm mới sản phẩm" })
+}
+//[POST] /admin/product/createPost-> Tạo mới sản phẩm
+
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price)
+    req.body.discountPercentage = parseInt(req.body.discountPercentage)
+
+    req.body.stock = parseInt(req.body.stock)
+    if (req.body.position == '') {
+        const count = await Product.countDocuments({
+            deleted: false
+        })
+        req.body.position = count + 1;
+    } else {
+        req.body.position = parseInt(req.body.position)
+
+    }
+
+    const record = new Product(req.body);
+    await record.save();
+    req.flash("success", "Tạo mới sản phẩm thành công");
+    res.redirect(`${prefixAdmin}/products`)
+    // {
+    //   fieldname: 'thumbnail',
+    //   originalname: 'tom.jpg',
+    //   encoding: '7bit',
+    //   mimetype: 'image/jpeg',
+    //   destination: './public/uploads/',
+    //   filename: '92e492c3e569325f774b65c28136ef11',
+    //   path: 'public\\uploads\\92e492c3e569325f774b65c28136ef11',
+    //   size: 847628
+    // }
+}
+//[GET] /admin/product/edit
+
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    const record = await Product.findOne({
+        _id: id,
+        deleted: false
+    })
+    res.render("admin/pages/products/edit", { title: "Trang chỉnh sửa sản phẩm", record: record })
+}
+//[PATCH] /admin/product/editPatch
+
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+    req.body.price = parseInt(req.body.price)
+    req.body.discountPercentage = parseInt(req.body.discountPercentage)
+
+    req.body.stock = parseInt(req.body.stock)
+    req.body.position = parseInt(req.body.position)
+    await Product.updateOne({ _id: id }, req.body)
+    req.flash("success", "Cập nhập thành công")
+    res.redirect(`${prefixAdmin}/products`);
+}
+module.exports.detail = async (req, res) => {
+    const id = req.params.id;
+    const item = await Product.findOne({ _id: id, deleted: false })
+    res.render("admin/pages/products/detail", { title: "Trang chi tiết sản phẩm", item: item })
+}

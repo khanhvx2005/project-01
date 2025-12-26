@@ -1,0 +1,212 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+
+    //- PAGE HEADER
+    .d-flex.justify-content-between.align-items-center.mb-4
+        div
+            h2.fw-bold.mb-1 Thêm mới sản phẩm
+            nav(aria-label="breadcrumb")
+                ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                    li.breadcrumb-item
+                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                    li.breadcrumb-item
+                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/products`) Sản phẩm
+                    li.breadcrumb-item.active(aria-current="page") Thêm mới
+        
+        
+
+    //- FORM CREATE
+    form(
+        action=`${prefixAdmin}/products/create`
+        id="form-create-product"
+        method="POST"
+        enctype="multipart/form-data"
+    )
+        .row
+            //- LEFT COLUMN (Thông tin chính)
+            .col-12.col-lg-8
+                //- Card: Thông tin chung
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Thông tin chung
+                    .card-body.section-card__body
+                        .form-group
+                            label.form-group__label(for="title") Tên sản phẩm <span class="text-danger">*</span>
+                            input.form-control.form-group__input(
+                                type="text" 
+                                id="title" 
+                                name="title" 
+                                placeholder="VD: Áo thun nam Polo..." 
+                                required
+                            )
+                        
+                        .form-group
+                            label.form-group__label(for="desc") Mô tả chi tiết
+                            textarea.form-control.form-group__input(
+                                id="desc" 
+                                name="description" 
+                                rows="6" 
+                                placeholder="Nhập mô tả sản phẩm..."
+                            )
+
+                //- Card: Giá & Kho
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Giá & Kho hàng
+                    .card-body.section-card__body
+                        .row
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="price") Giá bán (VNĐ) <span class="text-danger">*</span>
+                                    input.form-control.form-group__input(
+                                        type="number" 
+                                        id="price" 
+                                        name="price" 
+                                        value="0" 
+                                        min="0"
+                                    )
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="discount") Giảm giá (%)
+                                    input.form-control.form-group__input(
+                                        type="number" 
+                                        id="discount" 
+                                        name="discountPercentage" 
+                                        value="0" 
+                                        min="0" 
+                                        max="100"
+                                    )
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="stock") Số lượng tồn kho <span class="text-danger">*</span>
+                                    input.form-control.form-group__input(
+                                        type="number" 
+                                        id="stock" 
+                                        name="stock" 
+                                        value="0" 
+                                        min="0"
+                                    )
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="position") Vị trí hiển thị
+                                    input.form-control.form-group__input(
+                                        type="number" 
+                                        id="position" 
+                                        name="position" 
+                                        placeholder="Tự động tăng"
+                                        min="1"
+                                    )
+                //- Card: Kích thước && Size
+
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Kích thước & Size
+                    .card-body.section-card__body
+                        .row
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
+                                    div
+                                        input(type="checkbox" name="size" value="S") 
+                                        span.mr-2.ml-1 S
+                                        input(type="checkbox" name="size" value="M") 
+                                        span.mr-2.ml-1 M
+                                        input(type="checkbox" name="size" value="L") 
+                                        span.mr-2.ml-1 L
+                                        input(type="checkbox" name="size" value="XL") 
+                                        span.mr-2.ml-1 XL
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="color") Màu <span class="text-danger">*</span>
+                                    div
+                                        input(type="checkbox" name="color" value="red") 
+                                        span.mr-2.ml-1 Đỏ
+                                        input(type="checkbox" name="color" value="blue") 
+                                        span.mr-2.ml-1 Xanh
+                                        input(type="checkbox" name="color" value="yellow") 
+                                        span.mr-2.ml-1 Vàng
+                            
+
+            //- RIGHT COLUMN (Cấu hình & Ảnh)
+            .col-12.col-lg-4
+                //- Card: Trạng thái
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Trạng thái
+                    .card-body.section-card__body
+                        .form-check.form-check-inline
+                            input.form-check-input(
+                                type="radio" 
+                                name="status" 
+                                id="statusActive" 
+                                value="active" 
+                                checked
+                            )
+                            label.form-check-label.text-success.font-weight-bold(for="statusActive") Đang bán
+                        .form-check.form-check-inline
+                            input.form-check-input(
+                                type="radio" 
+                                name="status" 
+                                id="statusInactive" 
+                                value="inactive"
+                            )
+                            label.form-check-label.text-secondary(for="statusInactive") Hết hàng
+
+                //- Card: Danh mục
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Danh mục
+                    .card-body.section-card__body
+                        select.form-control.form-group__input(name="product_category_id")
+                            option(disabled selected) -- Chọn danh mục --
+                            //- Logic loop danh mục sẽ thêm sau
+                            option(value="1") Thời trang Nam
+                            option(value="2") Thời trang Nữ
+                            
+                //- Card: Upload Ảnh
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Hình ảnh đại diện
+                    .card-body.section-card__body.text-center
+                        //- Custom Upload UI
+                        .image-uploader(upload-image)
+                            .image-uploader__preview-box.mb-3
+                                img.image-uploader__img(
+                                    src="#" 
+                                    alt="Preview" 
+                                    upload-image-preview
+                                )
+                                span.image-uploader__close(upload-image-close)
+                                    i.fas.fa-times
+                            
+                            div
+                                label.btn.btn-sm.btn-outline-primary.mb-0(for="thumbnail")
+                                    i.fas.fa-upload.mr-2
+                                    | Chọn ảnh
+                                input.form-control-file.d-none(
+                                    type="file" 
+                                    id="thumbnail" 
+                                    name="thumbnail" 
+                                    accept="image/*" 
+                                    upload-image-input
+                                )
+
+                //- Card: Nổi bật
+                .card.section-card.mb-4
+                    .card-body.section-card__body
+                        .custom-control.custom-switch
+                            input.custom-control-input(
+                                type="checkbox" 
+                                id="featured" 
+                                name="featured" 
+                                value="1"
+                            )
+                            label.custom-control-label(for="featured") Sản phẩm nổi bật
+        button.btn.btn-primary.px-4(type="submit" form="form-create-product")
+            i.fas.fa-save.mr-2
+            |  Lưu lại
+
+    

@@ -257,3 +257,302 @@ a {
     color: var(--color-white);
     padding-left: 5px;
 }
+
+/* chi tiet san pham */
+/* --- PRODUCT DETAIL STYLES --- */
+
+/* 1. GALLERY */
+.product-gallery__main img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    /* Ảnh vuông */
+    object-fit: cover;
+    cursor: zoom-in;
+    /* Gợi ý user có thể zoom */
+}
+
+.product-gallery__thumb {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.product-gallery__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-gallery__thumb:hover,
+.product-gallery__thumb.active {
+    opacity: 1;
+    border-color: var(--color-primary);
+    /* Màu chủ đạo của web */
+}
+
+/* 2. PRODUCT INFO */
+.product-info__title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* 3. VARIANT SELECTOR (CORE) */
+/* Ẩn radio mặc định */
+.product-option__input {
+    display: none;
+}
+
+/* Style chung cho Label */
+.product-option__label {
+    cursor: pointer;
+    border: 2px solid #e9ecef;
+    transition: all 0.2s;
+    display: inline-block;
+    position: relative;
+}
+
+/* Style cho nút Màu (Tròn) */
+.product-option__label--color {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+/* Khi nút màu được chọn -> Thêm vòng tròn bao ngoài */
+.product-option__input:checked+.product-option__label--color {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-primary);
+    border-color: transparent;
+}
+
+/* Style cho nút Size (Chữ nhật) */
+.product-option__label--text {
+    min-width: 45px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: 600;
+    background-color: #fff;
+    color: #333;
+}
+
+.product-option__label--text:hover {
+    border-color: #aaa;
+}
+
+/* Khi nút size được chọn -> Đổi màu nền */
+.product-option__input:checked+.product-option__label--text {
+    background-color: #212529;
+    /* Màu đen */
+    color: #fff;
+    border-color: #212529;
+}
+
+/* 4. QUANTITY SELECTOR */
+.quantity-selector input {
+    border-left: none;
+    border-right: none;
+    font-weight: 600;
+}
+
+.quantity-selector input:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+/* 5. TABS */
+.nav-tabs .nav-link {
+    color: #555;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000;
+    font-weight: 700;
+    border-bottom-color: var(--color-primary);
+    background: transparent;
+}
+
+.product-desc-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* end chi tiet san pham */
+
+/* trang san pham */
+/* --- SIDEBAR FILTER --- */
+.sidebar__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.sidebar__link {
+    display: block;
+    padding: 6px 0;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.sidebar__link:hover,
+.sidebar__link.active {
+    color: var(--color-primary);
+    /* Màu chủ đạo */
+    padding-left: 5px;
+    font-weight: 500;
+}
+
+/* Color Checkbox (Ô chọn màu) */
+.color-check input {
+    display: none;
+}
+
+.color-check__box {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-check input:checked+.color-check__box {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--color-primary);
+}
+
+/* --- PRODUCT ITEM CARD --- */
+.product-item {
+    transition: transform 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    /* Nảy lên nhẹ khi hover */
+}
+
+/* Thumbnail Wrapper */
+.product-item__thumb {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    aspect-ratio: 3/4;
+    /* Tỷ lệ khung hình chuẩn thời trang */
+}
+
+.product-item__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-item:hover .product-item__img {
+    transform: scale(1.08);
+    /* Zoom nhẹ ảnh */
+}
+
+/* Badge (Giảm giá/New) */
+.product-item__badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Action Buttons (Hiện khi hover) */
+.product-item__actions {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.product-item:hover .product-item__actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.product-item__btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.product-item__btn:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+/* Content (Tên & Giá) */
+.product-item__content {
+    padding: 12px 0;
+    text-align: center;
+}
+
+.product-item__title a {
+    color: #212529;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    /* Cắt dòng nếu tên quá dài */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-item__title a:hover {
+    color: var(--color-primary);
+}
+
+.product-item__price {
+    margin-top: 5px;
+}
+
+.product-item__price-new {
+    font-weight: 700;
+    color: #212529;
+    margin-right: 8px;
+}
+
+.product-item__price-old {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+}
+
+/* end trang san pham */

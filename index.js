@@ -14,7 +14,7 @@ const app = express()
 const port = process.env.PORT
 
 // Cấu hình pug
-app.set('views', './views')
+app.set('views', `${__dirname}/views`)
 app.set('view engine', 'pug')
 // End Cấu hình pug
 // Cấu hình thư viện method-override
@@ -31,7 +31,7 @@ const routeClient = require("./routes/client/index.route")
 routeAdmin(app);
 routeClient(app);
 //Cấu hình file tĩnh
-app.use(express.static('public'))
+app.use(express.static(`${__dirname}/public`))
 app.locals.prefixAdmin = '/admin';
 
 // Kết nối dự án vs mongoDB

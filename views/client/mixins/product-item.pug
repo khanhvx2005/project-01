@@ -1,0 +1,27 @@
+mixin product-item(product)
+    .col-6.col-md-4.col-lg-4.mb-4
+        .product-item
+            .product-item__thumb
+                a(href=`/products/detail/${product.slug}`)
+                    img.product-item__img(src=product.thumbnail alt=product.title)
+                
+                //- Badge giảm giá
+                if product.discountPercentage > 0
+                    span.product-item__badge -#{product.discountPercentage}%
+                
+                //- Actions (Hiện khi hover)
+                .product-item__actions
+                    button.btn.btn-light.product-item__btn(title="Thêm vào giỏ")
+                        i.fas.fa-shopping-bag
+                    a.btn.btn-light.product-item__btn(href=`/products/detail/${product.slug}` title="Xem chi tiết")
+                        i.fas.fa-eye
+            
+            .product-item__content
+                h3.product-item__title
+                    a(href=`/products/detail/${product.slug}`) #{product.title}
+                
+                .product-item__price
+                    - var newPrice = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+                    span.product-item__price-new #{newPrice}$
+                    if product.discountPercentage > 0
+                        span.product-item__price-old #{product.price.toLocaleString('vi-VN')} <sup>đ</sup>

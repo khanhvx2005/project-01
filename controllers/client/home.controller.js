@@ -7,3 +7,6 @@ module.exports.index = async (req, res) => {
     // console.log(records);
     res.render("client/pages/homes/index", { title: "Trang chủ", records: records })
 }
+module.exports.detail = (req, res) => {
+    res.send("OK");
+}

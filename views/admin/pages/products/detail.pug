@@ -1,0 +1,151 @@
+extends ../../layouts/default.pug
+
+block main
+    //- PAGE HEADER
+    .d-flex.justify-content-between.align-items-center.mb-4
+        div
+            h2.fw-bold.mb-1 Chi tiết sản phẩm
+            div.text-muted.small.mb-2 ID: #{item.id}
+            nav(aria-label="breadcrumb")
+                ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                    li.breadcrumb-item
+                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                    li.breadcrumb-item
+                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/products`) Sản phẩm
+                    li.breadcrumb-item.active(aria-current="page") Chi tiết
+        
+        //- ACTIONS
+        div
+            a.btn.btn-secondary.mr-2(href=`${prefixAdmin}/products/edit/${item.id}`)
+                i.fas.fa-pencil-alt.mr-2
+                | Chỉnh sửa
+            a.btn.btn-outline-secondary(href=`${prefixAdmin}/products`)
+                | Quay lại
+
+    //- DETAIL CONTENT
+    .row
+        //- LEFT COLUMN (Thông tin chính)
+        .col-12.col-lg-8
+            
+            //- Card: Tổng quan
+            .card.section-card.mb-4
+                .card-header.section-card__header
+                    h5.section-card__title Thông tin chung
+                .card-body.section-card__body
+                    h4.mb-3.font-weight-bold #{item.title}
+                    
+                    .detail-row.mb-3
+                        strong.text-muted.mr-2 Danh mục:
+                        //- Giả sử item.category là object đã populate, hoặc hiển thị tạm ID
+                        span.text-primary #{item.category ? item.category.title : "Chưa phân loại"}
+                    
+                    hr
+
+                    //- MÔ TẢ CHI TIẾT (Render HTML)
+                    //- Sử dụng !{...} trong Pug để render HTML thay vì text thuần
+                    .description-box
+                        strong.d-block.text-muted.mb-2 Mô tả sản phẩm:
+                        if item.description
+                            div.description-content !{item.description}
+                        else 
+                            span.text-muted.font-italic Không có mô tả.
+
+            //- Card: Giá & Kho
+            .card.section-card.mb-4
+                .card-header.section-card__header
+                    h5.section-card__title Dữ liệu kinh doanh
+                .card-body.section-card__body
+                    .row
+                        .col-md-6.mb-3
+                            .p-3.bg-light.rounded
+                                div.text-muted.small.mb-1 Giá gốc
+                                div.h5.mb-0 #{item.price}$
+                        
+                        .col-md-6.mb-3
+                            .p-3.bg-light.rounded
+                                div.text-muted.small.mb-1 Giảm giá
+                                div.h5.mb-0 #{item.discountPercentage}%
+                        
+                        //- .col-md-6.mb-3
+                        //-     .p-3.bg-light-success.rounded.border.border-success
+                        //-         div.text-success.small.mb-1.font-weight-bold Giá hiện tại (Sau giảm)
+                        //-         //- Tính toán giá mới ngay tại view
+                        //-         - var newPrice = (item.price * (100 - item.discountPercentage) / 100).toFixed(0)
+                        //-         div.h4.text-success.mb-0.font-weight-bold #{newPrice}$
+
+                        .col-md-6.mb-3
+                            .p-3.bg-light.rounded
+                                div.text-muted.small.mb-1 Tồn kho
+                                div.h5.mb-0 #{item.stock} sản phẩm
+            .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Kích thước & Size
+                    .card-body.section-card__body
+                        .row
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
+                                    div
+                                        
+                                        each items , index in item.size
+                                            input(type="checkbox" name="size" value=items checked = true) 
+                                            span.mr-2.ml-1 #{items}
+                                        
+                            .col-md-6
+                                .form-group
+                                    label.form-group__label(for="color") Màu <span class="text-danger">*</span>
+                                    div
+                                        each items , index in item.color
+
+                                            input(type="checkbox" name="color" value=items checked = true) 
+                                            span.mr-2.ml-1 #{items}
+                                        
+        //- RIGHT COLUMN (Meta data)
+        .col-12.col-lg-4
+            
+            //- Card: Trạng thái
+            .card.section-card.mb-4
+                .card-header.section-card__header
+                    h5.section-card__title Trạng thái
+                .card-body.section-card__body
+                    if(item.status == "active")
+                        span.badge.badge-success.px-3.py-2 Đang bán
+                    else
+                        span.badge.badge-secondary.px-3.py-2 Hết hàng
+                    
+                    div.mt-3
+                        strong.text-muted.small.mr-2 Vị trí hiển thị:
+                        span #{item.position}
+                    
+                    div.mt-2
+                        strong.text-muted.small.mr-2 Nổi bật:
+                        if(item.featured == "1")
+                            span.text-success.font-weight-bold  Có
+                        else
+                            span.text-muted Không
+
+            //- Card: Ảnh đại diện
+            .card.section-card.mb-4
+                .card-header.section-card__header
+                    h5.section-card__title Hình ảnh
+                .card-body.section-card__body.text-center
+                    if item.thumbnail
+                        img.img-fluid.rounded.border(src=item.thumbnail alt=item.title style="max-height: 300px;")
+                    else 
+                        img.img-fluid.rounded.border(src="https://placehold.co/300x300?text=No+Image" alt="No Image")
+
+            //- Card: Thông tin hệ thống (Timestamp)
+            //- Phần này rất hữu ích cho Admin để trace log
+            //- .card.section-card.mb-4
+            //-     .card-header.section-card__header
+            //-         h5.section-card__title Thông tin hệ thống
+            //-     .card-body.section-card__body
+            //-         div.mb-2
+            //-             div.text-muted.small Ngày tạo
+            //-             //- Giả sử có thư viện moment hoặc format date
+            //-             div.font-weight-medium 24/12/2025 10:30
+            //-         div
+            //-             div.text-muted.small Cập nhật lần cuối
+            //-             div.font-weight-medium 25/12/2025 09:15
+
+    
