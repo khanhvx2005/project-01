@@ -30,6 +30,8 @@ block main
                                     option(value="active") Đang bán
                                     option(value="inactive") Hết hàng
                                     option(value="delete-all") Xóa tất cả
+                                    option(value="change-position") Thay đổi thứ tự
+
                                 button.btn.btn-sm.btn-primary(type="submit") Áp dụng
                     .col-12.col-md-5.d-flex.flex-wrap.justify-content-md-end.gap-3
                         .d-flex.align-items-center.gap-2
@@ -52,7 +54,7 @@ block main
                                 th Tên sản phẩm
                                 th Hình ảnh
                                 th Giá
-
+                                th Vị trí
                                 th Tồn kho
                                 th Trạng thái
                                 th.text-end.pe-4 Hành động
@@ -68,6 +70,8 @@ block main
                                             img.product-table__img.rounded(src=item.thumbnail, alt=item.title )
                                             
                                     td.fw-semibold.text-primary #{item.price}
+                                    td 
+                                        input(type = "number" name = "position" value = item.position style = "width:60px;" min = "1")
                                     td #{item.stock}
                                     td
                                         if(item.status=="active")

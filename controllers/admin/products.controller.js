@@ -76,6 +76,16 @@ module.exports.changeMulti = async (req, res) => {
         case "delete-all":
             await Product.updateMany({ _id: { $in: ids } }, { deleted: true, deletedAt: new Date() })
             break;
+        case "change-position":
+            for (const element of ids) {
+                let [id, position] = element.split("-");
+                position = parseInt(position);
+                await Product.updateOne({ _id: id }, { position: position })
+
+            }
+            const backURL = req.get("Referer");
+            res.redirect(backURL);
+            break;
         default:
             break;
     }
