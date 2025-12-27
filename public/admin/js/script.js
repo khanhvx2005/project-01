@@ -232,3 +232,32 @@ if (uploadImage) {
 }
 // end upload image preview
 
+// Sắp xếp
+const selectSort = document.querySelector(".select-sort");
+if (selectSort) {
+    const url = new URL(window.location.href);
+    selectSort.addEventListener("change", (e) => {
+        const [sortKey, sortValue] = e.target.value.split("_");
+        if (sortKey && sortValue) {
+            url.searchParams.set("sortKey", sortKey)
+            url.searchParams.set("sortValue", sortValue)
+        } else {
+            url.searchParams.delete("sortKey")
+            url.searchParams.delete("sortValue")
+        }
+        window.location.href = url.href;
+    })
+    const value = url.searchParams.get("sortValue");
+    const key = url.searchParams.get("sortKey");
+    const string = `${key}_${value}`;
+    const option = selectSort.querySelectorAll("option[value]");
+    option.forEach((item) => {
+        const value = item.getAttribute("value");
+        if (string == value) {
+            item.selected = true;
+        }
+    })
+}
+// end sắp xếp
+
+

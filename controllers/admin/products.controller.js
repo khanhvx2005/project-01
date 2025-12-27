@@ -45,9 +45,17 @@ module.exports.index = async (req, res) => {
     }
 
     // end logic phân trang
+    // logic sắp xếp
     const sort = {
-        position: "desc"
     }
+    if (req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+
+    } else {
+        sort.position = 'desc';
+    }
+    // end logic sắp xếp
+
     const records = await Product.find(find).limit(objPagination.limitItems).skip(objPagination.skip).sort(sort)
     res.render('admin/pages/products/index', { title: 'Trang quản lý sản phẩm', records: records, filter: filter, keyword: keyword, objPagination: objPagination })
 }

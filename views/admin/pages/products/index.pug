@@ -42,8 +42,9 @@ block main
                                     
                         .d-flex.align-items-center.gap-2
                             label.text-muted.small.fw-medium.text-nowrap Sắp xếp:
-                            select.form-select.form-select-sm(style='width: 160px;')
-                                option(value='price_asc') Giá: Thấp - Cao
+                            select.form-select.form-select-sm.select-sort(style='width: 160px;')
+                                option( selected) ---Chọn hành động---
+                                option(value='price_asc' ) Giá: Thấp - Cao
                                 option(value='price_desc') Giá: Cao - Thấp
         .card.border-0.shadow-sm
             .card-body.p-0
@@ -71,12 +72,12 @@ block main
                                         .d-flex.align-items-center.gap-3
                                             img.product-table__img.rounded(src=item.thumbnail, alt=item.title )
                                             
-                                    td.fw-semibold.text-primary #{item.price}
+                                    td.fw-semibold.text-primary #{item.price.toLocaleString('vi-VN')} <sup>đ</sup
                                     td 
                                         input(type = "number" name = "position" value = item.position style = "width:60px;" min = "1")
                                     td #{item.stock}
                                     td
-                                        if(item.status=="active")
+                                        if(item.status == "active")
 
                                             a(class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Đang bán
                                         else 
