@@ -19,7 +19,14 @@ module.exports.index = async (req, res) => {
         });
         return tree;
     }
+    let keyword = "";
+    if (req.query.keyword) {
+        keyword = req.query.keyword;
+        const reg = new RegExp(req.query.keyword, "i");
+        find.title = reg;
+    }
     const records = await ProductCategory.find(find)
+
     const newRecords = createTree(records)
     for (const item of records) {
         if (item.parent_id) {
@@ -31,7 +38,15 @@ module.exports.index = async (req, res) => {
         }
 
     }
-    res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: newRecords })
+
+
+    if (req.query.keyword) {
+        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: records, keyword: keyword })
+
+    } else {
+        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: newRecords, keyword: keyword })
+
+    }
 }
 // [GET] /admin/products-category/create
 

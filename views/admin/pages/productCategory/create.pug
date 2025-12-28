@@ -52,7 +52,8 @@ block main
                             label.form-group__label(for="parent_id") Danh mục cha
                             select.form-control.form-group__input(name="parent_id" id="parent_id")
                                 option(value="") -- Danh mục gốc --
-                                +select-tree(records)
+                                if(records)
+                                    +select-tree(records)
 
                                 
 
