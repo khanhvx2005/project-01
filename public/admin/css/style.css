@@ -516,3 +516,43 @@ body {
 }
 
 /* end chi tiet san pham */
+/* quản lý danh mục sản phẩm */
+/* --- CATEGORY TABLE STYLES --- */
+
+/* Ảnh thumbnail của danh mục */
+.category-table__img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+
+/* Ký tự phân cấp (-- --) */
+.category-prefix {
+    font-family: monospace;
+    /* Dùng font monospace để các dấu gạch thẳng hàng */
+    font-size: 12px;
+    color: #adb5bd;
+    /* Màu xám nhạt để không rối mắt */
+    letter-spacing: -1px;
+    user-select: none;
+    /* Không cho người dùng bôi đen copy */
+}
+
+/* Input số vị trí */
+.category-table input[type="number"] {
+    padding: 2px 5px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.category-table input[type="number"]:focus {
+    border-color: var(--color-primary);
+    box-shadow: none;
+    background-color: #fff;
+}
+
+/* end quản lý danh mục sản phẩm */

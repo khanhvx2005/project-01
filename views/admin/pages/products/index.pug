@@ -3,6 +3,8 @@ include ../../mixins/filter-status.pug
 include ../../mixins/alert.pug
 block main
     +alert_success("5000")
+    +alert_error("5000")
+
     .container-fluid.p-0
         .d-flex.justify-content-between.align-items-center.mb-4
             div
@@ -84,7 +86,7 @@ block main
                                             a(class="badge bg-danger-subtle text-success border border-danger-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Hết hàng
 
                                     td.text-end.pe-4
-                                        a.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết' href=`${prefixAdmin}/products/edit/${item.id}`)
+                                        a.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết' href=`${prefixAdmin}/products/detail/${item.id}`)
                                             i.far.fa-eye
                                         a.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa' href=`${prefixAdmin}/products/edit/${item.id}` )
                                             i.fas.fa-pencil-alt

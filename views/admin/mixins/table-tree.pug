@@ -1,0 +1,41 @@
+mixin table-tree(records , level = 1)
+    each item in records 
+        - const prefix = Array(level + 1).join("-- ")
+
+        tr
+            
+            td
+                img.category-table__img.rounded(src=item.thumbnail alt=item.title)
+            
+            //- CỘT TIÊU ĐỀ (Xử lý phân cấp)
+            td
+                //- Tính toán prefix dựa trên level
+                
+                div.d-flex.align-items-center #{prefix}#{item.title}
+                        
+            td
+                
+                span.badge.bg-light.text-secondary.border #{item.titleParent}
+                
+            td
+                input.form-control.form-control-sm(
+                    type="number" 
+                    value=item.position 
+                    style="width: 60px;" 
+                    min="1"
+                )
+            td
+                if(item.status == "active")
+                    a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill") Hoạt động
+                else
+                    a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill") Dừng hoạt động
+            td.text-end.pe-4
+                a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/products-category/edit/${item.id}` title='Chỉnh sửa')
+                    i.fas.fa-pencil-alt
+                button.btn.btn-sm.btn-light.text-danger(
+                    button-delete
+                    data-id=item.id 
+                    title='Xóa')
+                    i.far.fa-trash-alt
+        if(item.children && item.children.length >0)
+            +table-tree(item.children ,level + 1)
