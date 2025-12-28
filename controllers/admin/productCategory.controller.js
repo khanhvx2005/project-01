@@ -5,6 +5,33 @@ module.exports.index = async (req, res) => {
     const find = {
         deleted: false
     }
+    const filter = [
+        {
+            name: "Tất cả",
+            value: "",
+            selected: false
+        },
+        {
+            name: "Hoạt động",
+            value: "active",
+            selected: false
+        },
+        {
+            name: "Dừng hoạt động",
+            value: "inactive",
+            selected: false
+        }
+    ]
+    if (req.query.status) {
+        find.status = req.query.status;
+        const index = filter.findIndex((item) => item.value == req.query.status);
+
+        filter[index].selected = true;
+    } else {
+        const index = filter.findIndex((item) => item.value == "");
+        filter[index].selected = true;
+    }
+
     function createTree(arr, parent_id = "") {
         const tree = [];
         arr.forEach(item => {
@@ -40,11 +67,11 @@ module.exports.index = async (req, res) => {
     }
 
 
-    if (req.query.keyword) {
-        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: records, keyword: keyword })
+    if (req.query.keyword || req.query.status) {
+        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: records, keyword: keyword, filter: filter })
 
     } else {
-        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: newRecords, keyword: keyword })
+        res.render("admin/pages/productCategory/index", { title: "Trang quản lý danh mục", records: newRecords, keyword: keyword, filter: filter })
 
     }
 }
