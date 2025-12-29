@@ -1,5 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 block main
     +alert_success("5000")
     +alert_error("5000")
@@ -110,24 +112,21 @@ block main
                                 .form-group
                                     label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
                                     div
-                                        input(type="checkbox" name="size" value="S") 
-                                        span.mr-2.ml-1 S
-                                        input(type="checkbox" name="size" value="M") 
-                                        span.mr-2.ml-1 M
-                                        input(type="checkbox" name="size" value="L") 
-                                        span.mr-2.ml-1 L
-                                        input(type="checkbox" name="size" value="XL") 
-                                        span.mr-2.ml-1 XL
+                                        
+                                        - const sizes = ["S", "M", "L", "XL", "XXL"]
+                                        each size in sizes
+                                        
+                                            input(type="checkbox" name="size" value=size ) 
+                                            span.mr-2.ml-1 #{size}
                             .col-md-6
                                 .form-group
                                     label.form-group__label(for="color") Màu <span class="text-danger">*</span>
                                     div
-                                        input(type="checkbox" name="color" value="red") 
-                                        span.mr-2.ml-1 Đỏ
-                                        input(type="checkbox" name="color" value="blue") 
-                                        span.mr-2.ml-1 Xanh
-                                        input(type="checkbox" name="color" value="yellow") 
-                                        span.mr-2.ml-1 Vàng
+                                        
+                                        - const colors = ["Đỏ" , "Xanh" , "Vàng" , "Tím" , "Đen" , "Nâu" , "Trắng"]
+                                        each color in colors
+                                            input(type="checkbox" name="color" value=color ) 
+                                            span.mr-2.ml-1 #{color}
                             
 
             //- RIGHT COLUMN (Cấu hình & Ảnh)
@@ -162,9 +161,8 @@ block main
                     .card-body.section-card__body
                         select.form-control.form-group__input(name="product_category_id")
                             option(disabled selected) -- Chọn danh mục --
-                            //- Logic loop danh mục sẽ thêm sau
-                            option(value="1") Thời trang Nam
-                            option(value="2") Thời trang Nữ
+                            if(records)
+                                +select-tree(records)
                             
                 //- Card: Upload Ảnh
                 .card.section-card.mb-4

@@ -188,3 +188,14 @@ module.exports.editPatch = async (req, res) => {
     req.flash("success", "Cập nhập thành công")
     res.redirect(`${prefixAdmin}/products-category`);
 }
+//[PATCH] /admin/products-category/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+    await ProductCategory.updateOne(
+        { _id: id },
+        { deleted: true, deletedAt: new Date() }
+    )
+    req.flash("success", "Xóa thành công")
+
+    res.redirect(`${prefixAdmin}/products-category`)
+}

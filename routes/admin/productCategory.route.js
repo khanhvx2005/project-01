@@ -5,7 +5,6 @@ const router = express.Router()
 const controller = require("../../controllers/admin/productCategory.controller")
 const uploadCloud = require('../../middlewares/admin/uploadCloud.middleware')
 const validate = require("../../validates/admin/createPost.validate")
-
 router.get('/', controller.index)
 router.get('/create', controller.create)
 router.post('/create',
@@ -21,6 +20,8 @@ router.patch('/edit/:id',
     uploadCloud.upload,
     validate.createPost,
     controller.editPatch)
+router.delete('/delete/:id', controller.deleteItem)
+
 
 
 module.exports = router;

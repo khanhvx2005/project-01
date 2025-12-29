@@ -21,7 +21,7 @@ mixin product-item(product)
                     a(href=`/products/detail/${product.slug}`) #{product.title}
                 
                 .product-item__price
-                    - var newPrice = (product.price * (100 - product.discountPercentage) / 100).toFixed(0)
+                    - var newPrice = parseInt((product.price * (100 - product.discountPercentage) / 100).toFixed(0))
                     span.product-item__price-new #{newPrice.toLocaleString('vi-VN')} <sup>đ</sup>
                     if product.discountPercentage > 0
                         span.product-item__price-old #{product.price.toLocaleString('vi-VN')} <sup>đ</sup>

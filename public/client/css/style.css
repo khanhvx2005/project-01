@@ -556,3 +556,234 @@ a {
 }
 
 /* end trang san pham */
+/* css menu */
+/* --- Cấu hình Menu cha (Level 0) --- */
+.navbar-nav {
+    /* Đảm bảo danh sách menu nằm ngang (Bootstrap đã lo, nhưng thêm cho chắc) */
+    align-items: center;
+}
+
+/* Item cấp 1 */
+.navbar-nav .nav-item {
+    position: relative;
+    /* Quan trọng: Để menu con định vị theo nó */
+}
+
+/* --- Cấu hình Menu con (Level 1) - Dropdown xuống dưới --- */
+.navbar-nav .nav-item>.sub-menu {
+    display: none;
+    /* Mặc định ẩn */
+    position: absolute;
+    /* Nổi lên trên */
+    top: 100%;
+    /* Nằm ngay dưới đuôi menu cha */
+    left: 0;
+    min-width: 220px;
+    /* Độ rộng tối thiểu */
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    /* Khoảng cách trên dưới */
+    list-style: none;
+    z-index: 1000;
+    /* Đè lên các thành phần khác */
+    margin: 0;
+}
+
+/* Hiệu ứng: Hover vào cha thì hiện con */
+.navbar-nav .nav-item:hover>.sub-menu {
+    display: block;
+    animation: fadeIn 0.3s ease;
+    /* Thêm chút hiệu ứng hiện dần cho mượt */
+}
+
+/* Link trong menu con */
+.sub-menu li a {
+    display: block;
+    padding: 8px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-bottom: 1px solid #f5f5f5;
+    /* Đường kẻ mờ giữa các mục */
+}
+
+.sub-menu li:last-child a {
+    border-bottom: none;
+    /* Bỏ đường kẻ ở mục cuối */
+}
+
+.sub-menu li a:hover {
+    background-color: #f8f9fa;
+    /* Màu nền khi di chuột */
+    color: #007bff;
+    /* Đổi màu chữ (hoặc màu thương hiệu của bạn) */
+    padding-left: 25px;
+    /* Hiệu ứng đẩy chữ sang phải một chút */
+}
+
+/* --- Cấu hình Menu cháu (Level 2 trở đi) - Dropdown sang ngang --- */
+
+/* Các thẻ li trong menu con cần relative để menu cháu định vị theo nó */
+.sub-menu li {
+    position: relative;
+}
+
+/* Menu cấp 2, 3, 4... sẽ nằm bên phải */
+.sub-menu li>.sub-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    /* Ngang hàng với cha nó */
+    left: 100%;
+    /* Nằm hoàn toàn bên phải */
+    margin-left: 0;
+    /* Chỉnh lại margin nếu cần */
+
+    /* Copy lại style giao diện của level 1 */
+    min-width: 220px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    list-style: none;
+    z-index: 1001;
+}
+
+/* Hover vào menu con thì hiện menu cháu */
+.sub-menu li:hover>.sub-menu {
+    display: block;
+}
+
+/* --- (Tùy chọn) Thêm mũi tên chỉ thị có menu con --- */
+
+/* Mũi tên cho cấp 1 (xuống dưới) */
+.navbar-nav .nav-item:has(.sub-menu)>.nav-link::after {
+    content: "\f078";
+    /* Mã icon FontAwesome (hoặc dùng ký tự ▼) */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Mũi tên cho cấp 2 trở đi (sang phải) */
+.sub-menu li:has(.sub-menu)>a::after {
+    content: "\f054";
+    /* Mã icon FontAwesome (hoặc dùng ký tự ►) */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 10px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Keyframes cho hiệu ứng hiện ra */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* end css menu */
+
+/* Quảng cáo */
+/* --- 1. SPLIT BANNER STYLES --- */
+.promo-section .promo-img-wrapper {
+    height: 100%;
+    min-height: 400px;
+    /* Đảm bảo chiều cao trên mobile */
+    overflow: hidden;
+}
+
+.promo-section .promo-img-wrapper img {
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+/* Hiệu ứng zoom nhẹ khi hover vào vùng banner */
+.promo-section:hover .promo-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.time-box {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 10px 15px;
+    text-align: center;
+    border-radius: 8px;
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Nút bấm có hiệu ứng trượt */
+.btn-hover-effect {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-hover-effect:hover {
+    padding-left: 3rem !important;
+    /* Đẩy chữ sang phải */
+    background-color: var(--color-primary);
+    /* Đổi màu nếu muốn */
+}
+
+/* --- 2. PARALLAX BANNER STYLES --- */
+.parallax-banner {
+    background-image: url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop');
+    background-attachment: fixed;
+    /* Tạo hiệu ứng Parallax (ảnh đứng yên khi cuộn) */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 500px;
+    /* Chiều cao cố định */
+    position: relative;
+    margin: 4rem 0;
+}
+
+.parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    /* Lớp phủ đen mờ để chữ trắng nổi bật */
+}
+
+.letter-spacing-2 {
+    letter-spacing: 3px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Responsive cho Mobile */
+@media (max-width: 768px) {
+    .parallax-banner {
+        height: 350px;
+        background-attachment: scroll;
+        /* Tắt parallax trên mobile để đỡ giật */
+    }
+
+    .parallax-banner h2 {
+        font-size: 2.5rem;
+    }
+}
+
+/* quảng cáo */

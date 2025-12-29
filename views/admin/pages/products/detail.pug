@@ -37,7 +37,7 @@ block main
                     .detail-row.mb-3
                         strong.text-muted.mr-2 Danh mục:
                         //- Giả sử item.category là object đã populate, hoặc hiển thị tạm ID
-                        span.text-primary #{item.category ? item.category.title : "Chưa phân loại"}
+                        span.text-primary #{item.product_category_id ? item.titleProductCategory : "Chưa phân loại"}
                     
                     hr
 

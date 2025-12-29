@@ -1,0 +1,29 @@
+mixin product-section(title,subtitle,items)
+    section.section.py-5
+        .container
+            .section-header
+                span.section-header__subtitle #{title}
+                h2.section-header__title #{subtitle}
+            .row
+                each item,index in items
+                    .col-6.col-md-4.col-lg-3
+                        .product-card
+                            .product-card__image-wrapper
+                                img.product-card__img(src=item.thumbnail, alt=item.title)
+                                if item.discountPercentage > 0
+                                    span.product-item__badge -#{item.discountPercentage}%
+                                .product-card__actions
+                                    button.btn.btn-sm.btn-light
+                                        i.fas.fa-cart-plus
+                                    a.btn.btn-sm.btn-light(title = "Xem chi tiết" href = `/products/detail/${item.slug}`)
+                                        i.far.fa-eye
+                            .product-card__body
+                                .product-card__category Áo Khoác
+                                h3.product-card__title
+                                    a(href=`/products/detail/${item.slug}`) #{item.title}
+                                .product-card__price    
+                                    span(class="product-card__price--new") #{item.priceNew.toLocaleString('vi-VN')} <sup>đ</sup>
+
+                                    span(class="product-card__price--old") #{item.price.toLocaleString('vi-VN')} <sup>đ</sup>
+            .text-center.mt-5
+                a.btn.btn--custom.btn--dark(href='#') Xem Tất Cả

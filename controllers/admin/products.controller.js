@@ -1,4 +1,6 @@
 const Product = require("../../models/product.model")
+const ProductCategory = require("../../models/product-category.model")
+
 const filterHelpers = require("../../helpers/filter.helper")
 const prefixAdmin = require("../../configs/configAdmin.config")
 //[GET] /admin/product
@@ -120,8 +122,27 @@ module.exports.deleteItem = async (req, res) => {
     res.redirect(`${prefixAdmin}/products`)
 }
 //[GET] /admin/product/create-> Giao diện tạo mới sản phẩm
-module.exports.create = (req, res) => {
-    res.render("admin/pages/products/create", { title: "Trang thêm mới sản phẩm" })
+module.exports.create = async (req, res) => {
+    const find = {
+        deleted: false
+    }
+    function createTree(arr, parent_id = "") {
+        const tree = [];
+        arr.forEach(item => {
+            if (item.parent_id === parent_id) {
+                const newItem = item;
+                const children = createTree(arr, item.id)
+                if (children.length > 0) {
+                    newItem.children = children;
+                }
+                tree.push(newItem)
+            }
+        });
+        return tree;
+    }
+    const records = await ProductCategory.find(find)
+    const newRecords = createTree(records)
+    res.render("admin/pages/products/create", { title: "Trang thêm mới sản phẩm", records: newRecords })
 }
 //[POST] /admin/product/createPost-> Tạo mới sản phẩm
 
@@ -163,7 +184,25 @@ module.exports.edit = async (req, res) => {
         _id: id,
         deleted: false
     })
-    res.render("admin/pages/products/edit", { title: "Trang chỉnh sửa sản phẩm", record: record })
+    function createTree(arr, parent_id = "") {
+        const tree = [];
+        arr.forEach(item => {
+            if (item.parent_id === parent_id) {
+                const newItem = item;
+                const children = createTree(arr, item.id)
+                if (children.length > 0) {
+                    newItem.children = children;
+                }
+                tree.push(newItem)
+            }
+        });
+        return tree;
+    }
+    const records = await ProductCategory.find({
+        deleted: false
+    })
+    const newRecords = createTree(records)
+    res.render("admin/pages/products/edit", { title: "Trang chỉnh sửa sản phẩm", record: record, records: newRecords })
 }
 //[PATCH] /admin/product/editPatch
 
@@ -181,5 +220,13 @@ module.exports.editPatch = async (req, res) => {
 module.exports.detail = async (req, res) => {
     const id = req.params.id;
     const item = await Product.findOne({ _id: id, deleted: false })
+    const productCategoryId = await ProductCategory.findOne({
+        _id: item.product_category_id,
+        deleted: false
+    })
+    if (productCategoryId) {
+        item.titleProductCategory = productCategoryId.title;
+
+    }
     res.render("admin/pages/products/detail", { title: "Trang chi tiết sản phẩm", item: item })
 }

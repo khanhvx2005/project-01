@@ -1,4 +1,4 @@
-
+include ../mixins/sub-menu.pug
 header.header
   .container
     nav.navbar.navbar-expand-lg.navbar-light
@@ -11,10 +11,11 @@ header.header
             a.nav-link.header__nav-link.header__nav-link--active(href='/') Trang chủ
           li.nav-item
             a.nav-link.header__nav-link(href='/products') Sản phẩm
-          li.nav-item
-            a.nav-link.header__nav-link(href='#') Nam
-          li.nav-item
-            a.nav-link.header__nav-link(href='#') Nữ
+              +sub-menu(layoutProductsCategory)
+          each item in layoutProductsCategory
+            li.nav-item
+              a.nav-link.header__nav-link(href=`/products/${item.slug}`) #{item.title}
+            
           li.nav-item
             a.nav-link.header__nav-link(href='#') Bộ sưu tập
       .header__actions.d-flex.align-items-center

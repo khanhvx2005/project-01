@@ -169,7 +169,7 @@ if (buttonDeleteItem.length > 0) {
     const path = formDeleteItem.getAttribute("path");
     buttonDeleteItem.forEach((button) => {
         button.addEventListener("click", () => {
-            const isComfirm = confirm("Bạn có chắc chắn xóa sản phẩm không ?");
+            const isComfirm = confirm("Bạn có chắc chắn xóa không ?");
             if (!isComfirm) {
                 return;
             }

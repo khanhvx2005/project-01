@@ -4,6 +4,8 @@ module.exports.index = async (req, res) => {
         deleted: false,
         status: "active"
     }).sort({ position: "desc" })
-    // console.log(records);
+    records.forEach((record) => {
+        record.priceNew = parseInt((record.price * ((100 - record.discountPercentage) / 100)).toFixed(0));
+    })
     res.render("client/pages/homes/index", { title: "Trang chủ", records: records })
 }
