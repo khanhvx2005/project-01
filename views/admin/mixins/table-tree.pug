@@ -26,9 +26,9 @@ mixin table-tree(records , level = 1)
                 )
             td
                 if(item.status == "active")
-                    a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill") Hoạt động
+                    a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Hoạt động
                 else
-                    a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill") Dừng hoạt động
+                    a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Dừng hoạt động
             td.text-end.pe-4
                 a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/products-category/edit/${item.id}` title='Chỉnh sửa')
                     i.fas.fa-pencil-alt
@@ -39,3 +39,4 @@ mixin table-tree(records , level = 1)
                     i.far.fa-trash-alt
         if(item.children && item.children.length >0)
             +table-tree(item.children ,level + 1)
+    
