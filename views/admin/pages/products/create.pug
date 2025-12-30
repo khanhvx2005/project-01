@@ -81,16 +81,16 @@ block main
                                         min="0" 
                                         max="100"
                                     )
-                            .col-md-6
-                                .form-group
-                                    label.form-group__label(for="stock") Số lượng tồn kho <span class="text-danger">*</span>
-                                    input.form-control.form-group__input(
-                                        type="number" 
-                                        id="stock" 
-                                        name="stock" 
-                                        value="0" 
-                                        min="0"
-                                    )
+                            //- .col-md-6
+                            //-     .form-group
+                            //-         label.form-group__label(for="stock") Số lượng tồn kho <span class="text-danger">*</span>
+                            //-         input.form-control.form-group__input(
+                            //-             type="number" 
+                            //-             id="stock" 
+                            //-             name="stock" 
+                            //-             value="0" 
+                            //-             min="0"
+                            //-         )
                             .col-md-6
                                 .form-group
                                     label.form-group__label(for="position") Vị trí hiển thị
@@ -103,30 +103,56 @@ block main
                                     )
                 //- Card: Kích thước && Size
 
+                //- .card.section-card.mb-4
+                //-     .card-header.section-card__header
+                //-         h5.section-card__title Kích thước & Size
+                //-     .card-body.section-card__body
+                //-         .row
+                //-             .col-md-6
+                //-                 .form-group
+                //-                     label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
+                //-                     div
+                                        
+                //-                         - const sizes = ["S", "M", "L", "XL", "XXL"]
+                //-                         each size in sizes
+                                        
+                //-                             input(type="checkbox" name="size" value=size ) 
+                //-                             span.mr-2.ml-1 #{size}
+                //-             .col-md-6
+                //-                 .form-group
+                //-                     label.form-group__label(for="color") Màu <span class="text-danger">*</span>
+                //-                     div
+                                        
+                //-                         - const colors = ["Đỏ" , "Xanh" , "Vàng" , "Tím" , "Đen" , "Nâu" , "Trắng"]
+                //-                         each color in colors
+                //-                             input(type="checkbox" name="color" value=color ) 
+                //-                             span.mr-2.ml-1 #{color}
                 .card.section-card.mb-4
                     .card-header.section-card__header
-                        h5.section-card__title Kích thước & Size
+                        h5.section-card__title Danh sách biến thể (Size - Màu - Số lượng)
                     .card-body.section-card__body
-                        .row
-                            .col-md-6
-                                .form-group
-                                    label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
-                                    div
-                                        
-                                        - const sizes = ["S", "M", "L", "XL", "XXL"]
-                                        each size in sizes
-                                        
-                                            input(type="checkbox" name="size" value=size ) 
-                                            span.mr-2.ml-1 #{size}
-                            .col-md-6
-                                .form-group
-                                    label.form-group__label(for="color") Màu <span class="text-danger">*</span>
-                                    div
-                                        
-                                        - const colors = ["Đỏ" , "Xanh" , "Vàng" , "Tím" , "Đen" , "Nâu" , "Trắng"]
-                                        each color in colors
-                                            input(type="checkbox" name="color" value=color ) 
-                                            span.mr-2.ml-1 #{color}
+                        table.table.table-bordered#table-variants
+                            thead
+                                
+                                tr
+                                    th Size
+                                    th Màu sắc
+                                    th Số lượng
+                                    th Hành động
+                            tbody
+                                
+                                
+                                tr
+                                    td
+                                        input.form-control(type="text" name="size" placeholder="VD: S" required)
+                                    td
+                                        input.form-control(type="text" name="color" placeholder="VD: Đỏ" required)
+                                    td
+                                        input.form-control(type="number" name="stock" value="0" min="0" required)
+                                    td
+                                        button.btn.btn-danger.btn-sm.btn-delete-variant(type="button") Xóa
+
+                        button.btn.btn-primary.btn-add-variant(type="button") + Thêm biến thể
                             
 
             //- RIGHT COLUMN (Cấu hình & Ảnh)

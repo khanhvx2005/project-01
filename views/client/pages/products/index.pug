@@ -20,10 +20,10 @@ block main
                         h5.sidebar__title Danh mục
                         .sidebar__content
                             ul.list-unstyled.mb-0
-                                li: a.sidebar__link.active(href="#") Tất cả sản phẩm
-                                li: a.sidebar__link(href="#") Thời trang Nam
-                                li: a.sidebar__link(href="#") Thời trang Nữ
-                                li: a.sidebar__link(href="#") Phụ kiện
+                                li: a.sidebar__link.active(href="/products") Tất cả sản phẩm
+                                each item , index in layoutProductsCategory
+                                    li: a.sidebar__link(href=`/products/${item.slug}`) #{item.title}
+                                    
                     
                     //- Filter: Khoảng giá
                     .sidebar__widget.mb-4

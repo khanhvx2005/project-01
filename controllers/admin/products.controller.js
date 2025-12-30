@@ -147,10 +147,9 @@ module.exports.create = async (req, res) => {
 //[POST] /admin/product/createPost-> Tạo mới sản phẩm
 
 module.exports.createPost = async (req, res) => {
-    req.body.price = parseInt(req.body.price)
-    req.body.discountPercentage = parseInt(req.body.discountPercentage)
-
-    req.body.stock = parseInt(req.body.stock)
+    // 1. Chuẩn hóa dữ liệu cơ bản
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
     if (req.body.position == '') {
         const count = await Product.countDocuments({
             deleted: false
@@ -161,20 +160,37 @@ module.exports.createPost = async (req, res) => {
 
     }
 
-    const record = new Product(req.body);
-    await record.save();
+    let variants = [];
+
+    // TH1: Người dùng chỉ nhập 1 dòng -> req.body.size là String
+    // TH2: Người dùng nhập nhiều dòng -> req.body.size là Array
+    // => Ta ép tất cả về Array để dễ xử lý
+    const sizes = Array.isArray(req.body.size) ? req.body.size : [req.body.size];
+    const colors = Array.isArray(req.body.color) ? req.body.color : [req.body.color];
+    const stocks = Array.isArray(req.body.stock) ? req.body.stock : [req.body.stock];
+
+
+    let totalStock = 0;
+
+    // // Lặp qua mảng size để ghép dữ liệu
+    for (let i = 0; i < sizes.length; i++) {
+        const stock = parseInt(stocks[i]);
+
+        variants.push({
+            size: sizes[i],
+            color: colors[i],
+            stock: stock
+        });
+
+        totalStock += stock; // Cộng dồn tổng kho
+        // }
+    }
+    req.body.variants = variants;
+    req.body.totalStock = totalStock;
+    const product = new Product(req.body);
+    await product.save();
     req.flash("success", "Tạo mới sản phẩm thành công");
-    res.redirect(`${prefixAdmin}/products`)
-    // {
-    //   fieldname: 'thumbnail',
-    //   originalname: 'tom.jpg',
-    //   encoding: '7bit',
-    //   mimetype: 'image/jpeg',
-    //   destination: './public/uploads/',
-    //   filename: '92e492c3e569325f774b65c28136ef11',
-    //   path: 'public\\uploads\\92e492c3e569325f774b65c28136ef11',
-    //   size: 847628
-    // }
+    res.redirect(`${prefixAdmin}/products`);
 }
 //[GET] /admin/product/edit
 
@@ -207,12 +223,33 @@ module.exports.edit = async (req, res) => {
 //[PATCH] /admin/product/editPatch
 
 module.exports.editPatch = async (req, res) => {
+
     const id = req.params.id;
     req.body.price = parseInt(req.body.price)
     req.body.discountPercentage = parseInt(req.body.discountPercentage)
 
-    req.body.stock = parseInt(req.body.stock)
+    // req.body.stock = parseInt(req.body.stock)
     req.body.position = parseInt(req.body.position)
+    let variants = [];
+    const sizes = Array.isArray(req.body.size) ? req.body.size : [req.body.size];
+    const colors = Array.isArray(req.body.color) ? req.body.color : [req.body.color];
+    const stocks = Array.isArray(req.body.stock) ? req.body.stock : [req.body.stock];
+    let totalStock = 0;
+
+    for (let i = 0; i < sizes.length; i++) {
+        const stock = parseInt(stocks[i]);
+
+        variants.push({
+            size: sizes[i],
+            color: colors[i],
+            stock: stock
+        });
+
+        totalStock += stock; // Cộng dồn tổng kho
+        // }
+    }
+    req.body.variants = variants;
+    req.body.totalStock = totalStock;
     await Product.updateOne({ _id: id }, req.body)
     req.flash("success", "Cập nhập thành công")
     res.redirect(`${prefixAdmin}/products`);

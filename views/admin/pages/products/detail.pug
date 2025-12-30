@@ -66,39 +66,36 @@ block main
                                 div.text-muted.small.mb-1 Giảm giá
                                 div.h5.mb-0 #{item.discountPercentage}%
                         
-                        //- .col-md-6.mb-3
-                        //-     .p-3.bg-light-success.rounded.border.border-success
-                        //-         div.text-success.small.mb-1.font-weight-bold Giá hiện tại (Sau giảm)
-                        //-         //- Tính toán giá mới ngay tại view
-                        //-         - var newPrice = (item.price * (100 - item.discountPercentage) / 100).toFixed(0)
-                        //-         div.h4.text-success.mb-0.font-weight-bold #{newPrice}$
+                       
 
                         .col-md-6.mb-3
                             .p-3.bg-light.rounded
                                 div.text-muted.small.mb-1 Tồn kho
-                                div.h5.mb-0 #{item.stock} sản phẩm
+                                div.h5.mb-0 #{item.totalStock} sản phẩm
             .card.section-card.mb-4
                     .card-header.section-card__header
-                        h5.section-card__title Kích thước & Size
+                        h5.section-card__title Danh sách biến thể
                     .card-body.section-card__body
-                        .row
-                            .col-md-6
-                                .form-group
-                                    label.form-group__label(for="size") Kích thước <span class="text-danger">*</span>
-                                    div
-                                        
-                                        each items , index in item.size
-                                            input(type="checkbox" name="size" value=items checked = true) 
-                                            span.mr-2.ml-1 #{items}
-                                        
-                            .col-md-6
-                                .form-group
-                                    label.form-group__label(for="color") Màu <span class="text-danger">*</span>
-                                    div
-                                        each items , index in item.color
-
-                                            input(type="checkbox" name="color" value=items checked = true) 
-                                            span.mr-2.ml-1 #{items}
+                        table.table.table-bordered#table-variants
+                            thead
+                                tr
+                                    th Size
+                                    th Màu sắc
+                                    th Số lượng
+                                    
+                            tbody
+                                //- LOGIC: Lặp qua mảng variants có trong DB để in ra các dòng cũ
+                                if(item.variants && item.variants.length > 0)
+                                    each items in item.variants
+                                        tr
+                                            td
+                                                input.form-control(type="text" name="size" value=items.size  disabled)
+                                            td
+                                                input.form-control(type="text" name="color" value=items.color  disabled)
+                                            td
+                                                input.form-control(type="number" name="stock" value=items.stock min="0"  disabled)
+                                            
+                                
                                         
         //- RIGHT COLUMN (Meta data)
         .col-12.col-lg-4

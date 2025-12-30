@@ -260,4 +260,47 @@ if (selectSort) {
 }
 // end sắp xếp
 
+// Xử lý logic thêm biến thể
+// Xử lý thêm biến thể
+const btnAddVariant = document.querySelector(".btn-add-variant");
+const tableVariantsBody = document.querySelector("#table-variants tbody");
+
+if (btnAddVariant && tableVariantsBody) {
+    btnAddVariant.addEventListener("click", () => {
+        // SỬA LẠI ĐOẠN NÀY: Dùng thẻ <td> và </td> chuẩn HTML
+        const html = `
+            <tr>
+                <td>
+                    <input class="form-control" type="text" name="size" placeholder="VD: M" required>
+                </td>
+                <td>
+                    <input class="form-control" type="text" name="color" placeholder="VD: Xanh" required>
+                </td>
+                <td>
+                    <input class="form-control" type="number" name="stock" value="0" min="0" required>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm btn-delete-variant" type="button">Xóa</button>
+                </td>
+            </tr>
+        `;
+
+        // Chèn vào cuối bảng
+        tableVariantsBody.insertAdjacentHTML("beforeend", html);
+    });
+
+    // Xử lý nút Xóa (Giữ nguyên logic cũ vì nó đúng)
+    tableVariantsBody.addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn-delete-variant")) {
+            const row = e.target.closest("tr");
+            const rowCount = tableVariantsBody.querySelectorAll("tr").length;
+            if (rowCount > 1) {
+                row.remove();
+            } else {
+                alert("Phải có ít nhất 1 biến thể!");
+            }
+        }
+    });
+}
+
 

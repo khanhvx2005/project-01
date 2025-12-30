@@ -8,7 +8,7 @@ const productsSchema = new mongoose.Schema(
         description: String,
         price: Number,
         discountPercentage: Number,
-        stock: Number,
+        totalStock: Number,
         status: String,
         deleted: {
             type: Boolean,
@@ -23,14 +23,14 @@ const productsSchema = new mongoose.Schema(
             unique: true
         },
         featured: String,
-        color: {
-            type: Array,
-            default: []
-        },
-        size: {
-            type: Array,
-            default: []
-        }
+        variants: [
+            {
+                size: String,
+                color: String,
+                stock: Number
+            }
+        ]
+
 
 
     }, { timestamps: true });
