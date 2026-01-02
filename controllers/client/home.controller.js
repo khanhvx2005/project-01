@@ -7,5 +7,13 @@ module.exports.index = async (req, res) => {
     records.forEach((record) => {
         record.priceNew = parseInt((record.price * ((100 - record.discountPercentage) / 100)).toFixed(0));
     })
-    res.render("client/pages/homes/index", { title: "Trang chủ", records: records })
+    const recordsFeatured = await Product.find({
+        deleted: false,
+        status: "active",
+        featured: "1"
+    }).sort({ position: "desc" })
+    recordsFeatured.forEach((record) => {
+        record.priceNew = parseInt((record.price * ((100 - record.discountPercentage) / 100)).toFixed(0));
+    })
+    res.render("client/pages/homes/index", { title: "Trang chủ", records: records, recordsFeatured: recordsFeatured })
 }
