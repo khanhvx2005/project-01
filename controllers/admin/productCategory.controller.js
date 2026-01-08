@@ -119,7 +119,7 @@ module.exports.createPost = async (req, res) => {
     req.flash("success", "Tạo mới danh mục thành công");
     res.redirect(`${prefixAdmin}/products-category`)
 }
-// [PATCH] /admin/products-category/change-status/:status:id
+// [PATCH] /admin/products-category/change-status/:status/:id
 
 module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;

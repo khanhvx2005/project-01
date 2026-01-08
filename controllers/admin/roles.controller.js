@@ -68,12 +68,18 @@ module.exports.permissions = async (req, res) => {
 }
 // [PATCH] /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
-    const permissions = JSON.parse(req.body.permissions);
-    for (const item of permissions) {
-        const { id, permissions } = item;
-        await Role.updateOne({ _id: id }, { permission: permissions })
+    try {
+        const permissions = JSON.parse(req.body.permissions);
+        for (const item of permissions) {
+            const { id, permissions } = item;
+            await Role.updateOne({ _id: id }, { permission: permissions })
+        }
+        req.flash("success", "Cập nhập thành công")
+    } catch (error) {
+        req.flash("error", "Cập nhập thất bại")
+
     }
-    req.flash("success", "Cập nhập thành công")
+
     const backURL = req.get("Referer")
     res.redirect(backURL);
 }

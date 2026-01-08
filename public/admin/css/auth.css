@@ -1,0 +1,347 @@
+/* --- RESET & BASE --- */
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    /* Chặn scroll */
+}
+
+/* --- BACKGROUND --- */
+.login-page {
+    height: 100vh;
+    width: 100%;
+    /* Nền tối màu xanh đen hiện đại */
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Hiệu ứng đốm sáng trang trí (Decor Circles) */
+.decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    /* Làm nhòe để tạo hiệu ứng glow */
+    z-index: 1;
+    animation: float 10s infinite ease-in-out;
+}
+
+.decor-1 {
+    width: 300px;
+    height: 300px;
+    background: #435ebe;
+    /* Màu xanh chủ đạo */
+    top: -50px;
+    left: -50px;
+}
+
+.decor-2 {
+    width: 400px;
+    height: 400px;
+    background: #7c3aed;
+    /* Màu tím điểm nhấn */
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 5s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, 50px);
+    }
+}
+
+/* --- GLASS CARD (TRUNG TÂM) --- */
+.login-card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 400px;
+    padding: 3rem;
+
+    /* GLASSMORPHISM MAGIC */
+    background: rgba(255, 255, 255, 0.05);
+    /* Nền trắng cực mờ */
+    backdrop-filter: blur(20px);
+    /* Làm mờ hậu cảnh */
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Viền mỏng trong suốt */
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    /* Đổ bóng sâu */
+}
+
+/* Header */
+.logo-icon {
+    font-size: 3rem;
+    color: #fff;
+    background: linear-gradient(135deg, #435ebe, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(67, 94, 190, 0.5));
+}
+
+/* --- INPUT FIELDS --- */
+.input-group-custom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 5px 15px;
+    transition: all 0.3s ease;
+}
+
+.input-group-custom:focus-within {
+    border-color: #435ebe;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 4px rgba(67, 94, 190, 0.1);
+}
+
+.input-icon {
+    color: #94a3b8;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.form-control-glass {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 100%;
+    padding: 10px 0;
+    outline: none;
+}
+
+.form-control-glass::placeholder {
+    color: #64748b;
+}
+
+/* Password Toggle */
+.password-toggle {
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: #fff;
+}
+
+/* --- CHECKBOX & LINK --- */
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-checkbox input:checked~.checkmark {
+    background-color: #435ebe;
+    border-color: #435ebe;
+}
+
+.custom-checkbox input:checked~.checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.label-text {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.forgot-link,
+.register-link {
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.forgot-link:hover,
+.register-link:hover {
+    color: #a78bfa;
+    text-decoration: underline;
+}
+
+/* --- SUBMIT BUTTON --- */
+.btn-glass-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #435ebe, #7c3aed);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 20px -10px rgba(124, 58, 237, 0.5);
+}
+
+.btn-glass-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -10px rgba(124, 58, 237, 0.7);
+}
+
+.btn-glass-submit:active {
+    transform: translateY(0);
+}
+
+/* Responsive Mobile */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 20px;
+        padding: 2rem;
+    }
+}
+
+/* thông báo */
+/* --- TOAST NOTIFICATION STYLES --- */
+
+[show-alert] {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+    min-width: 350px;
+    max-width: 450px;
+
+    background: #fff;
+    border: none;
+    border-left: 5px solid;
+    /* Thanh màu bên trái */
+    border-radius: 4px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    /* Đổ bóng sâu */
+
+    display: flex;
+    align-items: center;
+    /* Căn giữa dọc */
+    padding: 15px 20px;
+
+    /* Animation */
+    animation: slideInLeft 0.5s ease forwards;
+    transition: all 0.3s ease;
+}
+
+/* Animation trượt từ phải sang */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Class ẩn thông báo (JS sẽ thêm vào khi hết giờ) */
+[show-alert].alert-hidden {
+    animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* --- MÀU SẮC THEO TRẠNG THÁI --- */
+
+/* Thành công (Màu xanh ngọc hiện đại) */
+.alert-success {
+    border-left-color: #28c76f;
+}
+
+.alert-success .alert-icon {
+    color: #28c76f;
+}
+
+/* Lỗi (Màu đỏ dịu) */
+.alert-danger {
+    border-left-color: #ea5455;
+}
+
+.alert-danger .alert-icon {
+    color: #ea5455;
+}
+
+/* --- CẤU TRÚC NỘI DUNG --- */
+
+.alert-icon {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.alert-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.alert-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.alert-desc {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Nút đóng (Close button) */
+.alert-close {
+    cursor: pointer;
+    padding: 5px;
+    color: #999;
+    transition: color 0.2s;
+    margin-left: 10px;
+}
+
+.alert-close:hover {
+    color: #333;
+}
+
+/* end thông báo */

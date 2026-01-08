@@ -1,0 +1,72 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .container-fluid.p-0
+        //- HEADER
+        .d-flex.justify-content-between.align-items-center.mb-4
+            div
+                h2.fw-bold.mb-1 Danh sách tài khoản
+                nav(aria-label="breadcrumb")
+                    ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                        li.breadcrumb-item: a.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                        li.breadcrumb-item.active(aria-current="page") Danh sách tài khoản
+            
+            //- NÚT TẠO TÀI KHOẢN MỚI NẰM Ở ĐÂY
+            a.btn.btn-primary(href=`${prefixAdmin}/accounts/create`)
+                i.fas.fa-plus.mr-2
+                | Thêm mới
+
+        //- TABLE
+        .card.border-0.shadow-sm
+            .card-body.p-0
+                .table-responsive
+                    table.table.table-hover.align-middle.mb-0
+                        thead.bg-light
+                            tr
+                                th.ps-4 STT
+                                th Avatar
+                                th Họ tên
+                                th Nhóm quyền
+                                th Email
+                                th Trạng thái
+                                th.text-end.pe-4 Hành động
+                        tbody
+                            //- MOCK DATA
+                            
+
+                            each item, index in records
+                                tr
+                                    td.ps-4 #{index + 1}
+                                    td
+                                        img.rounded-circle(
+                                            src=(item.avatar ? item.avatar : "https://placehold.co/100") 
+                                            alt=item.fullName
+                                            width="80" height="80"
+                                            style="object-fit: cover"
+                                        )
+                                    td.fw-bold #{item.fullName}
+                                    td
+                                        span.badge.bg-light.text-dark.border #{item.role.title}
+                                    td #{item.email}
+                                    td
+                                        if(item.status == "active")
+                                            a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Hoạt động
+                                        else
+                                            a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Bị khóa
+                                    td.text-end.pe-4
+                                        a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/accounts/edit/${item.id}`)
+                                            i.fas.fa-pencil-alt
+                                        button.btn.btn-sm.btn-light.text-danger(title='Xóa' data-id = item.id button-delete-item)
+                                            i.far.fa-trash-alt
+    form(action= ""
+    form-change-status 
+    path = `${prefixAdmin}/accounts/change-status`
+    method = "POST"
+    )
+    form(action=""
+    form-delete-item
+    path = `${prefixAdmin}/accounts/delete`
+    method = "POST")

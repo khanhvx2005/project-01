@@ -1,0 +1,55 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .login-page
+        //- Background decorations (Các hình tròn trang trí mờ ảo phía sau)
+        .decor-circle.decor-1
+        .decor-circle.decor-2
+
+        .login-card
+            .login-header.text-center.mb-4
+                .logo-icon.mb-3
+                    i.fas.fa-layer-group
+                h3.fw-bold.text-white Admin VUKHANHSHOP
+                p.text-white-50.small Vui lòng đăng nhập để quản trị hệ thống
+
+            form(action=`${prefixAdmin}/auth/login` method="POST")
+                //- Email Input
+                .input-group-custom.mb-3
+                    .input-icon
+                        i.fas.fa-envelope
+                    input.form-control-glass(
+                        type="email" 
+                        name="email" 
+                        placeholder="Email quản trị" 
+                        required 
+                        autocomplete="new-password"
+                        autofocus
+                    )
+
+                //- Password Input
+                .input-group-custom.mb-3
+                    .input-icon
+                        i.fas.fa-lock
+                    input.form-control-glass(
+                        type="password" 
+                        name="password" 
+                        id="password"
+                        placeholder="Mật khẩu" 
+                        autocomplete="new-password"
+                        required
+                    )
+                    //- Nút hiện mật khẩu
+                    .password-toggle(onclick="togglePassword()")
+                        i.far.fa-eye#toggleIcon
+
+                
+
+                button.btn-glass-submit(type="submit")
+                    | Đăng Nhập
+                    
+
+            

@@ -1,0 +1,143 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    //- PAGE HEADER
+    .d-flex.justify-content-between.align-items-center.mb-4
+        div
+            h2.fw-bold.mb-1 Chỉnh sửa tài khoản
+            div.text-muted.small.mb-2 ID: #{data.id}
+            nav(aria-label="breadcrumb")
+                ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                    li.breadcrumb-item: a.text-secondary(href=`${prefixAdmin}/accounts`) Danh sách tài khoản
+                    li.breadcrumb-item.active(aria-current="page") Chỉnh sửa
+        
+        
+
+    //- FORM EDIT
+    form(
+        action=`${prefixAdmin}/accounts/edit/${data.id}?_method=PATCH`
+        id="form-edit-account"
+        method="POST"
+        enctype="multipart/form-data"
+    )
+        .row
+            //- CỘT TRÁI: Avatar & Trạng thái
+            .col-12.col-lg-4
+                .card.section-card.mb-4
+                    .card-header.section-card__header
+                        h5.section-card__title Hình ảnh đại diện
+                    .card-body.section-card__body.text-center
+                        //- Custom Upload UI
+                        .image-uploader(upload-image)
+                            .image-uploader__preview-box.mb-3
+                                img.image-uploader__img(
+                                    src=data.avatar 
+                                    alt="Preview" 
+                                    upload-image-preview
+                                )
+                                span.image-uploader__close(upload-image-close)
+                                    i.fas.fa-times
+                            
+                            div
+                                label.btn.btn-sm.btn-outline-primary.mb-0(for="avatar")
+                                    i.fas.fa-upload.mr-2
+                                    | Chọn ảnh
+                                input.form-control-file.d-none(
+                                    type="file" 
+                                    id="avatar" 
+                                    name="avatar" 
+                                    accept="image/*" 
+                                    upload-image-input
+                                )
+
+                .card.section-card.mb-4
+                    .card-header.bg-white
+                        h6.mb-0.fw-bold Trạng thái
+                    .card-body
+                        .form-check.mb-2
+                            input.form-check-input(
+                                type="radio" 
+                                name="status" 
+                                id="statusActive" 
+                                value="active" 
+                                checked=(data.status == "active" ? true : false)
+                            )
+                            label.form-check-label.text-success(for="statusActive") Hoạt động
+                        .form-check
+                            input.form-check-input(
+                                type="radio" 
+                                name="status" 
+                                id="statusInactive" 
+                                value="inactive"
+                                checked=(data.status == "inactive" ? true : false)
+                            )
+                            label.form-check-label.text-secondary(for="statusInactive") Dừng hoạt động
+
+            //- CỘT PHẢI: Thông tin chi tiết
+            .col-12.col-lg-8
+                .card.section-card.mb-4
+                    .card-header.bg-white.py-3
+                        h5.mb-0.fw-bold Thông tin chung
+                    .card-body.p-4
+                        .row
+                            .col-12.form-group.mb-3
+                                label.form-label.fw-bold(for="fullName") Họ và tên <span class="text-danger">*</span>
+                                input.form-control(
+                                    type="text" 
+                                    id="fullName" 
+                                    name="fullName" 
+                                    value=data.fullName
+                                    required
+                                )
+
+                            .col-12.form-group.mb-3
+                                label.form-label.fw-bold(for="email") Email <span class="text-danger">*</span>
+                                input.form-control(
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    value=data.email
+                                    required
+                                )
+
+                            //- MẬT KHẨU (Xử lý UX đặc biệt)
+                            .col-12.form-group.mb-3
+                                label.form-label.fw-bold(for="password") Mật khẩu
+                                input.form-control(
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    placeholder="Chỉ nhập nếu muốn đổi mật khẩu mới..."
+                                    autocomplete = "new-password"
+                                )
+                                small.form-text.text-muted Để trống nếu bạn muốn giữ nguyên mật khẩu cũ.
+                            
+                            .col-12.form-group.mb-3
+                                label.form-label.fw-bold(for="phone") Số điện thoại
+                                input.form-control(
+                                    type="text" 
+                                    id="phone" 
+                                    name="phone" 
+                                    value=data.phone
+                                )
+
+                            //- SELECT ROLE (Logic Selected)
+                            .col-12.form-group.mb-3
+                                label.form-label.fw-bold(for="role_id") Phân quyền <span class="text-danger">*</span>
+                                select.form-control(name="role_id" id="role_id" required)
+                                    option(disabled) -- Chọn nhóm quyền --
+                                    if(roles)
+                                        each role in roles
+                                            option(
+                                                value=role.id
+                                                selected = (role.id == data.role_id ? true : false)
+                                            ) #{role.title}
+
+        div
+            a(href=`${prefixAdmin}/accounts` class = "btn btn-success") Hủy bỏ
+            button.btn.btn-primary.px-4(type="submit" form="form-edit-account")
+                i.fas.fa-save.mr-2
+                | Cập nhật

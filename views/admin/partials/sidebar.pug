@@ -26,7 +26,7 @@ aside.sidebar
             i.fas.fa-users.sidebar__icon
             |  Quản lý User
 
-        a.sidebar__link(href='#')
+        a.sidebar__link(href=`${prefixAdmin}/accounts`)
             i.fas.fa-user-shield.sidebar__icon
             |  Quản lý tài khoản
 
@@ -38,3 +38,7 @@ aside.sidebar
         a.sidebar__link(href=`${prefixAdmin}/roles/permissions`)
             i.fas.fa-key.sidebar__icon
             |  Phân quyền chi tiết
+    .sidebar__footer
+        a.sidebar__link.sidebar__link--logout(href=`${prefixAdmin}/auth/logout`)
+            i.fas.fa-sign-out-alt.sidebar__icon
+            |  Đăng xuất

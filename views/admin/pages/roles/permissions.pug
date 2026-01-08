@@ -31,11 +31,11 @@ block main
 
 
                         tbody
-                            tr(data-name = "id")  
+                            tr(data-name = "id" class = "d-none")  
                                 td
                                 each item in records
                                     td.ps-4 
-                                        input(type="text" value = item.id class = "d-none")
+                                        input(type="text" value = item.id )
                                 
                             //- --- NHÓM: DANH MỤC SẢN PHẨM ---
                             tr.table-active

@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model")
 const ProductCategory = require("../../models/product-category.model")
 const getDescendantsHelper = require("../../helpers/getDescendants.helper"); // Gọi helper cũ
+// [GET] products
 module.exports.index = async (req, res) => {
     const records = await Product.find({
         deleted: false,
@@ -8,11 +9,14 @@ module.exports.index = async (req, res) => {
     }).sort({ position: "desc" })
     res.render("client/pages/products/index", { title: "Trang sản phẩm", records: records })
 }
+// [GET] /products//detail/:id
+
 module.exports.detail = async (req, res) => {
     const slug = req.params.slug;
     const product = await Product.findOne({ slug: slug, deleted: false })
     res.render('client/pages/products/detail', { title: req.params.slug, product: product })
 }
+// [GET] /products/:slugCategory
 module.exports.category = async (req, res) => {
     try {
         const slug = req.params.slugCategory;
@@ -37,6 +41,4 @@ module.exports.category = async (req, res) => {
         const backURL = req.get("Referer");
         res.redirect(backURL);
     }
-
-
 }
