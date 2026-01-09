@@ -25,18 +25,24 @@ mixin table-tree(records , level = 1)
                     min="1"
                 )
             td
-                if(item.status == "active")
-                    a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Hoạt động
-                else
-                    a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Dừng hoạt động
+                if(role.permission.includes("products-category_edit"))
+
+                    if(item.status == "active")
+                        a(href="javascript:;" class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Hoạt động
+                    else
+                        a(href="javascript:;" class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" button-change-status data-id = item.id data-status = item.status) Dừng hoạt động
             td.text-end.pe-4
-                a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/products-category/edit/${item.id}` title='Chỉnh sửa')
-                    i.fas.fa-pencil-alt
-                button.btn.btn-sm.btn-light.text-danger(
-                    button-delete-item
-                    data-id=item.id 
-                    title='Xóa')
-                    i.far.fa-trash-alt
+                if(role.permission.includes("products-category_edit"))
+
+                    a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/products-category/edit/${item.id}` title='Chỉnh sửa')
+                        i.fas.fa-pencil-alt
+                if(role.permission.includes("products-category_delete"))
+
+                    button.btn.btn-sm.btn-light.text-danger(
+                        button-delete-item
+                        data-id=item.id 
+                        title='Xóa')
+                        i.far.fa-trash-alt
         if(item.children && item.children.length >0)
             +table-tree(item.children ,level + 1)
     

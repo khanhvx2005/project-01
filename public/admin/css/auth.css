@@ -345,3 +345,18 @@ html {
 }
 
 /* end thông báo */
+/* Target vào trạng thái autofill của Webkit (Chrome, Edge, Safari) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    /* 1. Đổi màu nền: Dùng box-shadow đổ vào trong (inset) để che màu vàng/trắng mặc định */
+    /* Thay mã màu #0f172a bằng màu nền thực tế của input trong thiết kế của bạn */
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.2) inset !important;
+
+    /* 2. Đổi màu chữ: autofill thường làm chữ thành màu đen, ta ép lại màu trắng */
+    -webkit-text-fill-color: #fff !important;
+
+    /* Giữ nguyên các thuộc tính khác */
+    transition: background-color 5000s ease-in-out 0s;
+}

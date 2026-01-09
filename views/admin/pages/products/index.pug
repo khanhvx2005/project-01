@@ -1,119 +1,131 @@
 extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/alert.pug
+include ../../mixins/accessDenied.pug
 block main
     +alert_success("5000")
     +alert_error("5000")
+    if(role.permission.includes("products_view"))
+        .container-fluid.p-0
+            .d-flex.justify-content-between.align-items-center.mb-4
+                div
+                    h2.fw-bold.mb-1 Quản lý sản phẩm
+                if(role.permission.includes("products_create"))
+   
+                    a.btn.btn-primary.d-flex.align-items-center.gap-2(href=`${prefixAdmin}/products/create`)
+                        i.fas.fa-plus
+                        |  
+                        span Thêm mới
+            .card.border-0.shadow-sm.mb-4
+                .card-body.p-3
+                    .filter-bar.row.g-3.align-items-center
+                        .col-12.col-md-4
+                            form(method = "GET" form-search)
+                                .input-group
+                                    button.input-group-text.bg-light.border-end-0.text-secondary.submit
+                                        i.fas.fa-search
+                                    input.form-control.border-start-0.bg-light.ps-0(type='text', placeholder='Tìm kiếm tên SP' name = "keyword" value = keyword)
+                        
+                        .col-12.col-md-3
+                            form(form-change-multi method="POST" action=`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                                .d-flex.align-items-center.gap-2
+                                    input(type="text" name="ids" value="" class="d-none") 
+                                    
+                                    select.form-select.form-select-sm(name="type")
+                                        option(disabled selected) -- Chọn hành động --
+                                        option(value="active") Đang bán
+                                        option(value="inactive") Hết hàng
+                                        option(value="delete-all") Xóa tất cả
+                                        option(value="change-position") Thay đổi thứ tự
 
-    .container-fluid.p-0
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h2.fw-bold.mb-1 Quản lý sản phẩm
-                
-            a.btn.btn-primary.d-flex.align-items-center.gap-2(href=`${prefixAdmin}/products/create`)
-                i.fas.fa-plus
-                |  
-                span Thêm mới
-        .card.border-0.shadow-sm.mb-4
-            .card-body.p-3
-                .filter-bar.row.g-3.align-items-center
-                    .col-12.col-md-4
-                        form(method = "GET" form-search)
-                            .input-group
-                                button.input-group-text.bg-light.border-end-0.text-secondary.submit
-                                    i.fas.fa-search
-                                input.form-control.border-start-0.bg-light.ps-0(type='text', placeholder='Tìm kiếm tên SP' name = "keyword" value = keyword)
-                    
-                    .col-12.col-md-3
-                        form(form-change-multi method="POST" action=`${prefixAdmin}/products/change-multi?_method=PATCH`)
+                                    button.btn.btn-sm.btn-primary(type="submit") Áp dụng
+                        .col-12.col-md-5.d-flex.flex-wrap.justify-content-md-end.gap-3
                             .d-flex.align-items-center.gap-2
-                                input(type="text" name="ids" value="" class="d-none") 
-                                
-                                select.form-select.form-select-sm(name="type")
-                                    option(disabled selected) -- Chọn hành động --
-                                    option(value="active") Đang bán
-                                    option(value="inactive") Hết hàng
-                                    option(value="delete-all") Xóa tất cả
-                                    option(value="change-position") Thay đổi thứ tự
-
-                                button.btn.btn-sm.btn-primary(type="submit") Áp dụng
-                    .col-12.col-md-5.d-flex.flex-wrap.justify-content-md-end.gap-3
-                        .d-flex.align-items-center.gap-2
-                            label.text-muted.small.fw-medium.text-nowrap Trạng thái:
-                            +filter-status(filter)
-                                    
-                        .d-flex.align-items-center.gap-2
-                            label.text-muted.small.fw-medium.text-nowrap Sắp xếp:
-                            select.form-select.form-select-sm.select-sort(style='width: 160px;')
-                                option( selected) ---Chọn hành động---
-                                option(value='price_asc' ) Giá: Thấp - Cao
-                                option(value='price_desc') Giá: Cao - Thấp
-        .card.border-0.shadow-sm
-            .card-body.p-0
-                .table-responsive
-                    table.table.table-hover.align-middle.mb-0.product-table
-                        thead.bg-light
-                            tr
-                                th 
-                                    input(type="checkbox" name = "checkall")
-                                th Tên sản phẩm
-                                th Hình ảnh
-                                th Giá
-                                th Vị trí
-                                th Tồn kho
-                                th Trạng thái
-                                th.text-end.pe-4 Hành động
-                        tbody
-                            each item,index in records
+                                label.text-muted.small.fw-medium.text-nowrap Trạng thái:
+                                +filter-status(filter)
+                                        
+                            .d-flex.align-items-center.gap-2
+                                label.text-muted.small.fw-medium.text-nowrap Sắp xếp:
+                                select.form-select.form-select-sm.select-sort(style='width: 160px;')
+                                    option( selected) ---Chọn hành động---
+                                    option(value='price_asc' ) Giá: Thấp - Cao
+                                    option(value='price_desc') Giá: Cao - Thấp
+            .card.border-0.shadow-sm
+                .card-body.p-0
+                    .table-responsive
+                        table.table.table-hover.align-middle.mb-0.product-table
+                            thead.bg-light
                                 tr
-                                    td 
-                                        input(type="checkbox" name = "id" value = item.id)
-                                    td #{item.title}
-                                    
-                                    td
-                                        .d-flex.align-items-center.gap-3
-                                            img.product-table__img.rounded(src=item.thumbnail, alt=item.title )
-                                            
-                                    td.fw-semibold.text-primary #{item.price.toLocaleString('vi-VN')} <sup>đ</sup
-                                    td 
-                                        input(type = "number" name = "position" value = item.position style = "width:60px;" min = "1")
-                                    td #{item.stock}
-                                    td
-                                        if(item.status == "active")
+                                    th 
+                                        input(type="checkbox" name = "checkall")
+                                    th Tên sản phẩm
+                                    th Hình ảnh
+                                    th Giá
+                                    th Vị trí
+                                    th Tồn kho
+                                    th Trạng thái
+                                    th.text-end.pe-4 Hành động
+                            tbody
+                                each item,index in records
+                                    tr
+                                        td 
+                                            input(type="checkbox" name = "id" value = item.id)
+                                        td #{item.title}
+                                        
+                                        td
+                                            .d-flex.align-items-center.gap-3
+                                                img.product-table__img.rounded(src=item.thumbnail, alt=item.title )
+                                                
+                                        td.fw-semibold.text-primary #{item.price.toLocaleString('vi-VN')} <sup>đ</sup
+                                        td 
+                                            input(type = "number" name = "position" value = item.position style = "width:60px;" min = "1")
+                                        td #{item.stock}
+                                        td
+                                            if(role.permission.includes("products_edit"))
 
-                                            a(class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Đang bán
-                                        else 
-                                            a(class="badge bg-danger-subtle text-success border border-danger-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Hết hàng
+                                                if(item.status == "active")
 
-                                    td.text-end.pe-4
-                                        a.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết' href=`${prefixAdmin}/products/detail/${item.id}`)
-                                            i.far.fa-eye
-                                        a.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa' href=`${prefixAdmin}/products/edit/${item.id}` )
-                                            i.fas.fa-pencil-alt
-                                        button.btn.btn-sm.btn-light.text-danger(title='Xóa' data-id = item.id button-delete-item)
-                                            i.far.fa-trash-alt
-                            
-                .card-footer.bg-white.border-top-0.d-flex.justify-content-between.align-items-center.py-3
-                    span.text-muted.small Hiển thị #{objPagination.start}-#{objPagination.end} trong số #{objPagination.countDocument} sản phẩm
-                    nav
-                        ul.pagination.pagination-sm.mb-0
-                            if(objPagination.currentPage > 1)
-                                li(class="page-item " page = objPagination.currentPage - 1)
-                                    a.page-link(href='#')
-                                        i.fas.fa-chevron-left
-                            - for(let i = 1;i<=objPagination.totalPage;i++)
-                                li(class=`page-item ${objPagination.currentPage == i ? "active" : ""}` page = i )
-                                    a.page-link(href='#' ) #{i}
-                            if(objPagination.currentPage < objPagination.totalPage)
-                                li(class="page-item " page = objPagination.currentPage + 1)
-                                    a.page-link(href='#')
-                                        i.fas.fa-chevron-right
-    form(action= ""
-    form-change-status 
-    path = `${prefixAdmin}/products/change-status`
-    method = "POST"
-    )
-    form(action=""
-    form-delete-item
-    path = `${prefixAdmin}/products/delete`
-    method = "POST")
+                                                    a(class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Đang bán
+                                                else 
+                                                    a(class="badge bg-danger-subtle text-success border border-danger-subtle rounded-pill" href="javascript:;" button-change-status data-id = item.id data-status = item.status) Hết hàng
+
+                                        td.text-end.pe-4
+                                            if(role.permission.includes("products_view"))
+
+                                                a.btn.btn-sm.btn-light.text-secondary.me-1(title='Xem chi tiết' href=`${prefixAdmin}/products/detail/${item.id}`)
+                                                    i.far.fa-eye
+                                            if(role.permission.includes("products_edit"))
+
+                                                a.btn.btn-sm.btn-light.text-primary.me-1(title='Chỉnh sửa' href=`${prefixAdmin}/products/edit/${item.id}` )
+                                                    i.fas.fa-pencil-alt
+                                            if(role.permission.includes("products_delete"))
+
+                                                button.btn.btn-sm.btn-light.text-danger(title='Xóa' data-id = item.id button-delete-item)
+                                                    i.far.fa-trash-alt
+                                
+                    .card-footer.bg-white.border-top-0.d-flex.justify-content-between.align-items-center.py-3
+                        span.text-muted.small Hiển thị #{objPagination.start}-#{objPagination.end} trong số #{objPagination.countDocument} sản phẩm
+                        nav
+                            ul.pagination.pagination-sm.mb-0
+                                if(objPagination.currentPage > 1)
+                                    li(class="page-item " page = objPagination.currentPage - 1)
+                                        a.page-link(href='#')
+                                            i.fas.fa-chevron-left
+                                - for(let i = 1;i<=objPagination.totalPage;i++)
+                                    li(class=`page-item ${objPagination.currentPage == i ? "active" : ""}` page = i )
+                                        a.page-link(href='#' ) #{i}
+                                if(objPagination.currentPage < objPagination.totalPage)
+                                    li(class="page-item " page = objPagination.currentPage + 1)
+                                        a.page-link(href='#')
+                                            i.fas.fa-chevron-right
+        form(action= ""
+        form-change-status 
+        path = `${prefixAdmin}/products/change-status`
+        method = "POST"
+        )
+        form(action=""
+        form-delete-item
+        path = `${prefixAdmin}/products/delete`
+        method = "POST")
+    else 
+        +access-denied("products_view")

@@ -1,0 +1,21 @@
+mixin access-denied(permissionCode)
+    .container-fluid.p-0
+        .card.border-0.shadow-sm.rounded-4
+            .card-body.text-center.py-5
+                //- Icon minh họa
+                .mb-4
+                    .d-inline-flex.align-items-center.justify-content-center.bg-danger-subtle.text-danger.rounded-circle(style="width: 80px; height: 80px;")
+                        i.fas.fa-user-lock.fa-2x
+
+                //- Tiêu đề & Nội dung
+                h3.fw-bold.text-dark.mb-2 Truy cập bị hạn chế
+                p.text-muted.mb-4.mx-auto(style="max-width: 500px;")
+                    | Bạn không có quyền truy cập vào nội dung này. 
+                    br
+                    | Yêu cầu quyền hạn: 
+                    span.badge.bg-light.text-secondary.border #{permissionCode}
+
+                //- Nút hành động
+                a.btn.btn-primary.px-4(href=`${prefixAdmin}/dashboard`)
+                    i.fas.fa-arrow-left.mr-2
+                    |  Quay lại Dashboard

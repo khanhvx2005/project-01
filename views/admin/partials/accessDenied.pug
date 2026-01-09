@@ -1,0 +1,19 @@
+div.access-denied-container
+    div.access-denied-content.text-center
+        //- Icon minh họa (Dùng FontAwesome hoặc ảnh SVG)
+        div.mb-4.text-danger
+            i.fas.fa-user-lock.fa-5x
+        
+        h1.display-4.font-weight-bold.mb-3 403
+        h2.h4.mb-3 Truy cập bị từ chối!
+        
+        p.text-muted.mb-4(style="max-width: 500px; margin: 0 auto;")
+            | Xin lỗi, tài khoản 
+            strong #{user.fullName} 
+            |  (Nhóm quyền: #{role.title}) không có đủ thẩm quyền để truy cập vào hệ thống quản trị này.<br>Vui lòng liên hệ quản trị viên cấp cao nếu bạn cho rằng đây là sự nhầm lẫn.
+
+        
+            
+        a.btn.btn-outline-secondary.px-4(href="/")
+            i.fas.fa-home.mr-2
+            | Về trang chủ

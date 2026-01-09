@@ -1,142 +1,186 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/accessDenied.pug
 
 block main
-    div(data-records = records class = "d-none")
+    +alert_success("5000")
+    +alert_error("5000")
+    if(role.permission.includes("roles_permissions"))
 
-    .container-fluid.p-0
-        //- HEADER
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h2.fw-bold.mb-1 Phân quyền chi tiết
-                p.text-muted.small.mb-0 Cấp quyền hạn cụ thể cho từng nhóm tài khoản.
-            
-            
-            button.btn.btn-primary.px-4(button-submit)
-                i.fas.fa-save.mr-2
-                | Cập nhật
+        div(data-records = records class = "d-none")
 
-        
-        .card.border-0.shadow-sm
-            .card-body.p-0
-                .table-responsive
-                    
-                    table.table.table-hover.align-middle.mb-0(table-permissions)
-                        thead.bg-light
-                            tr
-                                th.ps-4.py-3 Tính năng
-                                
-                                each item in records
-                                    th.text-center #{item.title}
+        .container-fluid.p-0
+            //- HEADER
+            .d-flex.justify-content-between.align-items-center.mb-4
+                div
+                    h2.fw-bold.mb-1 Phân quyền chi tiết
+                    p.text-muted.small.mb-0 Cấp quyền hạn cụ thể cho từng nhóm tài khoản.
+                
+                
+                button.btn.btn-primary.px-4(button-submit)
+                    i.fas.fa-save.mr-2
+                    | Cập nhật
+
+            
+            .card.border-0.shadow-sm
+                .card-body.p-0
+                    .table-responsive
+                        
+                        table.table.table-hover.align-middle.mb-0(table-permissions)
+                            thead.bg-light
+                                tr
+                                    th.ps-4.py-3 Tính năng
                                     
-
-
-                        tbody
-                            tr(data-name = "id" class = "d-none")  
-                                td
-                                each item in records
-                                    td.ps-4 
-                                        input(type="text" value = item.id )
-                                
-                            //- --- NHÓM: DANH MỤC SẢN PHẨM ---
-                            tr.table-active
-                                td.ps-4(colspan="100%") 
-                                    strong.text-primary <i class="fas fa-list mr-2"></i> Danh mục sản phẩm
-                            
-                            //- data-name trùng với tên quyền trong code backend
-                            tr(data-name="products-category_view")
-                                td.ps-4 Xem danh sách
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                                
-                                
-                            
-                            tr(data-name="products-category_create")
-                                td.ps-4 Thêm mới
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-
-                            tr(data-name="products-category_edit")
-                                td.ps-4 Chỉnh sửa
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                            
-                            tr(data-name="products-category_delete")
-                                td.ps-4 Xóa
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-
-                            //- //- --- NHÓM: SẢN PHẨM ---
-                            tr.table-active
-                                td.ps-4(colspan="100%") 
-                                    strong.text-primary <i class="fas fa-box mr-2"></i> Quản lý sản phẩm
-                            
-                            tr(data-name="products_view")
-                                td.ps-4 Xem danh sách
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                            
-                            tr(data-name="products_create")
-                                td.ps-4 Thêm mới
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-
-                            tr(data-name="products_edit")
-                                td.ps-4 Chỉnh sửa
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                            
-                            tr(data-name="products_delete")
-                                td.ps-4 Xóa
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-
-                            //- //- --- NHÓM: NHÓM QUYỀN (Roles) ---
-                            tr.table-active
-                                td.ps-4(colspan="100%") 
-                                    strong.text-primary <i class="fas fa-users-cog mr-2"></i> Nhóm quyền
-                            
-                            tr(data-name="roles_view")
-                                td.ps-4 Xem
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                            
-                            tr(data-name="roles_create")
-                                td.ps-4 Thêm mới
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
+                                    each item in records
+                                        th.text-center #{item.title}
                                         
-                            tr(data-name="roles_edit")
-                                td.ps-4 Chỉnh sửa
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
-                            
-                            tr(data-name="roles_permissions")
-                                td.ps-4 Phân quyền
-                                each item in records
-                                    td.text-center
-                                        input.form-check-input(type="checkbox")
 
-    //- FORM ẨN ĐỂ SUBMIT DỮ LIỆU
-    form(
-        id="form-change-permissions" 
-        method="POST" 
-        action=`${prefixAdmin}/roles/permissions?_method=PATCH`
-        class="d-none"
-    )
-        div(class="form-group")
-            input(type="text" class="form-control" name="permissions")
 
-    //- SCRIPT XỬ LÝ LOGIC MA TRẬN
-    script(src="/admin/js/roles.js")
+                            tbody
+                                tr(data-name = "id" class = "d-none")  
+                                    td
+                                    each item in records
+                                        td.ps-4 
+                                            input(type="text" value = item.id )
+                                    
+                                //- --- NHÓM: DANH MỤC SẢN PHẨM ---
+                                tr.table-active
+                                    td.ps-4(colspan="100%") 
+                                        strong.text-primary <i class="fas fa-list mr-2"></i> Danh mục sản phẩm
+                                
+                                //- data-name trùng với tên quyền trong code backend
+                                tr(data-name="products-category_view")
+                                    td.ps-4 Xem danh sách
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                    
+                                    
+                                
+                                tr(data-name="products-category_create")
+                                    td.ps-4 Thêm mới
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+                                tr(data-name="products-category_edit")
+                                    td.ps-4 Chỉnh sửa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="products-category_delete")
+                                    td.ps-4 Xóa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+                                //- //- --- NHÓM: SẢN PHẨM ---
+                                tr.table-active
+                                    td.ps-4(colspan="100%") 
+                                        strong.text-primary <i class="fas fa-box mr-2"></i> Quản lý sản phẩm
+                                
+                                tr(data-name="products_view")
+                                    td.ps-4 Xem danh sách
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="products_create")
+                                    td.ps-4 Thêm mới
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+                                tr(data-name="products_edit")
+                                    td.ps-4 Chỉnh sửa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="products_delete")
+                                    td.ps-4 Xóa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+                                //- //- --- NHÓM: NHÓM QUYỀN (Roles) ---
+                                tr.table-active
+                                    td.ps-4(colspan="100%") 
+                                        strong.text-primary <i class="fas fa-users-cog mr-2"></i> Nhóm quyền
+                                
+                                tr(data-name="roles_view")
+                                    td.ps-4 Xem
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="roles_create")
+                                    td.ps-4 Thêm mới
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                            
+                                tr(data-name="roles_edit")
+                                    td.ps-4 Chỉnh sửa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                tr(data-name="roles_delete")
+                                    td.ps-4 Xóa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="roles_permissions")
+                                    td.ps-4 Phân quyền
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                //- --- NHÓM: Tài khoản ---
+                                tr.table-active
+                                    td.ps-4(colspan="100%") 
+                                        strong.text-primary <i class="fas fa-list mr-2"></i> Tài khoản
+                                
+                                //- data-name trùng với tên quyền trong code backend
+                                tr(data-name="accounts_view")
+                                    td.ps-4 Xem danh sách
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                    
+                                    
+                                
+                                tr(data-name="accounts_create")
+                                    td.ps-4 Thêm mới
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+                                tr(data-name="accounts_edit")
+                                    td.ps-4 Chỉnh sửa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+                                
+                                tr(data-name="accounts_delete")
+                                    td.ps-4 Xóa
+                                    each item in records
+                                        td.text-center
+                                            input.form-check-input(type="checkbox")
+
+        //- FORM ẨN ĐỂ SUBMIT DỮ LIỆU
+        form(
+            id="form-change-permissions" 
+            method="POST" 
+            action=`${prefixAdmin}/roles/permissions?_method=PATCH`
+            class="d-none"
+        )
+            div(class="form-group")
+                input(type="text" class="form-control" name="permissions")
+
+        //- SCRIPT XỬ LÝ LOGIC MA TRẬN
+        script(src="/admin/js/roles.js")
+    else 
+        +access-denied("roles_permissions")
     

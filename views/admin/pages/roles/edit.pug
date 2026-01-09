@@ -1,61 +1,63 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/select-tree.pug
+include ../../mixins/accessDenied.pug
 
 block main
     +alert_success("5000")
     +alert_error("5000")
+    if(role.permission.includes("roles_edit"))
 
-    //- PAGE HEADER
-    .d-flex.justify-content-between.align-items-center.mb-4
-        div
-            h2.fw-bold.mb-1 Chỉnh sửa nhóm quyền
-            nav(aria-label="breadcrumb")
-                ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
-                    li.breadcrumb-item
-                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
-                    li.breadcrumb-item
-                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/roles`) Nhóm quyền
-                    li.breadcrumb-item.active(aria-current="page") Chỉnh sửa
-        
-        
-
-    //- FORM CREATE
-    form(
-        action=`${prefixAdmin}/roles/edit/${record.id}?_method=PATCH`
-        method="POST"
-    )
-        .card.border-0.shadow-sm
-            .card-header.bg-white.py-3
-                h5.mb-0.fw-bold Thông tin nhóm quyền
+        .d-flex.justify-content-between.align-items-center.mb-4
+            div
+                h2.fw-bold.mb-1 Chỉnh sửa nhóm quyền
+                nav(aria-label="breadcrumb")
+                    ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                        li.breadcrumb-item
+                            a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                        li.breadcrumb-item
+                            a.text-decoration-none.text-secondary(href=`${prefixAdmin}/roles`) Nhóm quyền
+                        li.breadcrumb-item.active(aria-current="page") Chỉnh sửa
             
-            .card-body.p-4
-                //- Tiêu đề
-                .form-group.mb-4
-                    label.form-label.fw-bold(for="title") Tên nhóm quyền <span class="text-danger">*</span>
-                    input.form-control(
-                        type="text" 
-                        id="title" 
-                        name="title" 
-                        placeholder="VD: Quản trị viên, Nhân viên content..." 
-                        value=record.title
-                        required
-                        autofocus
-                    )
-                    small.form-text.text-muted Tên nhóm quyền nên ngắn gọn và thể hiện rõ chức vụ.
+            
 
-                //- Mô tả
-                .form-group.mb-0
-                    label.form-label.fw-bold(for="desc") Mô tả
-                    textarea.form-control(
-                        id="desc" 
-                        name="description" 
-                        rows="5" 
-                        placeholder="Nhập mô tả chi tiết về nhiệm vụ của nhóm quyền này..."
-                    ) #{record.description}
-        div(class="mt-2")
-            a.mr-2.btn.btn-success(href=`${prefixAdmin}/roles`) Hủy bỏ
-            button.btn.btn-primary.px-4(type="submit" )
-                i.fas.fa-save.mr-2
-                |  Lưu lại
+        //- FORM CREATE
+        form(
+            action=`${prefixAdmin}/roles/edit/${record.id}?_method=PATCH`
+            method="POST"
+        )
+            .card.border-0.shadow-sm
+                .card-header.bg-white.py-3
+                    h5.mb-0.fw-bold Thông tin nhóm quyền
+                
+                .card-body.p-4
+                    //- Tiêu đề
+                    .form-group.mb-4
+                        label.form-label.fw-bold(for="title") Tên nhóm quyền <span class="text-danger">*</span>
+                        input.form-control(
+                            type="text" 
+                            id="title" 
+                            name="title" 
+                            placeholder="VD: Quản trị viên, Nhân viên content..." 
+                            value=record.title
+                            required
+                            autofocus
+                        )
+                        small.form-text.text-muted Tên nhóm quyền nên ngắn gọn và thể hiện rõ chức vụ.
 
+                    //- Mô tả
+                    .form-group.mb-0
+                        label.form-label.fw-bold(for="desc") Mô tả
+                        textarea.form-control(
+                            id="desc" 
+                            name="description" 
+                            rows="5" 
+                            placeholder="Nhập mô tả chi tiết về nhiệm vụ của nhóm quyền này..."
+                        ) #{record.description}
+            div(class="mt-2")
+                a.mr-2.btn.btn-success(href=`${prefixAdmin}/roles`) Hủy bỏ
+                button.btn.btn-primary.px-4(type="submit" )
+                    i.fas.fa-save.mr-2
+                    |  Lưu lại
+    else 
+        +access-denied("roles_edit")

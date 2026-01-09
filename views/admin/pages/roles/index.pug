@@ -1,54 +1,67 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/accessDenied.pug
+
 block main
     +alert_success("5000")
     +alert_error("5000")
-    .container-fluid.p-0
-        //- HEADER
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h2.fw-bold.mb-1 Nhóm quyền
-                nav(aria-label="breadcrumb")
-                    ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
-                        li.breadcrumb-item: a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
-                        li.breadcrumb-item.active(aria-current="page") Nhóm quyền
-            
-            //- Nút dẫn sang trang Phân quyền chi tiết
-            div
-                a.btn.btn-outline-secondary.mr-2(href=`${prefixAdmin}/roles/permissions`)
-                    i.fas.fa-user-shield.mr-2
-                    | Phân quyền
-                a.btn.btn-primary(href=`${prefixAdmin}/roles/create`)
-                    i.fas.fa-plus.mr-2
-                    | Thêm mới
+    if(role.permission.includes("roles_view"))
 
-        //- TABLE ROLES
-        .card.border-0.shadow-sm
-            .card-body.p-0
-                .table-responsive
-                    table.table.table-hover.align-middle.mb-0
-                        thead.bg-light
-                            tr
-                                th.ps-4 STT
-                                th Nhóm quyền
-                                th Mô tả ngắn
-                                th.text-end.pe-4 Hành động
-                        tbody
-                            if(records.length > 0)
-                                each item, index in records
-                                    tr
-                                        td.ps-4 #{index + 1}
-                                        td.fw-bold #{item.title}
-                                        td.text-muted !{item.description}
-                                        td.text-end.pe-4
-                                            a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/roles/edit/${item.id}`)
-                                                i.fas.fa-pencil-alt
-                                            button.btn.btn-sm.btn-light.text-danger(button-delete data-id=item.id button-delete-item)
-                                                i.far.fa-trash-alt
-                            else
+        .container-fluid.p-0
+            //- HEADER
+            .d-flex.justify-content-between.align-items-center.mb-4
+                div
+                    h2.fw-bold.mb-1 Nhóm quyền
+                    nav(aria-label="breadcrumb")
+                        ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                            li.breadcrumb-item: a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                            li.breadcrumb-item.active(aria-current="page") Nhóm quyền
+                
+                //- Nút dẫn sang trang Phân quyền chi tiết
+                div
+                    if(role.permission.includes("roles_permissions"))
+
+                        a.btn.btn-outline-secondary.mr-2(href=`${prefixAdmin}/roles/permissions`)
+                            i.fas.fa-user-shield.mr-2
+                            | Phân quyền
+                    if(role.permission.includes("roles_create"))
+                        a.btn.btn-primary(href=`${prefixAdmin}/roles/create`)
+                            i.fas.fa-plus.mr-2
+                            | Thêm mới
+
+            //- TABLE ROLES
+            .card.border-0.shadow-sm
+                .card-body.p-0
+                    .table-responsive
+                        table.table.table-hover.align-middle.mb-0
+                            thead.bg-light
                                 tr
-                                    td.text-center(colspan="4") Chưa có nhóm quyền nào.
-    form(action=""
-    form-delete-item
-    path = `${prefixAdmin}/roles/delete`
-    method = "POST")
+                                    th.ps-4 STT
+                                    th Nhóm quyền
+                                    th Mô tả ngắn
+                                    th.text-end.pe-4 Hành động
+                            tbody
+                                if(records.length > 0)
+                                    each item, index in records
+                                        tr
+                                            td.ps-4 #{index + 1}
+                                            td.fw-bold #{item.title}
+                                            td.text-muted !{item.description}
+                                            td.text-end.pe-4
+                                                if(role.permission.includes("roles_edit"))
+
+                                                    a.btn.btn-sm.btn-light.text-primary.mr-2(href=`${prefixAdmin}/roles/edit/${item.id}`)
+                                                        i.fas.fa-pencil-alt
+                                                if(role.permission.includes("roles_delete"))
+
+                                                    button.btn.btn-sm.btn-light.text-danger(button-delete data-id=item.id button-delete-item)
+                                                        i.far.fa-trash-alt
+                                else
+                                    tr
+                                        td.text-center(colspan="4") Chưa có nhóm quyền nào.
+        form(action=""
+        form-delete-item
+        path = `${prefixAdmin}/roles/delete`
+        method = "POST")
+    else 
+        +access-denied("roles_view")

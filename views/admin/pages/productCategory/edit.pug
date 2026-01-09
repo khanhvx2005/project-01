@@ -1,147 +1,135 @@
 extends ../../layouts/default.pug
 include ../../mixins/select-tree.pug
+include ../../mixins/accessDenied.pug
 
 block main
-    //- PAGE HEADER
-    .d-flex.justify-content-between.align-items-center.mb-4
-        div
-            h2.fw-bold.mb-1 Chỉnh sửa danh mục
-            div.text-muted.small.mb-2 ID: #{record.id}
-            nav(aria-label="breadcrumb")
-                ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
-                    li.breadcrumb-item
-                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
-                    li.breadcrumb-item
-                        a.text-decoration-none.text-secondary(href=`${prefixAdmin}/products-category`) Danh mục
-                    li.breadcrumb-item.active(aria-current="page") Chỉnh sửa
-        
-        //- ACTION BUTTONS
-        
+    if(role.permission.includes("products-category_edit"))
 
-    //- FORM EDIT
-    //- Action trỏ về route edit với id cụ thể + method PATCH
-    form(
-        action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
-        id="form-edit-category"
-        method="POST"
-        enctype="multipart/form-data"
-    )
-        .row
-            //- LEFT COLUMN
-            .col-12.col-lg-8
-                
-                //- Card: Thông tin chung
-                .card.section-card.mb-4
-                    .card-header.section-card__header
-                        h5.section-card__title Thông tin chung
-                    .card-body.section-card__body
-                        
-                        //- Tên danh mục
-                        .form-group
-                            label.form-group__label(for="title") Tên danh mục <span class="text-danger">*</span>
-                            input.form-control.form-group__input(
-                                type="text" 
-                                id="title" 
-                                name="title" 
-                                value=record.title
-                                required
-                            )
-
-                        //- Danh mục cha (LOGIC PHỨC TẠP NHẤT)
-                        .form-group
-                            label.form-group__label(for="parent_id") Danh mục cha
-                            select.form-control.form-group__input(name="parent_id" id="parent_id")
-                                option(value="") -- Danh mục gốc --
-                                
-                                if(records)
-                                    +select-tree(records,1,record.parent_id)
-
-                        //- Mô tả
-                        .form-group
-                            label.form-group__label(for="desc") Mô tả
-                            textarea.form-control.form-group__input(
-                                id="desc" 
-                                name="description" 
-                                rows="5" 
-                            ) #{record.description}
-
-            //- RIGHT COLUMN
-            .col-12.col-lg-4
-                
-                //- Card: Trạng thái & Vị trí
-                .card.section-card.mb-4
-                    .card-header.section-card__header
-                        h5.section-card__title Cấu hình
-                    .card-body.section-card__body
-                        
-                        //- Trạng thái
-                        .form-group.mb-4
-                            label.d-block.form-group__label.mb-2 Trạng thái
-                            .form-check.form-check-inline
-                                input.form-check-input(
-                                    type="radio" 
-                                    name="status" 
-                                    id="statusActive" 
-                                    value="active"
-                                    checked=(record.status == "active" ? true : false)
-                                )
-                                label.form-check-label.text-success.font-weight-bold(for="statusActive") Hoạt động
-                            .form-check.form-check-inline
-                                input.form-check-input(
-                                    type="radio" 
-                                    name="status" 
-                                    id="statusInactive" 
-                                    value="inactive"
-                                    checked=(record.status == "inactive" ? true : false)
-                                )
-                                label.form-check-label.text-secondary(for="statusInactive") Dừng hoạt động
-
-                        //- Vị trí
-                        .form-group
-                            label.form-group__label(for="position") Vị trí hiển thị
-                            input.form-control.form-group__input(
-                                type="number" 
-                                id="position" 
-                                name="position" 
-                                value=record.position
-                                placeholder="Tự động tăng" 
-                                min="1"
-                            )
-
-                //- Card: Hình ảnh
-                .card.section-card.mb-4
-                    .card-header.section-card__header
-                        h5.section-card__title Hình ảnh đại diện
-                    .card-body.section-card__body.text-center
-                        .image-uploader(upload-image)
-                            .image-uploader__preview-box.mb-3
-                                //- Hiển thị ảnh cũ hoặc placeholder
-                                img.image-uploader__img(
-                                    src=(record.thumbnail ? record.thumbnail : "https://placehold.co/300x300?text=Upload+Image") 
-                                    alt="Preview" 
-                                    upload-image-preview
-                                )
-                                //- Nút xóa ảnh (chỉ hiện khi có ảnh cũ)
-                                span.image-uploader__close(
-                                    upload-image-close
-                                    style=(record.thumbnail ? "display: flex" : "display: none")
-                                )
-                                    i.fas.fa-times
+        .d-flex.justify-content-between.align-items-center.mb-4
+            div
+                h2.fw-bold.mb-1 Chỉnh sửa danh mục
+                div.text-muted.small.mb-2 ID: #{record.id}
+                nav(aria-label="breadcrumb")
+                    ol.breadcrumb.bg-transparent.p-0.mb-0.fs-6
+                        li.breadcrumb-item
+                            a.text-decoration-none.text-secondary(href=`${prefixAdmin}/dashboard`) Dashboard
+                        li.breadcrumb-item
+                            a.text-decoration-none.text-secondary(href=`${prefixAdmin}/products-category`) Danh mục
+                        li.breadcrumb-item.active(aria-current="page") Chỉnh sửa
+            
+            
+        form(
+            action=`${prefixAdmin}/products-category/edit/${record.id}?_method=PATCH`
+            id="form-edit-category"
+            method="POST"
+            enctype="multipart/form-data"
+        )
+            .row
+                .col-12.col-lg-8
+                    
+                    .card.section-card.mb-4
+                        .card-header.section-card__header
+                            h5.section-card__title Thông tin chung
+                        .card-body.section-card__body
                             
-                            div
-                                label.btn.btn-sm.btn-outline-primary.mb-0(for="thumbnail")
-                                    i.fas.fa-upload.mr-2
-                                    | Thay đổi ảnh
-                                input.form-control-file.d-none(
-                                    type="file" 
-                                    id="thumbnail" 
-                                    name="thumbnail" 
-                                    accept="image/*" 
-                                    upload-image-input
+                            .form-group
+                                label.form-group__label(for="title") Tên danh mục <span class="text-danger">*</span>
+                                input.form-control.form-group__input(
+                                    type="text" 
+                                    id="title" 
+                                    name="title" 
+                                    value=record.title
+                                    required
                                 )
-        div
-            a(href=`${prefixAdmin}/products-category` class = "btn btn-success") Hủy bỏ
-            button.btn.btn-primary.px-4(type="submit" form="form-edit-category")
-                i.fas.fa-save.mr-2
-                |  Cập nhật
+
+                            .form-group
+                                label.form-group__label(for="parent_id") Danh mục cha
+                                select.form-control.form-group__input(name="parent_id" id="parent_id")
+                                    option(value="") -- Danh mục gốc --
+                                    
+                                    if(records)
+                                        +select-tree(records,1,record.parent_id)
+
+                            .form-group
+                                label.form-group__label(for="desc") Mô tả
+                                textarea.form-control.form-group__input(
+                                    id="desc" 
+                                    name="description" 
+                                    rows="5" 
+                                ) #{record.description}
+
+                .col-12.col-lg-4
+                    
+                    .card.section-card.mb-4
+                        .card-header.section-card__header
+                            h5.section-card__title Cấu hình
+                        .card-body.section-card__body
+                            
+                            .form-group.mb-4
+                                label.d-block.form-group__label.mb-2 Trạng thái
+                                .form-check.form-check-inline
+                                    input.form-check-input(
+                                        type="radio" 
+                                        name="status" 
+                                        id="statusActive" 
+                                        value="active"
+                                        checked=(record.status == "active" ? true : false)
+                                    )
+                                    label.form-check-label.text-success.font-weight-bold(for="statusActive") Hoạt động
+                                .form-check.form-check-inline
+                                    input.form-check-input(
+                                        type="radio" 
+                                        name="status" 
+                                        id="statusInactive" 
+                                        value="inactive"
+                                        checked=(record.status == "inactive" ? true : false)
+                                    )
+                                    label.form-check-label.text-secondary(for="statusInactive") Dừng hoạt động
+
+                            .form-group
+                                label.form-group__label(for="position") Vị trí hiển thị
+                                input.form-control.form-group__input(
+                                    type="number" 
+                                    id="position" 
+                                    name="position" 
+                                    value=record.position
+                                    placeholder="Tự động tăng" 
+                                    min="1"
+                                )
+
+                    .card.section-card.mb-4
+                        .card-header.section-card__header
+                            h5.section-card__title Hình ảnh đại diện
+                        .card-body.section-card__body.text-center
+                            .image-uploader(upload-image)
+                                .image-uploader__preview-box.mb-3
+                                    img.image-uploader__img(
+                                        src=(record.thumbnail ? record.thumbnail : "https://placehold.co/300x300?text=Upload+Image") 
+                                        alt="Preview" 
+                                        upload-image-preview
+                                    )
+                                    span.image-uploader__close(
+                                        upload-image-close
+                                        style=(record.thumbnail ? "display: flex" : "display: none")
+                                    )
+                                        i.fas.fa-times
+                                
+                                div
+                                    label.btn.btn-sm.btn-outline-primary.mb-0(for="thumbnail")
+                                        i.fas.fa-upload.mr-2
+                                        | Thay đổi ảnh
+                                    input.form-control-file.d-none(
+                                        type="file" 
+                                        id="thumbnail" 
+                                        name="thumbnail" 
+                                        accept="image/*" 
+                                        upload-image-input
+                                    )
+            div
+                a(href=`${prefixAdmin}/products-category` class = "btn btn-success") Hủy bỏ
+                button.btn.btn-primary.px-4(type="submit" form="form-edit-category")
+                    i.fas.fa-save.mr-2
+                    |  Cập nhật
+    else 
+        +access-denied("products-category_edit")
     

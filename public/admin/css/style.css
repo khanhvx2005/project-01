@@ -556,3 +556,77 @@ body {
 }
 
 /* end quản lý danh mục sản phẩm */
+/* Style riêng cho nút đăng xuất */
+.sidebar__link--logout {
+    background-color: rgba(237, 6, 6, 0.599);
+    color: white;
+    /* Màu đỏ nhạt */
+    font-weight: 600;
+    justify-content: center;
+}
+
+.sidebar__link--logout:hover {
+    background-color: #dc2626;
+    /* Màu đỏ đậm */
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* --- ACCESS DENIED PAGE --- */
+.access-denied-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    /* Màu nền sáng nhẹ */
+}
+
+.access-denied-content {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    /* Đổ bóng nhẹ tạo chiều sâu */
+    animation: fadeInUp 0.5s ease-out;
+    max-width: 600px;
+    width: 90%;
+}
+
+.access-denied-content .fa-user-lock {
+    opacity: 0.8;
+    animation: lockShake 2s infinite;
+    /* Hiệu ứng rung ổ khóa */
+}
+
+/* Animation xuất hiện nhẹ nhàng */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation rung nhẹ ổ khóa */
+@keyframes lockShake {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}

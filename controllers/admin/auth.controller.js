@@ -2,7 +2,12 @@ const Account = require("../../models/account.model")
 const md5 = require('md5');
 
 module.exports.login = (req, res) => {
-    res.render("admin/pages/auth/login", { title: "Trang đăng nhập" })
+    if (req.cookies.token) {
+        res.redirect("/admin/dashboard")
+    } else {
+        res.render("admin/pages/auth/login", { title: "Trang đăng nhập" })
+
+    }
 }
 module.exports.loginPost = async (req, res) => {
     // Kiểm tra email có tồn tại trong DB không ?
@@ -32,6 +37,7 @@ module.exports.loginPost = async (req, res) => {
         return;
     }
     res.cookie("token", user.token)
+    req.flash("success", "Đăng nhập thành công !")
     res.redirect("/admin/dashboard")
 
 }

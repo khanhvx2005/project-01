@@ -16,9 +16,11 @@ block main
         
         //- ACTIONS
         div
-            a.btn.btn-secondary.mr-2(href=`${prefixAdmin}/products/edit/${item.id}`)
-                i.fas.fa-pencil-alt.mr-2
-                | Chỉnh sửa
+            if(role.permission.includes("products_edit"))
+
+                a.btn.btn-secondary.mr-2(href=`${prefixAdmin}/products/edit/${item.id}`)
+                    i.fas.fa-pencil-alt.mr-2
+                    | Chỉnh sửa
             a.btn.btn-outline-secondary(href=`${prefixAdmin}/products`)
                 | Quay lại
 
@@ -133,16 +135,16 @@ block main
 
             //- Card: Thông tin hệ thống (Timestamp)
             //- Phần này rất hữu ích cho Admin để trace log
-            //- .card.section-card.mb-4
-            //-     .card-header.section-card__header
-            //-         h5.section-card__title Thông tin hệ thống
-            //-     .card-body.section-card__body
-            //-         div.mb-2
-            //-             div.text-muted.small Ngày tạo
-            //-             //- Giả sử có thư viện moment hoặc format date
-            //-             div.font-weight-medium 24/12/2025 10:30
-            //-         div
-            //-             div.text-muted.small Cập nhật lần cuối
-            //-             div.font-weight-medium 25/12/2025 09:15
+            .card.section-card.mb-4
+                .card-header.section-card__header
+                    h5.section-card__title Thông tin hệ thống
+                .card-body.section-card__body
+                    div.mb-2
+                        div.text-muted.small Ngày tạo
+                        //- Giả sử có thư viện moment hoặc format date
+                        div.font-weight-medium 24/12/2025 10:30
+                    div
+                        div.text-muted.small Cập nhật lần cuối
+                        div.font-weight-medium 25/12/2025 09:15
 
     
