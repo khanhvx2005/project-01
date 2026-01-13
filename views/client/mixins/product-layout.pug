@@ -18,12 +18,14 @@ mixin product-section(title,subtitle,items)
                                     a.btn.btn-sm.btn-light(title = "Xem chi tiết" href = `/products/detail/${item.slug}`)
                                         i.far.fa-eye
                             .product-card__body
-                                .product-card__category Áo Khoác
+                                
                                 h3.product-card__title
                                     a(href=`/products/detail/${item.slug}`) #{item.title}
-                                .product-card__price    
+                                .product-card__price
                                     span(class="product-card__price--new") #{item.priceNew.toLocaleString('vi-VN')} <sup>đ</sup>
 
                                     span(class="product-card__price--old") #{item.price.toLocaleString('vi-VN')} <sup>đ</sup>
+                                    
+
             .text-center.mt-5
                 a.btn.btn--custom.btn--dark(href='#') Xem Tất Cả

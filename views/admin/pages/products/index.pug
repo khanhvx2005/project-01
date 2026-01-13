@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/alert.pug
 include ../../mixins/accessDenied.pug
+include ../../mixins/moment.pug
 block main
     +alert_success("5000")
     +alert_error("5000")
@@ -63,6 +64,7 @@ block main
                                     th Giá
                                     th Vị trí
                                     th Tồn kho
+                                    th Ngày tạo
                                     th Trạng thái
                                     th.text-end.pe-4 Hành động
                             tbody
@@ -79,7 +81,10 @@ block main
                                         td.fw-semibold.text-primary #{item.price.toLocaleString('vi-VN')} <sup>đ</sup
                                         td 
                                             input(type = "number" name = "position" value = item.position style = "width:60px;" min = "1")
-                                        td #{item.stock}
+                                        td #{item.totalStock}
+                                        td 
+                                            p #{item.accountFullName}
+                                            +formatDateTime(item.createdBy.createdAt)
                                         td
                                             if(role.permission.includes("products_edit"))
 

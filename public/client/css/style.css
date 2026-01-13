@@ -388,6 +388,57 @@ a {
     height: auto;
 }
 
+/* Style chung cho label (hình dáng ô vuông) */
+.product-option__label {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    margin-right: 5px;
+    /* Khoảng cách giữa các ô */
+    font-weight: 500;
+    border-radius: 4px;
+    /* Bo góc nhẹ cho đẹp */
+    user-select: none;
+    /* Không cho bôi đen chữ */
+}
+
+/* 1. Style cho ô BÌNH THƯỜNG */
+.product-option__label--text {
+    cursor: pointer;
+    background-color: white;
+    transition: all 0.2s;
+}
+
+/* Khi được chọn (Active) */
+.product-option__input:checked+.product-option__label--text {
+    background-color: #000;
+    color: white;
+    border-color: #000;
+}
+
+/* 2. Style cho ô KHÔNG CÓ HÀNG (Hiệu ứng gạch chéo X) */
+.product-option__label--disabled {
+    cursor: not-allowed;
+    color: #ccc;
+    /* Làm mờ chữ */
+    background-color: #f8f9fa;
+    /* Màu nền xám nhạt */
+    border-color: #eee;
+
+    /* --- KỸ THUẬT VẼ DẤU X BẰNG CSS --- */
+    background-image:
+        linear-gradient(to top left, transparent 48%, #e0e0e0 48%, #e0e0e0 52%, transparent 52%),
+        linear-gradient(to top right, transparent 48%, #e0e0e0 48%, #e0e0e0 52%, transparent 52%);
+}
+
+/* Ẩn nút radio tròn mặc định */
+.product-option__input {
+    display: none;
+}
+
 /* end chi tiet san pham */
 
 /* trang san pham */
@@ -697,3 +748,116 @@ a {
 }
 
 /* end css menu */
+/* tim kiem */
+/* --- SEARCH OVERLAY STYLES --- */
+
+/* Lớp phủ toàn màn hình */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* Full chiều cao */
+    background-color: #ffffff;
+    z-index: 9999;
+    /* Đè lên tất cả */
+    padding-top: 50px;
+
+    /* Hiệu ứng ẩn hiện */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Class kích hoạt (được thêm bởi JS) */
+.search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Wrapper của ô input để tạo viền bo tròn */
+.search-bar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #7dd3fc;
+    /* Màu viền xanh nhạt giống ảnh */
+    border-radius: 50px;
+    /* Bo tròn hình viên thuốc */
+    padding: 10px 20px;
+    background: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon kính lúp bên trái */
+.search-bar-wrapper .search-icon {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+/* Input chính */
+.search-bar-wrapper .search-input {
+    border: none;
+    box-shadow: none;
+    font-size: 1rem;
+    width: 100%;
+    padding: 5px 0;
+    outline: none;
+}
+
+.search-bar-wrapper .search-input:focus {
+    background: transparent;
+}
+
+/* Nút đóng (X) bên phải */
+.btn-close-search {
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #334155;
+    transition: all 0.2s;
+    margin-left: 10px;
+}
+
+.btn-close-search:hover {
+    background: #e2e8f0;
+    transform: rotate(90deg);
+    /* Xoay nhẹ khi hover */
+}
+
+/* --- SUGGESTION TAGS --- */
+.search-suggestions h6 {
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.tag-item:hover {
+    background-color: #e0f2fe;
+    /* Màu nền xanh nhạt khi hover */
+    color: #0284c7;
+    border-color: #7dd3fc;
+}
+
+/* end tim kiem */

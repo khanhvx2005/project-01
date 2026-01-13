@@ -261,7 +261,6 @@ if (selectSort) {
 // end sắp xếp
 
 // Xử lý logic thêm biến thể
-// Xử lý thêm biến thể
 const btnAddVariant = document.querySelector(".btn-add-variant");
 const tableVariantsBody = document.querySelector("#table-variants tbody");
 
@@ -302,5 +301,6 @@ if (btnAddVariant && tableVariantsBody) {
         }
     });
 }
+// Hết Xử lý logic thêm biến thể
 
 

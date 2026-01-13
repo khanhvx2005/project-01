@@ -1,5 +1,5 @@
 mixin sub-menu(items)
-    ul.sub-menu
+    ul.sub-menu.py-0
         each item in items
             li 
                 a(href=`/products/${item.slug}`) #{item.title}

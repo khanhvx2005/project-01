@@ -10,6 +10,7 @@ const methodOverride = require('method-override')
 // Cấu hình thư viện body-parser
 
 const bodyParser = require('body-parser')
+const moment = require('moment')
 const app = express()
 const port = process.env.PORT
 
@@ -33,7 +34,7 @@ routeClient(app);
 //Cấu hình file tĩnh
 app.use(express.static(`${__dirname}/public`))
 app.locals.prefixAdmin = '/admin';
-
+app.locals.moment = moment;
 // Kết nối dự án vs mongoDB
 const database = require("./configs/database.config")
 database.connect()

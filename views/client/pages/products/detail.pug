@@ -46,47 +46,71 @@ block main
 
                         //- Form thêm vào giỏ
                         form(action=`/cart/add/${product.id}` method="POST")
-                            
-                            //- Chọn Màu (Visual Swatches)
+                            - 
+                                var colorMap = {
+                                    "Đen": "#000000",
+                                    "Trắng": "#FFFFFF",
+                                    "Đỏ": "#FF0000",
+                                    "Xanh": "#435ebe",
+                                    "Vàng": "#FFFF00",
+                                    "Xám": "#808080",
+                                    "Hồng": "#FFC0CB"
+                                }
+                            - var uniqueColors = [...new Set(product.variants.map(item => item.color))]
+                            //- //- Chọn Màu (Visual Swatches)
                             .product-option.mb-4
                                 label.product-option__title.fw-bold.mb-2 Màu sắc:
                                 .d-flex.gap-2
-                                    each item ,index in product.variants
-                                        if(item.color == "Đen")
-                                            input.product-option__input(type="radio" name="color" id="color-black" value="Đen" checked)
-                                            label.product-option__label.product-option__label--color(for="color-black" style="background-color: #000")
-                                        if(item.color == "Xanh")
-
-                                            input.product-option__input(type="radio" name="color" id="color-blue" value="Xanh")
-                                            label.product-option__label.product-option__label--color(for="color-blue" style="background-color: #435ebe")
-                                        if(item.color == "Đỏ")
-
-                                            input.product-option__input(type="radio" name="color" id="color-red" value="Đỏ")
-                                            label.product-option__label.product-option__label--color.border(for="color-red" style="background-color: red")
-                                        if(item.color == "Vàng")
-
-                                            input.product-option__input(type="radio" name="color" id="color-yellow" value="Vàng")
-                                            label.product-option__label.product-option__label--color.border(for="color-yellow" style="background-color: yellow")
+                                    each color in uniqueColors
+                                        - var hexCode = colorMap[color] || "#eee"
                                         
-                                        if(item.color == "Trắng")
-
-                                            input.product-option__input(type="radio" name="color" id="color-white" value="Trắng")
-                                            label.product-option__label.product-option__label--color.border(for="color-white" style="background-color: white")
+                                        div
+                                            //- Input Radio
+                                            input.product-option__input(
+                                            type="radio" 
+                                            name="color" 
+                                            id=`color-${color}` 
+                                            value=color
+                                            )
+                                            //- Label hiển thị màu
+                                            label.product-option__label.product-option__label--color(
+                                            for=`color-${color}` 
+                                            style=`background-color: ${hexCode}`
+                                            title=color 
+                                            )
 
                             //- Chọn Size
                             .product-option.mb-4
                                 label.product-option__title.fw-bold.mb-2 Kích thước:
                                 .d-flex.gap-2
-                                    each item,index in product.variants
-                                        input.product-option__input(type="radio" name="size" id=`size-${item.size}` value=item.size)
-                                        label.product-option__label.product-option__label--text(for=`size-${item.size}`) #{item.size}
+                                    - const allSize = ["M" , "S" , "L" , "XL" , "XXL"]
+                                    - const availableSizes = product.variants.map(item => item.size)
+                                    each item in allSize
+                                        if(availableSizes.includes(item))
+                                            div
+                                                input.product-option__input(
+                                                    type="radio" 
+                                                    name="size" 
+                                                    id=`size-${item}` 
+                                                    value=item
+                                                )
+                                                label.product-option__label.product-option__label--text(for=`size-${item}`) #{item}
+                                        else 
+                                            div
+                                                input.product-option__input(
+                                                    type="radio" 
+                                                    name="size" 
+                                                    id=`size-${item}-disabled` 
+                                                    disabled
+                                                )
+                                                label.product-option__label.product-option__label--disabled(for=`size-${item}-disabled`) #{item}                                   
 
                             //- Số lượng & Nút bấm
                             .d-flex.align-items-center.gap-3.mb-4
                                 .quantity-selector.input-group(style="width: 130px;")
                                     label.label Số lượng: 
 
-                                    input.form-control.text-center#quantity(type="number" name="quantity" value="1" min="1" max=product.stock)
+                                    input.form-control.text-center#quantity(type="number" name="quantity" value="1" min="1" max=product.totalStock)
                             
                             button.btn.btn-dark.btn-lg.w-100.py-3.fw-bold(type="submit")
                                 i.fas.fa-shopping-bag.me-2
