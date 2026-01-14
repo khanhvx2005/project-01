@@ -77,7 +77,8 @@ if (selectSort) {
         }
     })
 }
-// end sắp xếp
+// end sắp xếp 
+// sap xep theo gia
 function handleChangePrice(target) {
     // Lấy toàn bộ URL hiện tại (bao gồm cả ?page=1&sort=...)
     const url = new URL(window.location.href);

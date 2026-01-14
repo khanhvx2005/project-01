@@ -3,5 +3,5 @@ include ../../mixins/product-layout.pug
 block main
     include ../../partials/hero.pug
 
-    +product-section("Sản phẩm nổi bật","Featured Products",recordsFeatured)
-    +product-section("Hàng mới về", "New Arrivals",records)   
+    +product-section("Sản phẩm nổi bật","Featured Products",recordsFeatured,"/products?featured=1")
+    +product-section("Hàng mới về", "New Arrivals",records , "/products")   

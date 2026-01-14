@@ -1,4 +1,4 @@
-mixin product-section(title,subtitle,items)
+mixin product-section(title,subtitle,items , path)
     section.section.py-5
         .container
             .section-header
@@ -28,4 +28,5 @@ mixin product-section(title,subtitle,items)
                                     
 
             .text-center.mt-5
-                a.btn.btn--custom.btn--dark(href='#') Xem Tất Cả
+                
+                a.btn.btn--custom.btn--dark(href=path) Xem Tất Cả

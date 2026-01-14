@@ -1,5 +1,5 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/moment.pug
 block main
     //- PAGE HEADER
     .d-flex.justify-content-between.align-items-center.mb-4
@@ -142,9 +142,8 @@ block main
                     div.mb-2
                         div.text-muted.small Ngày tạo
                         //- Giả sử có thư viện moment hoặc format date
-                        div.font-weight-medium 24/12/2025 10:30
-                    div
-                        div.text-muted.small Cập nhật lần cuối
-                        div.font-weight-medium 25/12/2025 09:15
+                        div.font-weight-medium 
+                            +formatDateTime(item.createdBy.createdAt)
+                    
 
     

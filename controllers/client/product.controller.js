@@ -1,58 +1,36 @@
 const Product = require("../../models/product.model")
 const ProductCategory = require("../../models/product-category.model")
 const getDescendantsHelper = require("../../helpers/getDescendants.helper"); // Gọi helper cũ
-// [GET] products
+const paginationHelper = require("../../helpers/pagination.helper")
+const sortHelper = require("../../helpers/sort.helper")
+const priceRangeHelper = require("../../helpers/priceRange.helper")
+// [GET] /products
 module.exports.index = async (req, res) => {
     const find = {
         deleted: false,
         status: "active"
     }
-    // phân trang
-    const objPagination = {
-        limitItem: 12,
-        currentPage: 1
-    }
-    if (req.query.page) {
-        objPagination.currentPage = parseInt(req.query.page)
-    }
-    objPagination.skip = (objPagination.currentPage - 1) * objPagination.limitItem;
-    const countDocument = await Product.countDocuments(find)
-    const totalPage = Math.ceil(countDocument / objPagination.limitItem);
-    objPagination.totalPage = totalPage;
-    objPagination.start = objPagination.skip + 1;
-    objPagination.end = Math.min(objPagination.skip + objPagination.limitItem, countDocument)
-    objPagination.countDocument = countDocument;
-    // hết phân trang
+
     // logic sắp xếp
-    const sort = {
+    // Sắp xếp theo giá 
+    const sort = sortHelper(req.query);
+    // end logic sắp xếp theo giá
+
+    // Lọc sản phẩm theo giá
+    const priceRange = priceRangeHelper(req.query, find);
+    // hết lọc sản phẩm theo giá
+
+    // Lấy ra sản phẩm nổi bật
+    if (req.query.featured) {
+        find.featured = req.query.featured;
     }
-    if (req.query.sortKey && req.query.sortValue) {
-        sort[req.query.sortKey] = req.query.sortValue;
+    // Hết lấy ra sản phẩm nổi bật
 
-    } else {
-        sort.position = 'desc';
-    }
-    // end logic sắp xếp
-    // 2. LOGIC LỌC THEO GIÁ
-    const priceRange = req.query.priceRange;
+    // Phân trang
+    const countDocument = await Product.countDocuments(find)
+    const objPagination = paginationHelper(req.query, countDocument)
+    // Hết phân trang
 
-    if (priceRange) {
-        // Tách chuỗi "100000-300000" thành mảng [100000, 300000]
-        const [min, max] = priceRange.split('-');
-
-        // Khởi tạo object truy vấn cho priceNew
-        find.priceNew = {};
-
-        // Nếu có min (Lớn hơn hoặc bằng)
-        if (min) {
-            find.priceNew.$gte = parseInt(min);
-        }
-
-        // Nếu có max (Nhỏ hơn hoặc bằng)
-        if (max) {
-            find.priceNew.$lte = parseInt(max);
-        }
-    }
     const records = await Product.find(find).limit(objPagination.limitItem).skip(objPagination.skip).sort(sort)
     res.render("client/pages/products/index", { title: "Trang sản phẩm", records: records, objPagination: objPagination, priceRange: priceRange, priceRange: priceRange })
 }
@@ -78,32 +56,24 @@ module.exports.category = async (req, res) => {
             deleted: false,
             status: "active"
         }
-        // phân trang
-        const objPagination = {
-            limitItem: 12,
-            currentPage: 1
-        }
-        if (req.query.page) {
-            objPagination.currentPage = parseInt(req.query.page)
-        }
-        objPagination.skip = (objPagination.currentPage - 1) * objPagination.limitItem;
-        const countDocument = await Product.countDocuments(find)
-        const totalPage = Math.ceil(countDocument / objPagination.limitItem);
-        objPagination.totalPage = totalPage;
-        objPagination.start = objPagination.skip + 1;
-        objPagination.end = Math.min(objPagination.skip + objPagination.limitItem, countDocument)
-        objPagination.countDocument = countDocument;
-        // hết phân trang
-        // logic sắp xếp
-        const sort = {
-        }
-        if (req.query.sortKey && req.query.sortValue) {
-            sort[req.query.sortKey] = req.query.sortValue;
 
-        } else {
-            sort.position = 'desc';
+        // Lấy ra sản phẩm nổi bật
+        if (req.query.featured) {
+            find.featured = req.query.featured;
         }
-        // end logic sắp xếp
+        // Hết lấy ra sản phẩm nổi bật
+        // Sắp xếp theo giá 
+        const sort = sortHelper(req.query);
+        // end logic sắp xếp theo giá
+
+        // Lọc sản phẩm theo giá
+        const priceRange = priceRangeHelper(req.query, find);
+        // hết lọc sản phẩm theo giá
+
+        // Phân trang
+        const countDocument = await Product.countDocuments(find)
+        const objPagination = paginationHelper(req.query, countDocument)
+        // Hết phân trang
         const records = await Product.find({
             product_category_id: { $in: listSubCategoryId },
             deleted: false,
@@ -111,7 +81,7 @@ module.exports.category = async (req, res) => {
         }).limit(objPagination.limitItem).skip(objPagination.skip).sort(sort)
 
 
-        res.render("client/pages/products/index", { title: category.title, records: records, objPagination: objPagination })
+        res.render("client/pages/products/index", { title: category.title, records: records, objPagination: objPagination, priceRange: priceRange })
     } catch (error) {
         const backURL = req.get("Referer");
         res.redirect(backURL);
