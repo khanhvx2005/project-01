@@ -22,9 +22,41 @@ header.header
           i.fas.fa-search
         button.header__actions-btn
           i.far.fa-heart
-        button.header__actions-btn
-          i.fas.fa-shopping-bag
-          span.badge.rounded-pill.header__badge 2
+        .header__mini-cart-wrapper
+          a.header__actions-btn(href="/cart")
+            i.fas.fa-shopping-bag
+            //- Hiển thị số lượng dynamic
+            span.badge.rounded-pill.header__badge #{miniCart ? miniCart.totalQuantity : 0}
+          
+          //- HỘP MINI CART (Dropdown)
+          .mini-cart
+            //- TH1: Có sản phẩm
+            if miniCart && miniCart.products.length > 0
+              .mini-cart__list
+                each item in miniCart.products
+                  .mini-cart__item
+                    //- Ảnh sản phẩm
+                    .mini-cart__image
+                      a(href=`/products/detail/${item.productInfo.slug}`)
+                        img(src=item.productInfo.thumbnail, alt=item.productInfo.title)
+                    
+                    //- Thông tin
+                    .mini-cart__content
+                      a.mini-cart__title(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title}
+                      div.mini-cart__meta
+                        span.mini-cart__quantity Số lượng: #{item.quantity} 
+                        //- span.mini-cart__price #{item.productInfo.priceNew.toLocaleString('vi-VN')}đ
+                      div.mini-cart__variant.text-muted.small.mb-1
+                         | Size: #{item.size} / Màu: #{item.color}
+                         
+                    //- Nút xóa nhanh
+                    a.mini-cart__remove(href=`/cart/delete/${item.product_id}`) 
+                      i.fas.fa-times
+
+            else
+              .mini-cart__empty
+                i.fas.fa-shopping-basket.mb-2
+                p Chưa có sản phẩm nào
   .search-overlay#search-overlay
     .search-overlay__inner
         .container

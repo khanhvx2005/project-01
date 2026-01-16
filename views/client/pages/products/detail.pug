@@ -1,6 +1,8 @@
 extends ../../layouts/default.pug
-
+include ../../mixins/alert.pug
 block main
+    +alert_success("5000")
+    +alert_error("5000")
     .product-detail.py-5
         .container
             //- 1. BREADCRUMB
