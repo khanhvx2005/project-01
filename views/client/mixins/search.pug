@@ -1,0 +1,26 @@
+mixin search()
+    .search-overlay#search-overlay
+        .search-overlay__inner
+            .container
+                //- Form tìm kiếm
+                form(action="/search" method="GET")
+                    .search-bar-wrapper
+                        i.fas.fa-search.search-icon
+                        input.form-control.search-input(
+                            type="text" 
+                            name="keyword" 
+                            placeholder="Tìm kiếm sản phẩm..." 
+                            autocomplete="off"
+                        )
+                        //- Nút đóng (X)
+                        button.btn-close-search.js-close-search(type="button")
+                            i.fas.fa-times
+
+                //- Phần từ khóa nổi bật
+                .search-suggestions.mt-4
+                    h6.fw-bold.mb-3 Từ khóa nổi bật
+                    .d-flex.flex-wrap.gap-2
+                        a.tag-item(href="/products?keyword=áo phông") Áo phông
+                        a.tag-item(href="/products?keyword=hoodie") Hoodie
+                        a.tag-item(href="/products?keyword=áo khoác") Áo khoác
+                        a.tag-item(href="/products?keyword=6LB22W001") 6LB22W001

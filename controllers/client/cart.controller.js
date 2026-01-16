@@ -1,4 +1,20 @@
 const Cart = require("../../models/cart.model")
+const Product = require("../../models/product.model")
+module.exports.index = async (req, res) => {
+    const cart = await Cart.findOne({
+        _id: req.cookies.cartId
+    })
+    for (const item of cart.products) {
+        const productInfo = await Product.findOne({
+            _id: item.product_id
+        })
+
+        item.productInfo = productInfo;
+        item.totalPrice = productInfo.priceNew * item.quantity;
+    }
+    cart.totalPrice = cart.products.reduce((total, item) => total + item.totalPrice, 0)
+    res.render("client/pages/cart/index", { title: "Trang giỏ hàng", cartDetail: cart })
+}
 module.exports.addPost = async (req, res) => {
     const cartId = req.cookies.cartId;
     const productId = req.params.id;

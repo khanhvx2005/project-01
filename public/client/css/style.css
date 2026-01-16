@@ -1100,3 +1100,66 @@ a {
     /* Nếu muốn các thuộc tính cách xa nhau */
     /* letter-spacing: 0.5px; */
 }
+
+/* Trang giở hàng */
+/* --- CART PAGE STYLES --- */
+
+/* Làm đẹp bảng */
+.cart-table thead th {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 600;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.cart-table tbody td {
+    vertical-align: middle;
+    /* Căn giữa theo chiều dọc */
+}
+
+/* Bộ chỉnh số lượng (Quantity Box) */
+.quantity-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.quantity-box button {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #334155;
+    font-weight: bold;
+}
+
+.quantity-box button:hover {
+    background-color: #e2e8f0;
+}
+
+/* Xóa mũi tên tăng giảm mặc định của input number */
+.quantity-box input::-webkit-outer-spin-button,
+.quantity-box input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Sticky Summary Card */
+.sticky-top {
+    position: sticky;
+    top: 90px !important;
+    /* Cách header một đoạn (nếu header cao 70px) */
+}
+
+/* Nút thanh toán */
+.btn-primary {
+    /* Đảm bảo đồng bộ màu với hệ thống */
+    box-shadow: 0 4px 6px -1px rgba(var(--bs-primary-rgb), 0.4);
+    transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+/* end trang giỏ hang */
