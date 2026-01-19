@@ -63,8 +63,4 @@ module.exports.addPost = async (req, res) => {
         const backURL = req.get("Referer");
         res.redirect(backURL)
     }
-    // Logic thêm sản phẩm vào giỏ hàng
-
-
-
 }
