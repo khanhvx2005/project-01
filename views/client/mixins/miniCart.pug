@@ -27,7 +27,7 @@ mixin miniCart(miniCart)
                          | Size: #{item.size} / Màu: #{item.color}
                          
                     //- Nút xóa nhanh
-                    a.mini-cart__remove(href=`/cart/delete/${item.product_id}`) 
+                    a.mini-cart__remove(href=`/cart/delete/${item.product_id}/${item.size}/${item.color}`) 
                       i.fas.fa-times
 
             else

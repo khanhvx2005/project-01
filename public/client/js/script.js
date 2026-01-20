@@ -123,4 +123,12 @@ if (showAlert) {
     }
 }
 // end thông báo
+// Hàm cập nhật số lượng
+function updateQuantity(productId, newQuantity, size, color) {
+    if (newQuantity < 1) return;
 
+
+    window.location.href = `/cart/update/${productId}/${newQuantity}/${size}/${color}`;
+
+
+}
