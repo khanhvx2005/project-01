@@ -1,0 +1,71 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .container
+        .row.justify-content-center
+            .col-12.col-md-8.col-lg-6.col-xl-5
+                //- FORM CARD
+                .card.auth-card
+                    .card-body
+                        //- Header
+                        .auth-header
+                            h3.auth-title Đăng nhập
+                            p.auth-subtitle Chào mừng bạn quay trở lại!
+
+                        //- Form
+                        form(action="/user/login" method="POST")
+                            //- Email
+                            .mb-3
+                                label.form-label(for="email") Email
+                                input.form-control(
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    required 
+                                    placeholder="name@example.com"
+                                )
+                            
+                            //- Password
+                            .mb-3
+                                label.form-label(for="password") Mật khẩu
+                                .input-group
+                                    input.form-control.border-end-0(
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        required 
+                                        placeholder="••••••••"
+                                    )
+                                    span.input-group-text.cursor-pointer.toggle-password
+                                        i.far.fa-eye-slash
+                            
+                            //- Quên mật khẩu & Ghi nhớ
+                            .d-flex.justify-content-between.align-items-center.mb-4
+                                .form-check
+                                    input.form-check-input(type="checkbox" id="rememberMe")
+                                    label.form-check-label.small.text-muted(for="rememberMe") Ghi nhớ tôi
+                                
+                                a.text-decoration-none.small.fw-bold.text-danger(href="/user/password/forgot") Quên mật khẩu?
+                            
+                            //- Button Submit
+                            button.btn.btn-auth.w-100(type="submit") Đăng nhập
+
+                        //- Divider
+                        .auth-divider
+                            span hoặc đăng nhập bằng
+
+                        //- Social Buttons
+                        .d-flex.gap-3.mb-4
+                            button.btn.btn-light.w-50.d-flex.align-items-center.justify-content-center
+                                i.fab.fa-google.text-danger.me-2
+                                | Google
+                            button.btn.btn-light.w-50.d-flex.align-items-center.justify-content-center
+                                i.fab.fa-facebook.text-primary.me-2
+                                | Facebook
+
+                        //- Footer
+                        .auth-footer-text
+                            | Bạn chưa có tài khoản? 
+                            a(href="/user/register") Đăng ký ngay

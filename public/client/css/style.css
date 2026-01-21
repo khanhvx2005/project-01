@@ -6,6 +6,15 @@
     --color-white: #ffffff;
     --font-main: 'Inter', sans-serif;
     --transition-base: all 0.3s ease;
+    --auth-bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --auth-card-bg: #ffffff;
+    --input-bg: #f3f4f6;
+    --input-focus-bg: #ffffff;
+    --primary-color: #1a1a1a;
+    --accent-color: #e63946;
+    --text-muted: #94a3b8;
+    --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 20px 60px -15px rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -53,6 +62,7 @@ a {
     font-size: 1.2rem;
     margin-left: 15px;
     position: relative;
+    margin-right: 25px;
 }
 
 .header__badge {
@@ -64,6 +74,387 @@ a {
 }
 
 /* --- COMPONENT: HERO SECTION (BEM: .hero) --- */
+/* css menu */
+/* --- Cấu hình Menu cha (Level 0) --- */
+.navbar-nav {
+    /* Đảm bảo danh sách menu nằm ngang (Bootstrap đã lo, nhưng thêm cho chắc) */
+    align-items: center;
+}
+
+/* Item cấp 1 */
+.navbar-nav .nav-item {
+    position: relative;
+    /* Quan trọng: Để menu con định vị theo nó */
+}
+
+/* --- Cấu hình Menu con (Level 1) - Dropdown xuống dưới --- */
+.navbar-nav .nav-item>.sub-menu {
+    display: none;
+    /* Mặc định ẩn */
+    position: absolute;
+    /* Nổi lên trên */
+    top: 100%;
+    /* Nằm ngay dưới đuôi menu cha */
+    left: 0;
+    min-width: 220px;
+    /* Độ rộng tối thiểu */
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    /* Khoảng cách trên dưới */
+    list-style: none;
+    z-index: 1000;
+    /* Đè lên các thành phần khác */
+    margin: 0;
+}
+
+/* Hiệu ứng: Hover vào cha thì hiện con */
+.navbar-nav .nav-item:hover>.sub-menu {
+    display: block;
+    animation: fadeIn 0.3s ease;
+    /* Thêm chút hiệu ứng hiện dần cho mượt */
+}
+
+/* Link trong menu con */
+.sub-menu li a {
+    display: block;
+    padding: 8px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-bottom: 1px solid #f5f5f5;
+    /* Đường kẻ mờ giữa các mục */
+}
+
+.sub-menu li:last-child a {
+    border-bottom: none;
+    /* Bỏ đường kẻ ở mục cuối */
+}
+
+.sub-menu li a:hover {
+    background-color: #f8f9fa;
+    /* Màu nền khi di chuột */
+    color: #007bff;
+    /* Đổi màu chữ (hoặc màu thương hiệu của bạn) */
+    padding-left: 25px;
+    /* Hiệu ứng đẩy chữ sang phải một chút */
+}
+
+/* --- Cấu hình Menu cháu (Level 2 trở đi) - Dropdown sang ngang --- */
+
+/* Các thẻ li trong menu con cần relative để menu cháu định vị theo nó */
+.sub-menu li {
+    position: relative;
+}
+
+/* Menu cấp 2, 3, 4... sẽ nằm bên phải */
+.sub-menu li>.sub-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    /* Ngang hàng với cha nó */
+    left: 100%;
+    /* Nằm hoàn toàn bên phải */
+    margin-left: 0;
+    /* Chỉnh lại margin nếu cần */
+
+    /* Copy lại style giao diện của level 1 */
+    min-width: 220px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    list-style: none;
+    z-index: 1001;
+}
+
+/* Hover vào menu con thì hiện menu cháu */
+.sub-menu li:hover>.sub-menu {
+    display: block;
+}
+
+/* --- (Tùy chọn) Thêm mũi tên chỉ thị có menu con --- */
+
+/* Mũi tên cho cấp 1 (xuống dưới) */
+.navbar-nav .nav-item:has(.sub-menu)>.nav-link::after {
+    content: "\f078";
+    /* Mã icon FontAwesome (hoặc dùng ký tự ▼) */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Mũi tên cho cấp 2 trở đi (sang phải) */
+.sub-menu li:has(.sub-menu)>a::after {
+    content: "\f054";
+    /* Mã icon FontAwesome (hoặc dùng ký tự ►) */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 10px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Keyframes cho hiệu ứng hiện ra */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* end css menu */
+/* tim kiem */
+/* --- SEARCH OVERLAY STYLES --- */
+
+/* Lớp phủ toàn màn hình */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* Full chiều cao */
+    background-color: #ffffff;
+    z-index: 9999;
+    /* Đè lên tất cả */
+    padding-top: 50px;
+
+    /* Hiệu ứng ẩn hiện */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Class kích hoạt (được thêm bởi JS) */
+.search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Wrapper của ô input để tạo viền bo tròn */
+.search-bar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #7dd3fc;
+    /* Màu viền xanh nhạt giống ảnh */
+    border-radius: 50px;
+    /* Bo tròn hình viên thuốc */
+    padding: 10px 20px;
+    background: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon kính lúp bên trái */
+.search-bar-wrapper .search-icon {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+/* Input chính */
+.search-bar-wrapper .search-input {
+    border: none;
+    box-shadow: none;
+    font-size: 1rem;
+    width: 100%;
+    padding: 5px 0;
+    outline: none;
+}
+
+.search-bar-wrapper .search-input:focus {
+    background: transparent;
+}
+
+/* Nút đóng (X) bên phải */
+.btn-close-search {
+    background: #f1f5f9;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #334155;
+    transition: all 0.2s;
+    margin-left: 10px;
+}
+
+.btn-close-search:hover {
+    background: #e2e8f0;
+    transform: rotate(90deg);
+    /* Xoay nhẹ khi hover */
+}
+
+/* --- SUGGESTION TAGS --- */
+.search-suggestions h6 {
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.tag-item {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.tag-item:hover {
+    background-color: #e0f2fe;
+    /* Màu nền xanh nhạt khi hover */
+    color: #0284c7;
+    border-color: #7dd3fc;
+}
+
+/* end tim kiem */
+/* 1. Wrapper để căn vị trí */
+.header__mini-cart-wrapper {
+    position: relative;
+    /* Làm mốc tọa độ */
+    margin-left: 15px;
+    padding: 10px 0;
+    /* Mở rộng vùng hover để chuột không bị đứt quãng */
+}
+
+/* 2. Hộp Mini Cart (Mặc định ẩn) */
+.mini-cart {
+    position: absolute;
+    top: 100%;
+    /* Nằm ngay dưới icon */
+    right: 0;
+    /* Căn phải */
+    width: 300px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 15px;
+    z-index: 999;
+
+    /* Ẩn đi */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+/* 3. Hiệu ứng Hover: Hiện Mini Cart */
+.header__mini-cart-wrapper:hover .mini-cart {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* --- Style chi tiết bên trong --- */
+.mini-cart__list {
+    max-height: 300px;
+    overflow-y: auto;
+    /* Cuộn nếu danh sách dài */
+}
+
+.mini-cart__item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.mini-cart__image img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.mini-cart__title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+    line-height: 1.2;
+    /* Cắt chữ nếu dài quá */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.mini-cart__meta {
+    font-size: 13px;
+    color: #666;
+}
+
+.mini-cart__remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #999;
+    font-size: 12px;
+}
+
+.mini-cart__remove:hover {
+    color: red;
+}
+
+.mini-cart__footer {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.mini-cart__total {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.mini-cart__empty {
+    text-align: center;
+    color: #999;
+    padding: 20px 0;
+}
+
+.mini-cart__empty i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.mini-cart__variant {
+    font-size: 12px;
+    /* Chữ nhỏ gọn */
+    color: #888;
+    /* Màu xám nhẹ */
+    margin-bottom: 4px;
+    /* Cách dòng giá tiền một chút */
+
+    /* Nếu muốn các thuộc tính cách xa nhau */
+    /* letter-spacing: 0.5px; */
+}
+
 .hero {
     background-color: #f2f2f2;
     /* Placeholder color */
@@ -607,260 +998,7 @@ a {
 }
 
 /* end trang san pham */
-/* css menu */
-/* --- Cấu hình Menu cha (Level 0) --- */
-.navbar-nav {
-    /* Đảm bảo danh sách menu nằm ngang (Bootstrap đã lo, nhưng thêm cho chắc) */
-    align-items: center;
-}
 
-/* Item cấp 1 */
-.navbar-nav .nav-item {
-    position: relative;
-    /* Quan trọng: Để menu con định vị theo nó */
-}
-
-/* --- Cấu hình Menu con (Level 1) - Dropdown xuống dưới --- */
-.navbar-nav .nav-item>.sub-menu {
-    display: none;
-    /* Mặc định ẩn */
-    position: absolute;
-    /* Nổi lên trên */
-    top: 100%;
-    /* Nằm ngay dưới đuôi menu cha */
-    left: 0;
-    min-width: 220px;
-    /* Độ rộng tối thiểu */
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 10px 0;
-    /* Khoảng cách trên dưới */
-    list-style: none;
-    z-index: 1000;
-    /* Đè lên các thành phần khác */
-    margin: 0;
-}
-
-/* Hiệu ứng: Hover vào cha thì hiện con */
-.navbar-nav .nav-item:hover>.sub-menu {
-    display: block;
-    animation: fadeIn 0.3s ease;
-    /* Thêm chút hiệu ứng hiện dần cho mượt */
-}
-
-/* Link trong menu con */
-.sub-menu li a {
-    display: block;
-    padding: 8px 20px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s;
-    border-bottom: 1px solid #f5f5f5;
-    /* Đường kẻ mờ giữa các mục */
-}
-
-.sub-menu li:last-child a {
-    border-bottom: none;
-    /* Bỏ đường kẻ ở mục cuối */
-}
-
-.sub-menu li a:hover {
-    background-color: #f8f9fa;
-    /* Màu nền khi di chuột */
-    color: #007bff;
-    /* Đổi màu chữ (hoặc màu thương hiệu của bạn) */
-    padding-left: 25px;
-    /* Hiệu ứng đẩy chữ sang phải một chút */
-}
-
-/* --- Cấu hình Menu cháu (Level 2 trở đi) - Dropdown sang ngang --- */
-
-/* Các thẻ li trong menu con cần relative để menu cháu định vị theo nó */
-.sub-menu li {
-    position: relative;
-}
-
-/* Menu cấp 2, 3, 4... sẽ nằm bên phải */
-.sub-menu li>.sub-menu {
-    display: none;
-    position: absolute;
-    top: 0;
-    /* Ngang hàng với cha nó */
-    left: 100%;
-    /* Nằm hoàn toàn bên phải */
-    margin-left: 0;
-    /* Chỉnh lại margin nếu cần */
-
-    /* Copy lại style giao diện của level 1 */
-    min-width: 220px;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 10px 0;
-    list-style: none;
-    z-index: 1001;
-}
-
-/* Hover vào menu con thì hiện menu cháu */
-.sub-menu li:hover>.sub-menu {
-    display: block;
-}
-
-/* --- (Tùy chọn) Thêm mũi tên chỉ thị có menu con --- */
-
-/* Mũi tên cho cấp 1 (xuống dưới) */
-.navbar-nav .nav-item:has(.sub-menu)>.nav-link::after {
-    content: "\f078";
-    /* Mã icon FontAwesome (hoặc dùng ký tự ▼) */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 10px;
-    margin-left: 5px;
-    vertical-align: middle;
-}
-
-/* Mũi tên cho cấp 2 trở đi (sang phải) */
-.sub-menu li:has(.sub-menu)>a::after {
-    content: "\f054";
-    /* Mã icon FontAwesome (hoặc dùng ký tự ►) */
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 10px;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Keyframes cho hiệu ứng hiện ra */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* end css menu */
-/* tim kiem */
-/* --- SEARCH OVERLAY STYLES --- */
-
-/* Lớp phủ toàn màn hình */
-.search-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    /* Full chiều cao */
-    background-color: #ffffff;
-    z-index: 9999;
-    /* Đè lên tất cả */
-    padding-top: 50px;
-
-    /* Hiệu ứng ẩn hiện */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-    transition: all 0.3s ease-in-out;
-}
-
-/* Class kích hoạt (được thêm bởi JS) */
-.search-overlay.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* Wrapper của ô input để tạo viền bo tròn */
-.search-bar-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 1px solid #7dd3fc;
-    /* Màu viền xanh nhạt giống ảnh */
-    border-radius: 50px;
-    /* Bo tròn hình viên thuốc */
-    padding: 10px 20px;
-    background: #fff;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-/* Icon kính lúp bên trái */
-.search-bar-wrapper .search-icon {
-    color: #64748b;
-    font-size: 1.2rem;
-    margin-right: 15px;
-}
-
-/* Input chính */
-.search-bar-wrapper .search-input {
-    border: none;
-    box-shadow: none;
-    font-size: 1rem;
-    width: 100%;
-    padding: 5px 0;
-    outline: none;
-}
-
-.search-bar-wrapper .search-input:focus {
-    background: transparent;
-}
-
-/* Nút đóng (X) bên phải */
-.btn-close-search {
-    background: #f1f5f9;
-    border: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #334155;
-    transition: all 0.2s;
-    margin-left: 10px;
-}
-
-.btn-close-search:hover {
-    background: #e2e8f0;
-    transform: rotate(90deg);
-    /* Xoay nhẹ khi hover */
-}
-
-/* --- SUGGESTION TAGS --- */
-.search-suggestions h6 {
-    font-size: 1.1rem;
-    color: #0f172a;
-}
-
-.tag-item {
-    display: inline-block;
-    padding: 8px 20px;
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 50px;
-    color: #475569;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
-
-.tag-item:hover {
-    background-color: #e0f2fe;
-    /* Màu nền xanh nhạt khi hover */
-    color: #0284c7;
-    border-color: #7dd3fc;
-}
-
-/* end tim kiem */
 /* thông báo */
 /* --- TOAST NOTIFICATION STYLES --- */
 
@@ -974,132 +1112,7 @@ a {
 }
 
 /* end thông báo */
-/* 1. Wrapper để căn vị trí */
-.header__mini-cart-wrapper {
-    position: relative;
-    /* Làm mốc tọa độ */
-    margin-left: 15px;
-    padding: 10px 0;
-    /* Mở rộng vùng hover để chuột không bị đứt quãng */
-}
 
-/* 2. Hộp Mini Cart (Mặc định ẩn) */
-.mini-cart {
-    position: absolute;
-    top: 100%;
-    /* Nằm ngay dưới icon */
-    right: 0;
-    /* Căn phải */
-    width: 300px;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    padding: 15px;
-    z-index: 999;
-
-    /* Ẩn đi */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-/* 3. Hiệu ứng Hover: Hiện Mini Cart */
-.header__mini-cart-wrapper:hover .mini-cart {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-/* --- Style chi tiết bên trong --- */
-.mini-cart__list {
-    max-height: 300px;
-    overflow-y: auto;
-    /* Cuộn nếu danh sách dài */
-}
-
-.mini-cart__item {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    position: relative;
-}
-
-.mini-cart__image img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.mini-cart__title {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 2px;
-    line-height: 1.2;
-    /* Cắt chữ nếu dài quá */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.mini-cart__meta {
-    font-size: 13px;
-    color: #666;
-}
-
-.mini-cart__remove {
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #999;
-    font-size: 12px;
-}
-
-.mini-cart__remove:hover {
-    color: red;
-}
-
-.mini-cart__footer {
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-    margin-top: 10px;
-}
-
-.mini-cart__total {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 15px;
-}
-
-.mini-cart__empty {
-    text-align: center;
-    color: #999;
-    padding: 20px 0;
-}
-
-.mini-cart__empty i {
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.mini-cart__variant {
-    font-size: 12px;
-    /* Chữ nhỏ gọn */
-    color: #888;
-    /* Màu xám nhẹ */
-    margin-bottom: 4px;
-    /* Cách dòng giá tiền một chút */
-
-    /* Nếu muốn các thuộc tính cách xa nhau */
-    /* letter-spacing: 0.5px; */
-}
 
 /* Trang giở hàng */
 /* --- CART PAGE STYLES --- */
@@ -1297,4 +1310,264 @@ a {
     transition: top 0.3s;
 }
 
-/* 6. Nút Đặt hàng (CTA
+/* 6. Nút Đặt hàng (CTA) */
+.header__auth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
+}
+
+.auth-btn {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    transition: all 0.2s ease;
+}
+
+/* Icon bên trong nút */
+.auth-btn i {
+    font-size: 1.1rem;
+    /* Icon to hơn chữ xíu cho đẹp */
+    color: #555;
+    transition: color 0.2s;
+}
+
+/* Khoảng cách giữa Icon và Chữ (sử dụng margin hoặc class me-1 của bootstrap) */
+.auth-btn span {
+    margin-left: 5px;
+}
+
+/* Hiệu ứng hover: Đổi màu cả chữ và icon */
+.auth-btn:hover {
+    color: var(--color-accent);
+}
+
+.auth-btn:hover i {
+    color: var(--color-accent);
+}
+
+/* Dấu gạch đứng phân cách */
+.auth-divider {
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+/* Giao dienj đăng kí */
+/* =========================================
+   MODERN AUTHENTICATION PAGE (LOGIN/REGISTER)
+   ========================================= */
+
+:root {
+    --auth-bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --auth-card-bg: #ffffff;
+    --input-bg: #f3f4f6;
+    --input-focus-bg: #ffffff;
+    --primary-color: #1a1a1a;
+    --accent-color: #e63946;
+    --text-muted: #94a3b8;
+    --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 20px 60px -15px rgba(0, 0, 0, 0.15);
+}
+
+/* 1. LAYOUT & BACKGROUND */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--auth-bg-gradient);
+    /* Màu nền Gradient hiện đại */
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* 2. AUTH CARD (Khung chứa form) */
+.auth-card {
+    background: var(--auth-card-bg);
+    border: none;
+    border-radius: 24px;
+    /* Bo góc lớn hơn cho mềm mại */
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    /* Giới hạn chiều rộng chuẩn */
+
+    /* Animation trượt lên khi load trang */
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-card .card-body {
+    padding: 3rem !important;
+    /* Tăng khoảng cách lề trong cho thoáng */
+}
+
+/* Tiêu đề & Logo */
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-title {
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* 3. MODERN INPUT FIELDS */
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control {
+    background-color: var(--input-bg);
+    border: 2px solid transparent;
+    /* Viền trong suốt mặc định */
+    border-radius: 12px;
+    /* Bo góc input */
+    padding: 12px 18px;
+    font-size: 1rem;
+    color: #1f2937;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    background-color: var(--input-focus-bg);
+    border-color: var(--accent-color);
+    /* Viền màu đỏ khi focus */
+    box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+    /* Glow nhẹ */
+    color: #1f2937;
+}
+
+.form-control::placeholder {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Xử lý Input Group (Mật khẩu) */
+.input-group .input-group-text {
+    background-color: var(--input-bg);
+    border: 2px solid transparent;
+    border-left: none;
+    /* Bỏ viền trái để liền mạch */
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    color: #6b7280;
+    transition: all 0.2s ease;
+}
+
+/* Khi input password focus thì icon cũng đổi màu viền */
+.input-group:focus-within .form-control {
+    border-color: var(--accent-color);
+    border-right: none;
+}
+
+.input-group:focus-within .input-group-text {
+    background-color: var(--input-focus-bg);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+/* 4. BUTTONS */
+.btn-auth {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-auth:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(230, 57, 70, 0.25);
+}
+
+.btn-light {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.btn-light:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+/* 5. DIVIDER & FOOTER */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.auth-divider span {
+    padding: 0 10px;
+}
+
+.auth-footer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 1.5rem;
+}
+
+.auth-footer-text a {
+    color: var(--accent-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* ANIMATION KEYFRAMES */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

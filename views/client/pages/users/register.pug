@@ -1,0 +1,55 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .container
+        .row.justify-content-center
+            .col-12.col-md-8.col-lg-6.col-xl-5
+                //- FORM CARD
+                .card.auth-card
+                    .card-body
+                        //- Header mới
+                        .auth-header
+                            //- Có thể thêm Logo ở đây nếu muốn
+                            //- img.mb-3(src="/images/logo.png" width="60")
+                            h3.auth-title Đăng ký 
+
+                        form(action="/user/register" method="POST")
+                            .mb-3
+                                label.form-label(for="fullName") Họ và tên
+                                input.form-control(type="text" id="fullName" name="fullName" required placeholder="Ví dụ: Nguyễn Văn A")
+                            .mb-3
+                                label.form-label(for="phone") Số điện thoại
+                                input.form-control(type="text" id="phone" name="phone" required placeholder="Ví dụ: 0345126798")    
+                            
+                            .mb-3
+                                label.form-label(for="email") Email
+                                input.form-control(type="email" id="email" name="email" required placeholder="name@example.com" autocomplete = "new-password")
+                            
+                            .mb-3
+                                label.form-label(for="password") Mật khẩu
+                                .input-group
+                                    input.form-control.border-end-0(type="password" id="password" name="password" required placeholder="••••••••")
+                                    span.input-group-text.cursor-pointer.toggle-password
+                                        i.far.fa-eye-slash
+                            
+                            button.btn.btn-auth.w-100.mt-2(type="submit") Đăng ký ngay
+
+                        //- Divider
+                        .auth-divider
+                            span hoặc tiếp tục với
+
+                        //- Social Buttons
+                        .d-flex.gap-3.mb-3
+                            button.btn.btn-light.w-50.d-flex.align-items-center.justify-content-center
+                                i.fab.fa-google.text-danger.me-2
+                                | Google
+                            button.btn.btn-light.w-50.d-flex.align-items-center.justify-content-center
+                                i.fab.fa-facebook.text-primary.me-2
+                                | Facebook
+
+                        //- Footer
+                        .auth-footer-text
+                            | Bạn đã có tài khoản? 
+                            a(href="/user/login") Đăng nhập

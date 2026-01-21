@@ -22,6 +22,28 @@ header.header
       .header__actions.d-flex.align-items-center
         button.header__actions-btn.js-search-trigger(type="button")
           i.fas.fa-search
+        //- 2. USER ACCOUNT (NEW FEATURE)
+        .header__auth
+          if (user)
+            a.auth-btn(href="/user/info")
+              i.far.fa-user.me-1
+              span.d-none.d-md-inline #{user.fullName}
+            
+            span.auth-divider |
+            
+            a.auth-btn(href="/user/logout" title="Đăng xuất")
+              i.fas.fa-sign-out-alt
+          else
+            a.auth-btn(href="/user/login")
+              i.far.fa-user.me-1
+              span Đăng nhập
+            
+            span.auth-divider |
+            
+            a.auth-btn(href="/user/register")
+              i.fas.fa-user-plus.me-1
+              span Đăng ký
         
         +miniCart(miniCart)
   +search()
+  
