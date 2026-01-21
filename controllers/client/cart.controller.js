@@ -1,5 +1,6 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
+// Trang giỏ hàng
 module.exports.index = async (req, res) => {
     /* 
     Trang giỏ hàng cần hiển thị tên sản phẩm , ảnh , slug , số lượng , màu ....
@@ -23,6 +24,8 @@ module.exports.index = async (req, res) => {
 
     res.render("client/pages/cart/index", { title: "Trang giỏ hàng", cartDetail: cart })
 }
+// Hết giỏ hàng
+
 module.exports.addPost = async (req, res) => {
 
     const productId = req.params.id;
@@ -98,6 +101,7 @@ module.exports.addPost = async (req, res) => {
     }
 
 }
+// cập nhập số lượng trong giỏ
 module.exports.updateQuantity = async (req, res) => {
     const quantity = parseInt(req.params.quantity)
     const productId = req.params.productId;
@@ -118,6 +122,8 @@ module.exports.updateQuantity = async (req, res) => {
     const backURL = req.get("Referer");
     res.redirect(backURL)
 }
+// Hết cập nhập số lượng trong giỏ
+// Xóa sản phẩm trong giỏ
 module.exports.delete = async (req, res) => {
     const cartId = req.cookies.cartId;
     const color = req.params.color;
@@ -135,3 +141,4 @@ module.exports.delete = async (req, res) => {
     res.redirect(backURL)
 
 }
+// Hết xóa sản phẩm trong giỏ

@@ -1163,3 +1163,138 @@ a {
 }
 
 /* end trang giỏ hang */
+/* =========================================
+   CHECKOUT PAGE STYLING
+   ========================================= */
+
+/* 1. Tinh chỉnh Card & Khung bao */
+.card {
+    border: none;
+    /* Bỏ viền mặc định của Bootstrap */
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng bóng đổ mềm mại, hiện đại hơn bóng mặc định */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.04) !important;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-header {
+    border-bottom: 1px solid #f1f5f9;
+    /* Màu viền nhạt hơn */
+    background-color: #fff;
+}
+
+/* 2. Tinh chỉnh Form Input */
+.form-label {
+    font-size: 0.9rem;
+    color: #475569;
+    /* Màu xám đậm vừa phải */
+    margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+    padding: 0.75rem 1rem;
+    /* Tăng padding để input thoáng hơn */
+    border-color: #e2e8f0;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    background-color: #f8fafc;
+    /* Nền xám cực nhạt */
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    background-color: #fff;
+    border-color: var(--bs-primary);
+    /* Dùng màu chủ đạo của web */
+    box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.1);
+    /* Hiệu ứng glow nhẹ */
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+/* 3. Payment Methods (Phương thức thanh toán) */
+.payment-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid #f1f5f9;
+    /* Viền mặc định */
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.payment-item:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+/* Kỹ thuật CSS hiện đại: :has() 
+   Nếu input radio bên trong được checked -> Style thẻ cha (.payment-item) */
+.payment-item:has(input:checked) {
+    border-color: var(--bs-primary);
+    background-color: rgba(var(--bs-primary-rgb), 0.04);
+}
+
+/* Tạo dấu check nhỏ ở góc khi chọn (Optional - làm cho xịn hơn) */
+.payment-item:has(input:checked)::after {
+    content: "\f00c";
+    /* FontAwesome check icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--bs-primary);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.payment-item i {
+    opacity: 0.8;
+}
+
+/* 4. Product List Mini (Cột phải) */
+.checkout-product-list {
+    max-height: 400px;
+    /* Giới hạn chiều cao nếu mua nhiều hàng */
+    overflow-y: auto;
+    padding-right: 5px;
+    /* Custom Scrollbar cho đẹp */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.checkout-product-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.checkout-product-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+
+.checkout-product-list img {
+    background-color: #f8fafc;
+}
+
+/* 5. Sticky Order Summary */
+.sticky-top {
+    /* Điều chỉnh top để không bị header che mất (giả sử header cao 80px) */
+    top: 100px !important;
+    z-index: 10;
+    transition: top 0.3s;
+}
+
+/* 6. Nút Đặt hàng (CTA

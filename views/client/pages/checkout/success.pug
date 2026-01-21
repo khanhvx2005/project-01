@@ -1,0 +1,93 @@
+extends ../../layouts/default.pug
+
+block main
+    if(order)
+        .container.my-5
+            .row.justify-content-center
+                .col-12.col-lg-8
+                    //- 1. CARD THÔNG BÁO THÀNH CÔNG
+                    .card.border-0.shadow-sm.rounded-4.mb-4.overflow-hidden
+                        .card-body.text-center.p-5
+                            .success-animation.mb-4
+                                .checkmark-circle
+                                    .checkmark.draw
+                            
+                            h2.fw-bold.text-success.mb-2 Đặt hàng thành công!
+                            p.text-muted.mb-4 Cảm ơn bạn đã tin tưởng và mua sắm tại VUKHANHSHOP.
+                            
+                            
+
+                    //- 2. THÔNG TIN CHI TIẾT ĐƠN HÀNG
+                    .card.border-0.shadow-sm.rounded-4
+                        .card-header.bg-white.py-3
+                            h5.fw-bold.mb-0 Thông tin đơn hàng
+                        
+                        .card-body.p-4
+                            .row.mb-4
+                                //- Cột trái: Thông tin người nhận
+                                .col-12.col-md-6.mb-3.mb-md-0
+                                    h6.fw-bold.text-uppercase.small.text-muted.mb-3 Người nhận hàng
+                                    if(order.userInfo)
+                                        p.fw-bold.mb-1 #{order.userInfo.fullName}
+                                    if(order.userInfo)
+
+                                        p.mb-1 #{order.userInfo.phone}
+                                    if(order.userInfo)
+
+                                        p.mb-1.text-muted #{order.userInfo.address}
+                                
+                                //- Cột phải: Phương thức thanh toán
+                                .col-12.col-md-6
+                                    h6.fw-bold.text-uppercase.small.text-muted.mb-3 Hình thức thanh toán
+                                    p.mb-1 Thanh toán khi nhận hàng (COD)
+                                    p.text-success.fw-bold
+                                        i.fas.fa-check-circle.me-2
+                                        | Đang xử lý
+
+                            //- Bảng sản phẩm
+                            .table-responsive.mb-4
+                                table.table.table-borderless.align-middle.bg-light.rounded-3.overflow-hidden
+                                    thead
+                                        tr.border-bottom
+                                            th.ps-4.py-3 Sản phẩm
+                                            th.text-center Số lượng
+                                            th.text-end.pe-4 Đơn giá
+                                    tbody
+                                        if(order.products)
+                                            each item in order.products
+                                                tr.border-bottom
+                                                    td.ps-4.py-3
+                                                        .d-flex.align-items-center
+                                                            img.rounded.border(
+                                                                src=item.thumbnail
+                                                                alt=item.title 
+                                                                style="width: 50px; height: 50px; object-fit: cover;"
+                                                            )
+                                                            .ms-3
+                                                                span.fw-medium.d-block #{item.title}
+                                                                //- if(item.sku)
+                                                                //-     small.text-muted SKU: #{item.sku}
+                                                    td.text-center x#{item.quantity}
+                                                    td.text-end.pe-4.fw-bold #{item.totalPrice.toLocaleString()}đ
+                            
+                            //- Tổng kết tiền
+                            .d-flex.justify-content-end
+                                .text-end(style="min-width: 250px;")
+                                    .d-flex.justify-content-between.mb-2
+                                        span.text-muted Tạm tính:
+                                        span.fw-medium #{order.totalMoney.toLocaleString()}đ
+                                    .d-flex.justify-content-between.mb-2
+                                        span.text-muted Phí vận chuyển:
+                                        span.text-success 0đ
+                                    hr
+                                    .d-flex.justify-content-between.align-items-center
+                                        span.fw-bold.fs-5 Tổng cộng:
+                                        span.fw-bold.fs-4.text-primary #{order.totalMoney.toLocaleString()}đ
+
+                        .card-footer.bg-white.text-center.py-4.border-top-0
+                            a.btn.btn-outline-secondary.rounded-pill.px-4.me-2(href="/products")
+                                i.fas.fa-arrow-left.me-2
+                                | Tiếp tục mua sắm
+                            a.btn.btn-primary.rounded-pill.px-4(href="/user/info")
+                                i.fas.fa-file-invoice.me-2
+                                | Quản lý đơn hàng
