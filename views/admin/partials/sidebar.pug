@@ -18,12 +18,12 @@ aside.sidebar
             a.sidebar__link(href=`${prefixAdmin}/products-category`)
                 i.fas.fa-list.sidebar__icon
                 |  Quản lý danh mục
-        a.sidebar__link(href='#')
+        a.sidebar__link(href=`${prefixAdmin}/orders`)
             i.fas.fa-shopping-cart.sidebar__icon
             |  Đơn hàng
         
         .sidebar__menu-label Người dùng & Hệ thống
-        a.sidebar__link(href='#')
+        a.sidebar__link(href=`${prefixAdmin}/users`)
             i.fas.fa-users.sidebar__icon
             |  Quản lý User
         if(role.permission.includes("accounts_view"))

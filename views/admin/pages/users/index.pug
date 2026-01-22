@@ -1,0 +1,125 @@
+
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/moment.pug
+block main
+    +alert_success(5000)
+    +alert_error(5000)
+
+    .container-fluid.px-4
+        .card.border-0.shadow-sm.rounded-4.my-4
+            .card-header.bg-white.py-3
+                .row.align-items-center
+                    .col
+                        h5.mb-0.fw-bold Danh sách khách hàng
+                        small.text-muted Quản lý người dùng phía Client
+                    .col-auto
+                        //- Thường khách hàng tự đăng ký, nhưng admin có thể cần nút này
+                        //- a.btn.btn-primary.rounded-pill(href="/admin/users/create")
+                        //-     i.fas.fa-plus.me-2
+                        //-     | Thêm khách hàng
+
+            .card-body
+                //- 1. BỘ LỌC
+                .row.g-3.mb-4
+                    .col-12.col-md-6.col-lg-4
+                        .input-group
+                            span.input-group-text.bg-light.border-end-0
+                                i.fas.fa-search.text-muted
+                            input.form-control.border-start-0.bg-light(
+                                type="text" 
+                                name="keyword" 
+                                placeholder="Tìm theo tên, email, sđt..."
+                            )
+                    
+                    .col-12.col-md-3
+                        select.form-select(name="status")
+                            option(value="") Tất cả trạng thái
+                            option(value="active") Đang hoạt động
+                            option(value="inactive") Đã bị khóa
+
+                //- 2. BẢNG DỮ LIỆU
+                .table-responsive
+                    table.table.table-hover.align-middle.mb-0
+                        thead.bg-light
+                            tr
+                                th.py-3.ps-4 Khách hàng
+                                th.py-3 Liên hệ
+                                th.py-3.text-center Lịch sử mua hàng
+                                th.py-3.text-center Ngày tham gia
+                                th.py-3.text-center Trạng thái
+                                th.py-3.text-end.pe-4 Hành động
+                        tbody
+                            each item in records
+                                tr
+                                    //- Cột 1: Avatar & Tên
+                                    td.ps-4
+                                        .d-flex.align-items-center
+                                            img.rounded-circle.me-3.border(
+                                                src=(item.avatar ? item.avatar : "/images/default-avatar.png") 
+                                                alt=item.fullName 
+                                                style="width: 48px; height: 48px; object-fit: cover;"
+                                            )
+                                            div
+                                                .fw-bold.text-dark #{item.fullName}
+                                                //- Hiển thị ID nhỏ để dễ tra cứu nếu cần
+                                                small.text-muted.fs-7 ID: ##{item.id.toString().slice(-6)}
+
+                                    //- Cột 2: Email & SĐT
+                                    td
+                                        div
+                                            i.far.fa-envelope.me-2.text-muted.small
+                                            span #{item.email}
+                                        if(item.phone)
+                                            div.mt-1
+                                                i.fas.fa-phone.me-2.text-muted.small
+                                                span #{item.phone}
+                                        else 
+                                            div.mt-1.text-muted.small (Chưa cập nhật SĐT)
+
+                                    //- Cột 3: Chỉ số mua sắm (Khác biệt so với trang Admin)
+                                    td.text-center
+                                        //- Giả sử bạn có join bảng orders để lấy số liệu này
+                                        div.badge.bg-info-subtle.text-info-emphasis.mb-1
+                                            | #{item.orderCount || 0} đơn hàng
+                                        div.small.fw-bold.text-success
+                                            | Tổng: #{(item.totalSpent || 0).toLocaleString()}đ
+
+                                    //- Cột 4: Ngày tạo
+                                    td.text-center
+                                        +formatDate(item.createdAt)
+
+                                    //- Cột 5: Trạng thái (Active/Locked)
+                                    td.text-center
+                                        if(item.status == "active")
+                                            span.badge.bg-success-subtle.text-success Hoạt động
+                                        else
+                                            span.badge.bg-danger-subtle.text-danger Bị khóa
+
+                                    //- Cột 6: Hành động
+                                    td.text-end.pe-4
+                                        //- Nút xem chi tiết (Lịch sử đơn hàng của khách này)
+                                        a.btn.btn-light.btn-sm.me-2(
+                                            href=`/admin/users/detail/${item.id}` 
+                                            title="Xem lịch sử mua hàng"
+                                        )
+                                            i.fas.fa-history.text-primary
+                                        
+                                        //- Nút Khóa/Mở khóa tài khoản (Thay vì nút sửa)
+                                        if(item.status == "active")
+                                            button.btn.btn-light.btn-sm.btn-lock(
+                                                data-id=item.id 
+                                                data-status="inactive"
+                                                title="Khóa tài khoản này"
+                                            )
+                                                i.fas.fa-lock.text-warning
+                                        else 
+                                            button.btn.btn-light.btn-sm.btn-unlock(
+                                                data-id=item.id 
+                                                data-status="active"
+                                                title="Mở khóa tài khoản"
+                                            )
+                                                i.fas.fa-lock-open.text-success
+
+    //- Form ẩn để xử lý khóa/mở khóa
+    form#form-change-status(action="" method="POST" data-path="/admin/users/change-status")

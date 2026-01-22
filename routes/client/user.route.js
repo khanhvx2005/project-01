@@ -1,7 +1,12 @@
 const express = require("express")
+const multer = require('multer')
+const fileUpload = multer()
 const router = express.Router()
+const uploadCloud = require('../../middlewares/admin/uploadCloud.middleware')
+
 const controller = require("../../controllers/client/user.controller")
 const validate = require("../../validates/client/user.validate")
+const authMiddleware = require("../../middlewares/client/auth.middleware")
 router.get('/register', controller.register)
 router.post('/register', validate.register, controller.registerPost)
 router.get('/login', controller.login)
@@ -13,5 +18,6 @@ router.get('/password/otp', controller.otp)
 router.post('/password/otp', validate.otp, controller.otpPost)
 router.get('/password/reset', controller.reset)
 router.post('/password/reset', validate.reset, controller.resetPost)
-
+router.get('/info', authMiddleware.requireAuth, controller.info)
+router.patch('/info', fileUpload.single('avatar'), uploadCloud.upload, controller.infoPatch)
 module.exports = router;

@@ -1,0 +1,111 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success(5000)
+    +alert_error(5000)
+
+    .container-fluid.px-4
+        .card.border-0.shadow-sm.rounded-4.my-4
+            .card-header.bg-white.py-3
+                .row.align-items-center
+                    .col
+                        h5.mb-0.fw-bold Quản lý đơn hàng
+                    .col-auto
+                        //- Nút xuất Excel (Tính năng gợi ý)
+                        button.btn.btn-outline-success.btn-sm.rounded-pill
+                            i.fas.fa-file-excel.me-2
+                            | Xuất Excel
+
+            .card-body
+                //- 1. BỘ LỌC (Filter)
+                .row.g-3.mb-4
+                    .col-12.col-md-5
+                        .input-group
+                            span.input-group-text.bg-light.border-end-0
+                                i.fas.fa-search.text-muted
+                            input.form-control.border-start-0.bg-light(
+                                type="text" 
+                                name="keyword" 
+                                placeholder="Tìm theo mã đơn, tên khách, sđt..."
+                            )
+                    
+                    .col-12.col-md-3
+                        select.form-select(name="status" id="filterStatus")
+                            option(value="") Tất cả trạng thái
+                            option(value="pending") Chờ xác nhận
+                            option(value="shipping") Đang giao
+                            option(value="completed") Hoàn thành
+                            option(value="cancelled") Đã hủy
+                    
+                    .col-12.col-md-4
+                        input.form-control(type="date" name="date" placeholder="Lọc theo ngày")
+
+                //- 2. BẢNG ĐƠN HÀNG
+                .table-responsive
+                    table.table.table-hover.align-middle.mb-0.order-table
+                        thead.bg-light
+                            tr
+                                th.py-3.ps-4 Mã đơn
+                                th.py-3 Khách hàng
+                                th.py-3.text-center Sản phẩm
+                                th.py-3.text-center Tổng tiền
+                                th.py-3.text-center Trạng thái
+                                th.py-3.text-center Ngày đặt
+                                th.py-3.text-end.pe-4 Hành động
+                        tbody
+                            //- Giả sử records là danh sách đơn hàng từ Controller
+                            each item in records
+                                tr
+                                    //- Cột Mã đơn
+                                    td.ps-4
+                                        a.fw-bold.text-primary.text-decoration-none(href=`/admin/orders/detail/${item.id}`)
+                                            | ##{item.id.toString().slice(-6).toUpperCase()}
+                                    
+                                    //- Cột Khách hàng
+                                    td
+                                        div.fw-bold #{item.userInfo.fullName}
+                                        div.small.text-muted #{item.userInfo.phone}
+                                    
+                                    //- Cột Số lượng SP
+                                    td.text-center
+                                        span.badge.bg-light.text-dark.border #{item.products.length} SP
+                                    
+                                    //- //- Cột Tổng tiền
+                                    td.text-center
+                                        span.fw-bold.text-danger #{item.totalMoney.toLocaleString()}đ
+                                    
+                                    //- Cột Trạng thái (Dropdown đổi nhanh)
+                                    td.text-center
+                                        select.form-select.form-select-sm.badge-status.change-status-select(
+                                            data-id=item.id 
+                                            class=`status-${item.status}`
+                                            onchange="changeStatus(this)"
+                                        )
+                                            option(value="pending" selected=(item.status=="pending")) Chờ xác nhận
+                                            option(value="shipping" selected=(item.status=="shipping")) Đang giao
+                                            option(value="completed" selected=(item.status=="completed")) Hoàn thành
+                                            option(value="cancelled" selected=(item.status=="cancelled")) Đã hủy
+
+                                    //- Cột Ngày đặt
+                                    td.text-center
+                                        div.small #{new Date(item.createdAt).toLocaleDateString('vi-VN')}
+                                        div.small.text-muted #{new Date(item.createdAt).toLocaleTimeString('vi-VN')}
+
+                                    //- Cột Hành động
+                                    td.text-end.pe-4
+                                        a.btn.btn-light.btn-sm(
+                                            href=`/admin/orders/detail/${item.id}` 
+                                            title="Xem chi tiết"
+                                        )
+                                            i.fas.fa-eye.text-info
+                                        
+                                        button.btn.btn-light.btn-sm.btn-delete.ms-2(
+                                            data-id=item.id 
+                                            title="Xóa đơn"
+                                        )
+                                            i.fas.fa-trash.text-danger
+
+    //- Form ẩn xử lý Logic
+    form#form-change-status(action="" method="POST" data-path="/admin/orders/change-status")
+    form#form-delete-item(action="" method="POST" data-path="/admin/orders/delete")

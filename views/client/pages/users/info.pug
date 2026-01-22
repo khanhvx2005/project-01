@@ -1,0 +1,130 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    if(user)
+
+        .container.my-5
+            .row
+                //- SIDEBAR (MENU TRÁI)
+                .col-12.col-md-4.col-lg-3.mb-4
+                    .card.border-0.shadow-sm.rounded-4.dashboard-sidebar
+                        .card-body.p-0
+                            //- Avatar & Name Summary
+                            .text-center.p-4.border-bottom
+                                .avatar-wrapper.mb-3
+                                    if(user.avatar)
+                                        img.rounded-circle(src=user.avatar alt=user.fullName)
+                                    else
+                                        img.rounded-circle(src="/images/default-avatar.png" alt="User Avatar")
+                                h6.fw-bold.mb-0 #{user.fullName}
+                                small.text-muted #{user.email}
+
+                            //- Menu Links
+                            .dashboard-menu.py-2
+                                a.nav-link.active(href="/user/info")
+                                    i.far.fa-user.me-3
+                                    | Thông tin tài khoản
+                                a.nav-link(href="/user/orders")
+                                    i.fas.fa-box-open.me-3
+                                    | Đơn hàng của tôi
+                                a.nav-link(href="/user/password/change")
+                                    i.fas.fa-key.me-3
+                                    | Đổi mật khẩu
+                                a.nav-link.text-danger(href="/user/logout")
+                                    i.fas.fa-sign-out-alt.me-3
+                                    | Đăng xuất
+
+                //- MAIN CONTENT (NỘI DUNG PHẢI)
+                .col-12.col-md-8.col-lg-9
+                    .card.border-0.shadow-sm.rounded-4
+                        .card-header.bg-white.py-3.border-bottom-0
+                            h5.mb-0.fw-bold Hồ sơ của tôi
+                            p.text-muted.small.mb-0 Quản lý thông tin hồ sơ để bảo mật tài khoản
+
+                        .card-body.p-4
+                            form(action="/user/info?_method=PATCH" method="POST" enctype="multipart/form-data")
+                                .row
+                                    //- CỘT FORM NHẬP LIỆU
+                                    .col-12.col-lg-8.order-2.order-lg-1
+                                        .mb-3
+                                            label.form-label.fw-bold(for="fullName") Họ và tên
+                                            input.form-control(
+                                                type="text" 
+                                                id="fullName" 
+                                                name="fullName" 
+                                                value=user.fullName 
+                                                required
+                                            )
+
+                                        .mb-3
+                                            label.form-label.fw-bold(for="email") Email
+                                            //- Email thường không cho sửa hoặc phải có quy trình riêng
+                                            input.form-control(
+                                                type="email" 
+                                                value=user.email 
+                                                disabled 
+                                                style="background-color: #f1f5f9;"
+                                            )
+                                            small.text-muted.fst-italic Email không thể thay đổi.
+
+                                        .mb-3
+                                            label.form-label.fw-bold(for="phone") Số điện thoại
+                                            input.form-control(
+                                                type="text" 
+                                                id="phone" 
+                                                name="phone" 
+                                                value=user.phone
+                                                placeholder="Thêm số điện thoại"
+                                            )
+                                        
+                                        .mb-3
+                                            label.form-label.fw-bold(for="address") Địa chỉ
+                                            input.form-control(
+                                                type="text" 
+                                                id="address" 
+                                                name="address" 
+                                                value=user.address
+                                                placeholder="Địa chỉ nhận hàng mặc định"
+                                            )
+
+                                        //- Giới tính (Radio)
+                                        .mb-4
+                                            label.form-label.fw-bold.d-block Giới tính
+                                            .d-flex.gap-4
+                                                .form-check
+                                                    input.form-check-input(type="radio" name="gender" id="male" value="male" checked=(user.gender == "male"))
+                                                    label.form-check-label(for="male") Nam
+                                                .form-check
+                                                    input.form-check-input(type="radio" name="gender" id="female" value="female" checked=(user.gender == "female"))
+                                                    label.form-check-label(for="female") Nữ
+                                                .form-check
+                                                    input.form-check-input(type="radio" name="gender" id="other" value="other" checked=(user.gender == "other"))
+                                                    label.form-check-label(for="other") Khác
+
+                                        button.btn.btn-primary.rounded-pill.px-4(type="submit") Lưu thay đổi
+
+                                    //- CỘT UPLOAD AVATAR
+                                    .col-12.col-lg-4.order-1.order-lg-2.mb-4.mb-lg-0
+                                        .text-center.border-start-lg.ps-lg-4
+                                            .upload-avatar-preview.mb-3
+                                                img#avatar-preview.rounded-circle.shadow-sm(
+                                                    src=(user.avatar ? user.avatar : "/images/default-avatar.png") 
+                                                    alt="Avatar"
+                                                    style="width: 150px; height: 150px; object-fit: cover;"
+                                                )
+                                            
+                                            input.d-none#avatar-input(type="file" name="avatar" accept="image/*")
+                                            
+                                            button.btn.btn-outline-secondary.btn-sm.rounded-pill(
+                                                type="button"
+                                                onclick="document.getElementById('avatar-input').click()"
+                                            ) 
+                                                i.fas.fa-camera.me-2
+                                                | Chọn ảnh
+                                            
+                                            p.text-muted.small.mt-2 Dung lượng file tối đa 1MB
+                                            p.text-muted.small Định dạng: .JPEG, .PNG
+    

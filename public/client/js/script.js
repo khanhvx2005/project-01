@@ -132,4 +132,19 @@ function updateQuantity(productId, newQuantity, size, color) {
 
 
 }
+// --- UPLOAD IMAGE PREVIEW ---
+const uploadImageInput = document.querySelector("[upload-image-input]");
+const uploadImagePreview = document.querySelector("[upload-image-preview]");
 
+// Hoặc dùng ID như trong file PUG trên:
+const avatarInput = document.getElementById('avatar-input');
+const avatarPreview = document.getElementById('avatar-preview');
+
+if (avatarInput && avatarPreview) {
+    avatarInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            avatarPreview.src = URL.createObjectURL(file);
+        }
+    });
+}

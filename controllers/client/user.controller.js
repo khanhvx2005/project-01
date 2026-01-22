@@ -3,7 +3,7 @@ const md5 = require("md5")
 const generateHelper = require("../../helpers/generate.helper")
 const ForgotPassword = require("../../models/forgot-password.model")
 const sendMailHelper = require('../../helpers/sendMail.helper')
-
+const Cart = require("../../models/cart.model")
 module.exports.register = (req, res) => {
     res.render("client/pages/users/register", { title: "Trang đăng ký" })
 }
@@ -57,12 +57,31 @@ module.exports.loginPost = async (req, res) => {
         res.redirect(backURL)
         return;
     }
+    if (user) {
+
+    } else {
+
+    }
+    const cart = await Cart.findOne({
+        user_id: user.id
+    })
+    if (cart) {
+        res.cookie("cartId", cart.id)
+    } else {
+        await Cart.updateOne({
+            _id: req.cookies.cartId
+        }, {
+            user_id: user.id
+        })
+    }
+
     res.cookie("tokenUser", user.tokenUser)
     req.flash("success", "Đăng nhập thành công")
     res.redirect("/")
 }
 module.exports.logout = (req, res) => {
     res.clearCookie("tokenUser");
+    res.clearCookie("cartId");
     res.redirect('/')
 }
 module.exports.forgotPassword = (req, res) => {
@@ -135,4 +154,16 @@ module.exports.resetPost = async (req, res) => {
     }, { password: password })
     req.flash("success", "Đổi mật khẩu thành công !")
     res.redirect("/")
+}
+module.exports.info = (req, res) => {
+    res.render("client/pages/users/info", { title: "Trang thông tin cá nhân" })
+}
+module.exports.infoPatch = async (req, res) => {
+    await User.updateOne({
+        tokenUser: req.cookies.tokenUser
+    }, req.body)
+    req.flash("success", "Cập nhập thành công ")
+    const backURL = req.get("Referer")
+    res.redirect(backURL)
+
 }
