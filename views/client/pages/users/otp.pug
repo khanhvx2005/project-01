@@ -1,0 +1,46 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .container
+        .row.justify-content-center
+            .col-12.col-md-8.col-lg-6.col-xl-5
+                //- FORM CARD
+                .card.auth-card
+                    .card-body
+                        //- Icon Shield (Bảo mật)
+                        .text-center.mb-4
+                            .auth-icon-wrapper
+                                i.fas.fa-shield-alt
+
+                        //- Header
+                        .auth-header
+                            h3.auth-title Nhập mã xác thực
+                            p.auth-subtitle.mb-4 
+                                | Mã OTP đã được gửi đến email 
+                                //-(Giả sử server trả về biến email)
+                                span.fw-bold.text-dark #{email}
+                                | . Vui lòng kiểm tra hộp thư của bạn.
+
+                        //- Form
+                        form(action="/user/password/otp" method="POST")
+                            //- Input ẩn để gửi kèm email
+                            input(type="hidden" name="email" value=email)
+
+                            //- OTP Input Style
+                            .mb-4
+                                label.form-label.text-center.w-100(for="otp") Nhập mã 6 chữ số
+                                input.form-control.form-control-lg.text-center.otp-input(
+                                    type="text" 
+                                    id="otp" 
+                                    name="otp" 
+                                    required 
+                                    maxlength="6"
+                                    placeholder="0 0 0 0 0 0"
+                                    autocomplete="off"
+                                )
+                            
+                            //- Button Submit
+                            button.btn.

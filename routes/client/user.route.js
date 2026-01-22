@@ -7,4 +7,11 @@ router.post('/register', validate.register, controller.registerPost)
 router.get('/login', controller.login)
 router.post('/login', validate.login, controller.loginPost)
 router.get('/logout', controller.logout)
+router.get('/password/forgot', controller.forgotPassword)
+router.post('/password/forgot', validate.forgotPassword, controller.forgotPasswordPost)
+router.get('/password/otp', controller.otp)
+router.post('/password/otp', validate.otp, controller.otpPost)
+router.get('/password/reset', controller.reset)
+router.post('/password/reset', validate.reset, controller.resetPost)
+
 module.exports = router;

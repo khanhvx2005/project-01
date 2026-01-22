@@ -1,0 +1,61 @@
+extends ../../layouts/auth.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert_success("5000")
+    +alert_error("5000")
+    .container
+        .row.justify-content-center
+            .col-12.col-md-8.col-lg-6.col-xl-5
+                //- FORM CARD
+                .card.auth-card
+                    .card-body
+                        //- Icon Key (Điểm nhấn)
+                        .text-center.mb-4
+                            .auth-icon-wrapper
+                                i.fas.fa-key
+
+                        //- Header
+                        .auth-header
+                            h3.auth-title Đổi mật khẩu
+                            p.auth-subtitle.mb-4 
+                                | Vui lòng nhập mật khẩu mới cho tài khoản của bạn.
+
+                        //- Form
+                        form(action="/user/password/reset" method="POST")
+                            //- Mật khẩu mới
+                            .mb-3
+                                label.form-label(for="password") Mật khẩu mới
+                                .input-group
+                                    input.form-control.border-end-0(
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        required 
+                                        placeholder="Tối thiểu 6 ký tự"
+                                    )
+                                    span.input-group-text.cursor-pointer.toggle-password
+                                        i.far.fa-eye-slash
+                            
+                            //- Xác nhận mật khẩu
+                            .mb-4
+                                label.form-label(for="confirmPassword") Xác nhận mật khẩu mới
+                                .input-group
+                                    input.form-control.border-end-0(
+                                        type="password" 
+                                        id="confirmPassword" 
+                                        name="confirmPassword" 
+                                        required 
+                                        placeholder="Nhập lại mật khẩu bên trên"
+                                    )
+                                    span.input-group-text.cursor-pointer.toggle-password
+                                        i.far.fa-eye-slash
+                            
+                            //- Button Submit
+                            button.btn.btn-auth.w-100(type="submit") Xác nhận đổi mật khẩu
+
+                        //- Footer
+                        .text-center.mt-4
+                            a.text-decoration-none.fw-bold.text-secondary(href="/user/login")
+                                i.fas.fa-arrow-left.me-2
+                                | Quay lại trang Đăng nhập

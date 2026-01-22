@@ -1155,6 +1155,7 @@ a {
 .quantity-box input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+
 }
 
 /* Sticky Summary Card */
@@ -1440,7 +1441,7 @@ a {
     /* Viền trong suốt mặc định */
     border-radius: 12px;
     /* Bo góc input */
-    padding: 12px 18px;
+    padding: 3px 18px;
     font-size: 1rem;
     color: #1f2937;
     transition: all 0.2s ease;
@@ -1570,4 +1571,101 @@ a {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* --- FORGOT PASSWORD PAGE STYLES --- */
+
+/* Vòng tròn chứa icon */
+.auth-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background-color: #fef2f2;
+    /* Nền đỏ rất nhạt */
+    color: var(--accent-color);
+    /* Icon màu đỏ chủ đạo */
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(230, 57, 70, 0.15);
+    /* Bóng đổ màu đỏ nhẹ */
+
+    /* Animation nhẹ: Nảy lên */
+    animation: bounce 2s infinite;
+}
+
+/* Tinh chỉnh lại Input Group cho đẹp hơn (kết hợp icon + input) */
+.input-group-text {
+    background-color: var(--input-bg);
+    border: 2px solid transparent;
+    border-right: none;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    color: #9ca3af;
+}
+
+.input-group:focus-within .input-group-text {
+    background-color: var(--input-focus-bg);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+/* Keyframes cho hiệu ứng nảy */
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* --- OTP PAGE STYLES --- */
+
+/* Ô nhập OTP đặc biệt */
+.otp-input {
+    letter-spacing: 15px;
+    /* Giãn cách các số ra */
+    font-size: 1.5rem;
+    /* Chữ to rõ */
+    font-weight: 700;
+    /* In đậm */
+    color: var(--primary-color);
+    border: 2px solid #e2e8f0;
+}
+
+.otp-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+    letter-spacing: 15px;
+    /* Giữ nguyên khoảng cách khi focus */
+}
+
+/* Nút gửi lại mã */
+.resend-btn {
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transition: all 0.3s;
+}
+
+/* Khi nút gửi lại active (hết giờ đếm ngược) */
+.resend-btn.active {
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+.resend-btn.active:hover {
+    text-decoration: underline !important;
 }
